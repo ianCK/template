@@ -1,0 +1,22 @@
+---Abstract---
+Erasable priority_queue
+Based on STL
+
+MPQ[_R]<T, T1 = vector<T>, T2 = less<T>>
+void push(const T &x)
+void pop()
+T top()
+bool empty()
+int size()
+void clear()
+void erase(const T &x)
+
+---Complexity---
+Same as STL priority_queue
+
+---Usage---
+
+TODO
+
+
+

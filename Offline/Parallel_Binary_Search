@@ -1,0 +1,21 @@
+With modification :
+	O(nlg^2n)
+	
+	void solve(int l, int r, int L, int R) {
+		if (l == r) [L ~ R] : ans = l;
+		else {
+			[L ~ R] {
+				if query :
+					if k <= ask : to left
+					else : k -= ask, to right
+				else (modification) :
+					if k <= mid : fix, to left
+					else : to right
+			}
+	
+			[left] :
+				if modification : unfix
+	
+			solve(l, mid, left), solve(mid + 1, r, right);
+		}
+	}

@@ -1,0 +1,4 @@
+use tarjan
+if scc[i] < scc[~i] : choose scc[i]
+else if scc[i] > scc[~i] : choose scc[~i]
+else unsolvable

@@ -1,0 +1,5 @@
+Given a simple polygon(may be not convex) which the vertices are on grid points. 
+A = i + b/2 - 1
+A = Area
+i = interior points
+b = boundary points(including turning points)

@@ -1,0 +1,62 @@
+---Abstract---
+Calculate dynamic prefix sum
+struct BIT<T>;
+
+BIT<T> bit
+void init(int size)
+void init(int size, T *A)
+T add(int pos, T x)
+T ask(int pos)
+T ask(int l, int r)
+int lower_bound(T x)
+int upper_bound(T x)
+void clear(int pos)
+
+---Complexity---
+
+BIT<T> bit : O(1)
+
+void init(int size) : O(n)
+void init(int size, T *A) : O(n)
+
+T add(int pos, T x) : O(lgn)
+T ask(int pos) : O(lgn)
+T ask(int l, int r) : O(lgn)
+
+int lower_bound(T x) : O(lgn)
+int upper_bound(T x) : O(lgn)
+
+void clear(int pos) : O(lgn)
+
+---Usage---
+
+struct BIT<T> bit : Constructor
+	
+	void init(int size) : Set the size of the BIT to [1 ~ size], all values are set to 0
+	void init(int size, T *A) : Set the size of the BIT to [1 ~ size], calculates the prefix sum of A
+	
+	T add(int pos, T x) : Increase val[pos] by x
+	T ask(int pos) : Returns the prefix sum [1 ~ pos]
+	T ask(int l, int r) : Returns the sum of [l ~ r]
+	
+	int lower_bound(T x) : Returns the first position that the prefix sum is >= x
+	int upper_bound(T x) : Returns the first position that the prefix sum is > x
+	
+	void clear(int pos) : Set val[pos] and its ancestors to 0
+
+sturct BIT_2D<T> bit_2d : Constructor
+
+
+---Before Calling---
+init(size) or init(size, a) 
+
+---Example---
+
+BIT<int> bit;
+bit.init(5);
+bit.add(1, 2);
+bit.add(5); ( = 2)
+bit.ask(3, 4); ( = 0)
+bit.lower_bound(2); ( = 1)
+bit.upper_bound(2); ( = 6)
+bit.clear(1);

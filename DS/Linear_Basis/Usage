@@ -1,0 +1,71 @@
+---Abstract---
+Linear_Basis
+
+Linear_Basis<max_bit> lbs
+void init()
+bool zero()
+int size()
+long long int order()
+bool insert(bitset<max_bit> x)
+bool Merge(const Linear_Basis<max_bit> &lbs)
+bool can_produce(bitset<max_bit> x)
+bitset<max_bit> Biggest()
+bitset<max_bit> Smallest()
+bitset<max_bit> Biggest(bitset<max_bit> x)
+bitset<max_bit> kth_Smallest(long long int k)
+bitset<max_bit> kth_Biggest(long long int k)
+bool operator += (bitset<max_bit> x)
+bool operator () (bitset<max_bit> x)
+bitset<max_bit> operator[](long long int k)
+void out()
+
+---Complexity---
+
+Linear_Basis<max_bit> lbs : O(max_bit^2 / bitset) 
+void init() : O(1)
+bool zero() : O(1)
+int size() : O(1)
+long long int order() : O(1)
+bool insert(bitset<max_bit> x) : O(max_bit^2 / bitset)
+bool Merge(const Linear_Basis<max_bit> &lbs) : O(max_bit^3 / bitset)
+bool can_produce(bitset<max_bit> x) : O(max_bit^2 / bitset)
+bitset<max_bit> Biggest() : O(max_bit^2 / bitset)
+bitset<max_bit> Smallest() : O(1)
+bitset<max_bit> Biggest(bitset<max_bit> x) : O(max_bit^2 / bitset)
+bitset<max_bit> kth_Smallest(long long int k) : O(max_bit^2 / bitset)
+bitset<max_bit> kth_Biggest(long long int k) : O(max_bit^2 / bitset)
+bool operator += (bitset<max_bit> x) : O(max_bit^2 / bitset)
+bool operator () (bitset<max_bit> x) : O(max_bit^2 / bitset)
+bitset<max_bit> operator[](long long int k) : O(max_bit^2 / bitset)
+
+---Usage---
+
+Linear_Basis<max_bit> lbs : Constructor
+
+void init() : Clear out the struct
+bool zero() : Check if zero could be produced
+int size() : Current size of the struct
+long long int order() : The amount of values that could be produced
+
+bool insert(bitset<max_bit> x) : Insert x, return true if the values have changed
+bool Merge(const Linear_Basis<max_bit> &lbs) : Merge two Linear_Basis, return true if the values have changed
+bool can_produce(bitset<max_bit> x) : Check if x is could be produced
+
+bitset<max_bit> Biggest() : Return the lexicographically biggest bitset
+bitset<max_bit> Smallest() : Return the lexicographically smallest bitset
+bitset<max_bit> Biggest(bitset<max_bit> x) : Return the lexicographically biggest bitset xor x
+bitset<max_bit> kth_Smallest(long long int k) : Return the lexicographically kth smallest bitset
+bitset<max_bit> kth_Biggest(long long int k) : Return the lexicographically kth biggest bitset
+
+bool operator += (bitset<max_bit> x) : insert(x)
+bool operator () (bitset<max_bit> x) : can_produce(x)
+bitset<max_bit> operator[](long long int k) : kth_Smallest(k)
+
+void out() : debug
+
+---Before Calling---
+None, if need to reuse the struct, call init()
+
+---Example---
+
+TODO

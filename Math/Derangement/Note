@@ -1,0 +1,2 @@
+D_n be the number of permutations of [n] s.t. p(i) != i
+D_n = (n - 1) (D_{n-1} + D_{n-2})

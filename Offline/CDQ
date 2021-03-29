@@ -1,0 +1,6 @@
+void solve(int l, int r) {
+	solve(l, mid), solve(mid + 1, r);
+	[l ~ mid] : modi
+	[mid + 1 ~ r] : que
+	bit
+}

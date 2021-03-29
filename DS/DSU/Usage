@@ -1,0 +1,48 @@
+---Abstract---
+DSU, merged by size
+
+[1] : DSU.cpp
+[2] : Undoable_DSU.cpp
+
+[1] :
+struct DSU
+void init(int n)
+int Find(int n)
+int union_size(int n)
+bool same(int l, int r)
+bool Merge(int l, int r) : return true if l and r are in different union
+
+[2] :
+struct Undoable_DSU
+void init(int n)
+int Find(int n)
+int union_size(int n)
+bool same(int l, int r)
+bool Merge(int l, int r) : return true if l and r are in different union
+int cur_time() : essential for undo 
+void Undo_to_time(int t) : undo to time t
+
+---Complexity---
+[1] :
+sturct DSU : O(1)
+void init(int n) : O(n) (memset)
+int Find(int n) : Amortized O(\alpha(n))
+int union_size(int n) : O(1)
+bool same(int l, int r) : 2*Find
+bool Merge(int l, int r) : 2*Find
+
+[2] :
+struct Undoable_DSU : O(1)
+void init(int n) : O(n) (memset)
+int Find(int n) : Amortized O(\alpha(n))
+int union_size(int n) : O(1)
+bool same(int l, int r) : 2*Find
+bool Merge(int l, int r) : 2*Find
+int cur_time() : O(1) 
+void Undo_to_time(int t) : O(time_difference) (amortized)
+
+---Usage---
+
+TODO
+
+

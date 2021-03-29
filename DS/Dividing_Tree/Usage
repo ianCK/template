@@ -1,0 +1,19 @@
+---Abstract---
+Online range k-th smallest query w/o modification
+Space : O(nlgn), Time : O((n + q)lgn)
+
+struct Dividing_Tree<T>
+void init(int n, T *a)
+T ask(int ql, int qr, int k)
+T operator ()(int ql, int qr, int k) : ask(ql, qr, k)
+
+---Complexity---
+struct Dividing_Tree<T> : O(1)
+void init(int n, T *a) : O(nlgn)
+T ask(int ql, int qr, int k) : O(lgn)
+T operator ()(int ql, int qr, int k) : O(lgn)
+
+---Usage---
+
+TODO
+

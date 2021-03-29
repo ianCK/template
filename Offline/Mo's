@@ -1,0 +1,16 @@
+Normal :
+	O(n^3/2)
+	[l, r] -> (l / kSq, r)
+
+With Modification :
+	O(n^5/3)
+	[l, r, t] -> (l / kSq3, r / kSq3, t)
+
+Can't undo :
+	(1) If l / kSq == r / kSq : Brute Force
+	(2) If new blk : l = first element of next blk
+									 r = l - 1
+	(3) Else : r -> add
+						 memo cur_ans
+						 l -> add
+						 return to memo

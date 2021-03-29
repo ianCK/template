@@ -1,0 +1,54 @@
+---Abstract---
+Amortized O(1) sliding window
+Could customize operation
+
+[1] : Sliding_Window.cpp
+[2] : Sliding_Window_Static.cpp
+[3] : Default_Operations.cpp
+
+[1] : Vector
+[2] : Link with the source array
+!!! [2] Doesn't use extra memory, which means that modifying the source array is an undefined behavior.
+
+[1] : default
+struct Sliding_Window<T, T (*op)(T, T)>
+void init(int sz = 0) : reserve sz
+void push_back(T x)
+T ask(int l, int r)
+T operator () (int l, int r) : ask(l, r)
+
+[2] : 
+struct Sliding_Window_Static<T, T (*op)(T, T)>
+void Link(T *a) : link with array
+void reset()
+T ask(int l, int r)
+T operator () (int l, int r) : ask(l, r)
+
+[3] :
+- default operations -
+> SW_MIN
+> SW_MAX
+> SW_ADD
+> SW_MUL
+> SW_XOR
+> SW_AND
+> SW_OR
+
+---Complexity---
+[1] :
+struct Sliding_Window<T, T (*op)(T, T)> : O(1)
+void init(int sz = 0) : O(sz)
+void push_back(T x) : O(1) (amortized)
+T ask(int l, int r) : O(1) (amortized)
+T operator () (int l, int r) : O(1) (amortized)
+
+[2] :
+struct Sliding_Window_Static<T, T (*op)(T, T)> : O(1)
+void Link(T *a) : O(1)
+void reset() : O(current_size)
+T ask(int l, int r) : O(1) (amortized)
+T operator () (int l, int r) : O(1) (amortized)
+
+---Usage---
+
+TODO

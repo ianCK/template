@@ -1,0 +1,2 @@
+sum [j = 0 ~ k] C(m, j) * C(n - m, k - j) = C(n, k)
+sum [m = 0 ~ n] C(m, j) * C(n - m, k - j) = C(n + 1, k + 1)

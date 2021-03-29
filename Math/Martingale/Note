@@ -1,0 +1,3 @@
+Find a function mapping the state to R
+Satisfying f(nxt(A)) - f(A) = -1
+Then the expected stopping time = f(A0) - f(End)

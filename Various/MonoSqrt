@@ -1,0 +1,15 @@
+This is not correct!!!
+
+O(sqrt(n)) * O(f)
+
+ans = x * f(x)
+f(x) decreasing
+
+if can calculate {f^-1(y) = max x such that f(x) = y}
+	then :
+		tx = f(x)
+		nx = f^-1(tx)
+		ans = max(ans, nx * tx)
+		nx = max(nx, ans / (tx - 1))
+	Faster :
+		binary search s.t. x > y and y >= x
