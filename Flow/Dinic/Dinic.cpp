@@ -29,13 +29,6 @@ template <typename T> struct Dinic {
 		graph[v].push_back(Edge(u, int(graph[u].size()) - 1, c));
 		return ;
 	}
-	
-	// Only for B
-	void Reweight() {
-		for (int i = 0; i < size; i++) for (Edge &j : graph[i]) if (j.to > i) 
-			j.cap = graph[j.to][j.rev].cap = (j.cap + graph[j.to][j.rev].cap) >> 1;
-		return ;
-	}
 
 	void Bfs(int s, int t) {
 		queue<int> q;
