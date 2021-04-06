@@ -8,13 +8,25 @@ template <typename T1, typename T2> T1 Pow(T1 a, T2 b) {
 	return ans;
 }
 
-template <int kMod> struct Mod_Int {
-	constexpr static int Mod() {return kMod;}
+struct Mod_Int {
+	typedef unsigned long long int ull;
+	constexpr static ull kMod = (1LL << 61) - 1;
+	static constexpr ull CalcMod(const ull &x) {
+		ull xu = x >> 61;
+		ull xd = x & kMod;
+		ull res = xu + xd;
+		if (res >= kMod) res -= kMod;
+		return res;
+	}
+	static constexpr ull Mul(const ull &a, const ull &b) {
+		ull l1 = uint32_t(a), h1 = a >> 32, l2 = uint32_t(b), h2 = b >> 32;
+		ull l = l1 * l2, m = l1 * h2 + l2 * h1, h = h1 * h2;
+		return CalcMod((l & kMod) + (l >> 61) + (h << 3) + (m >> 29) + (m << 35 >> 3));
+	}
 
-	int val;
+	ull val;
 	Mod_Int() {val = 0;}
 	template <typename T> Mod_Int(const T &x) {val = x;}
-	template <int nMod> Mod_Int(const Mod_Int<nMod> &x) {val = x.val;}
 
 	Mod_Int inv() const {return Pow(*this, kMod - 2);} 
 
@@ -25,13 +37,13 @@ template <int kMod> struct Mod_Int {
 	}
 	Mod_Int operator - (const Mod_Int &x) const {
 		Mod_Int ans(val - x.val);
-		if (ans.val < 0) ans.val += kMod;
+		if (ans.val >= kMod) ans.val += kMod;
 		return ans;
 	}
-	Mod_Int operator * (const Mod_Int &x) const {return Mod_Int(1LL * val * x.val % kMod);}
+	Mod_Int operator * (const Mod_Int &x) const {return Mod_Int(Mul(val, x.val));}
 	Mod_Int operator / (const Mod_Int &x) const {return *this * x.inv();}
 	Mod_Int operator ^ (const Mod_Int &x) const {return Pow(*this, x.val);}
-	Mod_Int operator << (const int &x) const {return ((1LL * val) << x) % kMod;}
+	Mod_Int operator << (const int &x) const {return CalcMod(val << x);}
 
 	Mod_Int operator += (const Mod_Int &x) {return *this = *this + x;}
 	Mod_Int operator -= (const Mod_Int &x) {return *this = *this - x;}
@@ -47,7 +59,7 @@ template <int kMod> struct Mod_Int {
 	}
 	Mod_Int operator --(int) {
 		val--;
-		if (val < 0) val += kMod;
+		if (val >= kMod) val += kMod;
 		return *this;
 	}
 
@@ -58,10 +70,10 @@ template <int kMod> struct Mod_Int {
 	bool operator == (const Mod_Int &x) const {return val == x.val;}
 	bool operator != (const Mod_Int &x) const {return val != x.val;}
 
-	void out() const {printf("%d", val);}
+	void out() const {printf("%llu", val);}
 };
 
-using Mint = Mod_Int<kMod>;
+using Mint = Mod_Int;
 
 namespace Factorial {
 	Mint *f, *inf;

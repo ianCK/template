@@ -1,7 +1,6 @@
 // Exported by Exporter.exe
 
-// Included from test2.cpp
-// ABC141-E
+// Included from test.cpp
 #include <bits/stdc++.h>
 using namespace std;
 #define PB push_back
@@ -31,11 +30,10 @@ using namespace std;
 typedef long long int ll;
 typedef unsigned long long int ull;
 
-constexpr int kN = int(1E5 + 10);
-constexpr int kP = 123587;
-constexpr int kMod = 998244353;
+constexpr int kN = 60;
+// constexpr int kMod = 998244353;
 // constexpr int kMod = int(1E9 + 7);
-// constexpr int kInf = 0x3f3f3f3f;
+constexpr int kInf = 0x3f3f3f3f;
 // constexpr ll kInf = 0x3f3f3f3f3f3f3f3f;
 // constexpr double kPi = acos(-1);
 // constexpr double kEps = 1E-9;
@@ -335,181 +333,127 @@ template <typename T> void _Debugln_Array(int n, const T *x) {printf("\n"); for 
 // End of C:\Users\ianli\Desktop\CP\template\Various\Debug\Debug.cpp
 
 
-// Included from C:\Users\ianli\Desktop\CP\template\Math\Mod_Int\Mod_Int.cpp
-template <typename T1, typename T2> T1 Pow(T1 a, T2 b) {
-	T1 ans(1);
-	while (b) {
-		if (b & 1) ans *= a;
-		a *= a;
-		b >>= 1;
-	}
-	return ans;
-}
+// Included from C:\Users\ianli\Desktop\CP\template\Flow\MCMF\MCMF.cpp
+// AddEdge(u, v, cap, cost)
+template <typename T> struct MCMF {
+	struct Edge {
+		int to, rev;
+		T cap, wei;
+		Edge (int a, T b, T c, int d) {to = a; cap = b; wei = c; rev = d;}
+	};
 
-template <int kMod> struct Mod_Int {
-	constexpr static int Mod() {return kMod;}
+	vector<vector<Edge>> graph;
+	vector<T> d;
+	vector<int> p, ed;
+	vector<bool> inq;
+	int size;
+	static constexpr T kInf = numeric_limits<T>::max();
 
-	int val;
-	Mod_Int() {val = 0;}
-	template <typename T> Mod_Int(const T &x) {val = x;}
-	template <int nMod> Mod_Int(const Mod_Int<nMod> &x) {val = x.val;}
-
-	Mod_Int inv() const {return Pow(*this, kMod - 2);} 
-
-	Mod_Int operator + (const Mod_Int &x) const {
-		Mod_Int ans(val + x.val);
-		if (ans.val >= kMod) ans.val -= kMod;
-		return ans;
-	}
-	Mod_Int operator - (const Mod_Int &x) const {
-		Mod_Int ans(val - x.val);
-		if (ans.val < 0) ans.val += kMod;
-		return ans;
-	}
-	Mod_Int operator * (const Mod_Int &x) const {return Mod_Int(1LL * val * x.val % kMod);}
-	Mod_Int operator / (const Mod_Int &x) const {return *this * x.inv();}
-	Mod_Int operator ^ (const Mod_Int &x) const {return Pow(*this, x.val);}
-	Mod_Int operator << (const int &x) const {return ((1LL * val) << x) % kMod;}
-
-	Mod_Int operator += (const Mod_Int &x) {return *this = *this + x;}
-	Mod_Int operator -= (const Mod_Int &x) {return *this = *this - x;}
-	Mod_Int operator *= (const Mod_Int &x) {return *this = *this * x;}
-	Mod_Int operator /= (const Mod_Int &x) {return *this = *this / x;}
-	Mod_Int operator ^= (const Mod_Int &x) {return *this = Pow(*this, x.val);}
-	Mod_Int operator <<= (const int &x) {return *this = *this << x;}
-
-	Mod_Int operator ++(int) {
-		val++;
-		if (val >= kMod) val -= kMod;
-		return *this;
-	}
-	Mod_Int operator --(int) {
-		val--;
-		if (val < 0) val += kMod;
-		return *this;
-	}
-
-	bool operator < (const Mod_Int &x) const {return val < x.val;}
-	bool operator > (const Mod_Int &x) const {return val > x.val;}
-	bool operator <= (const Mod_Int &x) const {return val <= x.val;}
-	bool operator >= (const Mod_Int &x) const {return val >= x.val;}
-	bool operator == (const Mod_Int &x) const {return val == x.val;}
-	bool operator != (const Mod_Int &x) const {return val != x.val;}
-
-	void out() const {printf("%d", val);}
-};
-
-using Mint = Mod_Int<kMod>;
-
-namespace Factorial {
-	Mint *f, *inf;
-	bool preprocessed_factorial;
-	void Pre_Factorial(const int &sz) {
-		if (preprocessed_factorial) return ;
-		preprocessed_factorial = true;
-		f = new Mint[sz + 1];
-		inf = new Mint[sz + 1];
-		f[0] = f[1] = inf[0] = inf[1] = 1;
-		for (int i = 2; i <= sz; i++) f[i] = f[i - 1] * i;
-		inf[sz] = f[sz].inv();
-		for (int i = sz; i > 2; i--) inf[i - 1] = inf[i] * i;
+	void init(int n) {
+		size = n;
+		graph.clear(); graph.resize(n);
+		d.clear(); d.resize(n);
+		p.clear(); p.resize(n);
+		ed.clear(); ed.resize(n);
+		inq.clear(); inq.resize(n);
 		return ;
 	}
-	inline Mint P(const int &n, const int &m) {return f[n] * inf[m];}
-	inline Mint C(const int &n, const int &m) {return f[n] * inf[m] * inf[n - m];}
-	inline Mint H(const int &n, const int &m) {return f[n + m - 1] * inf[m] * inf[n - 1];}
-	inline Mint Catalan(const int &n) {return f[n << 1] * inf[n] * inf[n + 1];}
-}
 
-namespace Factorial_No_Inf {
-	Mint *f;
-	void Pre_Factorial(const int &sz) {
-		f = new Mint[sz + 1];
-		f[0] = f[1] = 1;
-		for (int i = 2; i <= sz; i++) f[i] = f[i - 1] * i;
+	void AddEdge(int a, int b, T c, T d) {
+		graph[a].push_back(Edge(b, c, d, int(graph[b].size())));
+		graph[b].push_back(Edge(a, 0, -d, int(graph[a].size()) - 1));
 		return ;
 	}
-	inline Mint P(const int &n, const int &m) {return f[n] / f[m];}
-	inline Mint C(const int &n, const int &m) {return f[n] / (f[m] * f[n - m]);}
-	inline Mint H(const int &n, const int &m) {return f[n + m - 1] / (f[m] * f[n - 1]);}
-	inline Mint Catalan(const int &n) {return f[n << 1] / (f[n] * f[n + 1]);}
-}
 
-namespace Inverse {
-	using namespace Factorial;
-	Mint *inv;
-	void Pre_Inverse(const int &sz) {
-		inv = new Mint[sz + 1];
-		inv[1] = 1;
-		Pre_Factorial(sz);
-		for (int i = 1; i <= sz; i++) inv[i] = f[i - 1] * inf[i];
-		return ;
+	bool spfa(int s, int t, T &f, T &c) {
+		for (int i = 0; i < size; i++) {
+			d[i] = kInf;
+			p[i] = ed[i] = -1;
+			inq[i] = false;
+		}
+
+		d[s] = 0;
+		queue<int> q;
+		q.push(s);
+		while (!q.empty()) {
+			int x = q.front(); q.pop();
+			inq[x] = false;
+			for (int i = 0; i < int(graph[x].size()); i++) {
+				Edge &e = graph[x][i];
+				if (e.cap > 0 && d[e.to] > d[x] + e.wei) {
+					d[e.to] = d[x] + e.wei;
+					p[e.to] = x;
+					ed[e.to] = i;
+					if (!inq[e.to]) {
+						q.push(e.to);
+						inq[e.to] = true;
+					}
+				}
+			}
+		}
+
+		if (d[t] == kInf) return false;
+
+		T dlt = kInf;
+		for (int x = t; x != s; x = p[x]) dlt = min(dlt, graph[p[x]][ed[x]].cap);
+		for (int x = t; x != s; x = p[x]) {
+			Edge &e = graph[p[x]][ed[x]];
+			e.cap -= dlt;
+			graph[e.to][e.rev].cap += dlt;
+		}
+
+		f += dlt; c += d[t] * dlt;
+		return true;
+	}
+
+	pair<T, T> operator () (int s, int t) {
+		T f = 0, c = 0;
+		while (spfa(s, t, f, c));
+		return make_pair(f, c);
 	}
 };
-// End of C:\Users\ianli\Desktop\CP\template\Math\Mod_Int\Mod_Int.cpp
+// End of C:\Users\ianli\Desktop\CP\template\Flow\MCMF\MCMF.cpp
 
 
-// Included from C:\Users\ianli\Desktop\CP\template\String\RollingHash\Hash.cpp
-// 1 based
-template <typename T, typename _T> void Build_Hash(const char *s, T*& hs, _T kP) {
-	int n = int(strlen(s));
-	
-	delete [] hs; hs = new T[n + 1];
-	hs[0] = 0; for (int i = 1; i <= n; i++) hs[i] = hs[i - 1] * kP + s[i - 1];
-
-	return ;
-}
-template <typename T, typename _T> void Build_Hash(string s, T*& hs, _T kP) {return Build_Hash(s.c_str(), hs, kP);}
-
-template <typename T, typename _T> void Build_Pow(int n, T*& p, _T kP) {
-	delete [] p; p = new T[n + 1];
-	p[0] = 1; p[1] = kP; for (int i = 2; i <= n; i++) p[i] = p[i - 1] * kP;
-	return ;
-}
-
-template <typename T> T Hash_value(int l, int r, const T* const hs, const T* const p) {return hs[r] - hs[l - 1] * p[r - l + 1];}
-template <typename T> bool same(int l1, int r1, int l2, int r2, const T* const hs1, const T* const hs2, const T* const p) {return Hash_value(l1, r1, hs1, p) == Hash_value(l2, r2, hs2, p);}
-template <typename T> int lcp(int l1, int r1, int l2, int r2, const T* const hs1, const T* const hs2, const T* const p) {
-	int l = 0, r = min(r1 - l1, r2 - l2) + 1;
-	while (r - l > 1) {
-		int mid = (l + r) >> 1;
-		if (same(l1, l1 + mid - 1, l2, l2 + mid - 1, hs1, hs2, p)) l = mid;
-		else r = mid;
-	}
-	return l;
-}
-// End of C:\Users\ianli\Desktop\CP\template\String\RollingHash\Hash.cpp
-
-
-Mint *hs, *p;
-int n; 
-int hs_val[kN];
-
-bool ok(int len) {
-	unordered_set<int> us;
-	for (int i = 1; i + len - 1 <= n; i++) hs_val[i] = Hash_value(i, i + len - 1, hs, p).val;
-	for (int i = len + 1; i + len - 1 <= n; i++) {
-		us.insert(hs_val[i - len]);
-		if (us.find(hs_val[i]) != us.end()) return true;
-	}
-	return false;
-}
+int a[kN][kN];
+int rid[kN], cid[kN], rcid[kN << 1];
+MCMF<ll> mcmf;
+bitset<kN> used[kN];
 
 int main() {
-	cin >> n;
-	string s; cin >> s;
+	int n, k; RP(n, k);
+	for (int i = 1; i <= n; i++) RLP(n, a[i]);
 
-	Build_Hash(s, hs, kP);
-	Build_Pow(n, p, kP);
+	int itr = 0;
+	for (int i = 1; i <= n; i++) rid[i] = itr++;
+	for (int i = 1; i <= n; i++) cid[i] = itr++;
+	for (int i = 1; i <= n; i++) rcid[cid[i]] = i;
 
-	int l = 0, r = n;
-	while (r - l > 1) {
-		int mid = (l + r) >> 1;
-		if (ok(mid)) l = mid;
-		else r = mid;
-	}
+	int S = itr++;
+	int T = itr++;
 
-	cout << l << "\n";
+	mcmf.init(itr);
+
+	for (int i = 1; i <= n; i++) mcmf.AddEdge(S, rid[i], k, 0);
+	for (int i = 1; i <= n; i++) mcmf.AddEdge(cid[i], T, k, 0);
+
+	ll ans = 0;
+	ans += ll(kInf) * n * k;
+	for (int i = 1; i <= n; i++) for (int j = 1; j <= n; j++) mcmf.AddEdge(rid[i], cid[j], 1, kInf - a[i][j]);
+	for (int i = 1; i <= n; i++) mcmf.AddEdge(rid[i], T, k, kInf);
+
+	auto [f, c] = mcmf(S, T);
+	ans -= c;
+
+	printf("%lld\n", ans);
+
+	//auto edges = mcmf.Edges();
+	//for (auto e : edges) if (e.from != S && e.to != T && e.flow != 0) used[e.from + 1][e.to - n + 1] = true;
+	
+	for (int i = 1; i <= n; i++) for (MCMF<ll>::Edge ed : mcmf.graph[rid[i]]) if (ed.to != T && ed.cap == 0) 
+		used[i][rcid[ed.to]] = true;
+
+	for (int i = 1; i <= n; i++, printf("\n")) for (int j = 1; j <= n; j++) printf("%c", used[i][j] ? 'X' : '.');
 }
-// End of test2.cpp
+// End of test.cpp
 

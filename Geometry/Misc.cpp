@@ -1,5 +1,4 @@
 constexpr double kEps = 1E-9;
-const double kPi = 4 * atan(1);
 
 inline int dcmp(double x) {return fabs(x) < kEps ? 0 : (x < 0 ? -1 : 1);}
 inline bool same(double a, double b) {return dcmp(a - b) == 0;}

@@ -1,6 +1,7 @@
 void _print(int x) {printf("%d", x);}
 void _print(long long int x) {printf("%lld", x);}
 void _print(double x) {printf("%lf", x);}
+template <typename T> void _print(T x) {return x.out();}
 template <typename T1, typename T2> void _print(pair<T1, T2> x) {printf("("); _print(x.first); printf(", "); _print(x.second); printf(")");}
 
 template <typename T> void _Debug(T x) {_print(x); printf("\n");}

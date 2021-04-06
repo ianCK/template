@@ -1,4 +1,4 @@
-// yosupo enumerate palindrome
+// ABC141-E
 #include <bits/stdc++.h>
 using namespace std;
 #define PB push_back
@@ -17,17 +17,20 @@ using namespace std;
 	#define Debugln(x) ;
 	#define Debug_Array(n,x) ;
 	#define Debugln_Array(n,x) ;
+	#define NL ;
 #else
 	#define Debug(x) printf("%s :", (#x)); _Debug(x)
 	#define Debugln(x) printf("%s :", (#x)); _Debugln(x)
 	#define Debug_Array(n,x) printf("%s :", (#x)); _Debug_Array((n), (x))
 	#define Debugln_Array(n,x) printf("%s :", (#x)); _Debugln_Array((n), (x))
+	#define NL printf("\n")
 #endif
 typedef long long int ll;
 typedef unsigned long long int ull;
 
 constexpr int kN = int(1E5 + 10);
 constexpr int kP = 257;
+// constexpr int kMod = 998244353;
 // constexpr int kMod = int(1E9 + 7);
 // constexpr int kInf = 0x3f3f3f3f;
 // constexpr ll kInf = 0x3f3f3f3f3f3f3f3f;
@@ -40,45 +43,33 @@ constexpr int kP = 257;
 #include "C:\Users\ianli\Desktop\CP\template\Math\Mod_Int\Mod_Int61.cpp"
 #include "C:\Users\ianli\Desktop\CP\template\String\RollingHash\Hash.cpp"
 
-Mint *lhs, *rhs, *p;
+Mint *hs, *p;
+int n; 
+ull hs_val[kN];
+
+bool ok(int len) {
+	unordered_set<ull> us;
+	for (int i = 1; i + len - 1 <= n; i++) hs_val[i] = Hash_value(i, i + len - 1, hs, p).val;
+	for (int i = len + 1; i + len - 1 <= n; i++) {
+		us.insert(hs_val[i - len]);
+		if (us.find(hs_val[i]) != us.end()) return true;
+	}
+	return false;
+}
 
 int main() {
+	cin >> n;
 	string s; cin >> s;
-	int n = int(s.size());
 
-	Build_Hash(s, lhs, kP);
-	reverse(s.begin(), s.end());
-	Build_Hash(s, rhs, kP);
+	Build_Hash(s, hs, kP);
 	Build_Pow(n, p, kP);
-	reverse(s.begin(), s.end());
 
-	//Debug_Array(n, lhs);
-	//Debug_Array(n, rhs);
-	//Debug_Array(n, p);
-
-	vector<int> v1, v2;
-	for (int i = 1; i <= n; i++) {
-		int l = 1, r = min(i, n - i + 1) + 1;
-		while (r - l > 1) {
-			int mid = (l + r) >> 1;
-			if (same(i - mid + 1, i + mid - 1, n + 1 - (i + mid - 1), n + 1 - (i - mid + 1), lhs, rhs, p)) l = mid;
-			else r = mid;
-		}
-		v1.PB(l * 2 - 1);
+	int l = 0, r = n;
+	while (r - l > 1) {
+		int mid = (l + r) >> 1;
+		if (ok(mid)) l = mid;
+		else r = mid;
 	}
 
-	for (int i = 2; i <= n; i++) {
-		if (s[i - 2] == s[i - 1]) {
-			int l = 1, r = min(i - 1, n - i + 1) + 1;
-			while (r - l > 1) {
-				int mid = (l + r) >> 1;
-				if (same(i - mid, i + mid - 1, n + 1 - (i + mid - 1), n + 1 - (i - mid), lhs, rhs, p)) l = mid;
-				else r = mid;
-			}
-			v2.PB(l * 2);
-		}
-		else v2.PB(0);
-	}
-
-	printf("%d", v1[0]); for (int i = 1; i < n; i++) printf(" %d %d", v2[i - 1], v1[i]); printf("\n");
+	cout << l << "\n";
 }

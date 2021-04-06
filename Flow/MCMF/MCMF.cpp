@@ -1,14 +1,17 @@
+// AddEdge(u, v, cap, cost)
 template <typename T> struct MCMF {
 	struct Edge {
 		int to, rev;
 		T cap, wei;
 		Edge (int a, T b, T c, int d) {to = a; cap = b; wei = c; rev = d;}
 	};
+
 	vector<vector<Edge>> graph;
-	vector<int> d, p, ed;
+	vector<T> d;
+	vector<int> p, ed;
 	vector<bool> inq;
 	int size;
-	constexpr int kInf = numeric_limits<T>::max();
+	static constexpr T kInf = numeric_limits<T>::max();
 
 	void init(int n) {
 		size = n;

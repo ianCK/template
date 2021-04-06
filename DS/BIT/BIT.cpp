@@ -2,16 +2,16 @@ template <typename T> struct BIT {
 	int sz; // n + 1
 	T* val;
 	T tot;
-	
+
 	void init(int n) {
-		delete val; val = new T[sz = n + 1];
+		delete [] val; val = new T[sz = n + 1];
 		memset(val + 1, 0, sizeof(T) * n);
 		tot = 0;
 		return ;
 	}
 
 	void init(int n, T *a) {
-		delete val; val = new T[sz = n + 1];
+		delete [] val; val = new T[sz = n + 1];
 		memcpy(val + 1, a + 1, sizeof(T) * n);
 		for (int i = 1; i <= n; i++) if (i + (i & -i) <= n) val[i + (i & -i)] += val[i];
 		for (int i = 1; i <= n; i++) tot += a[i];
@@ -24,13 +24,13 @@ template <typename T> struct BIT {
 		return ;
 	}
 
-	T ask(int pos) const {
+	T ask(int pos) {
 		T ans = 0;
 		for (int i = pos; i; i ^= i & -i) ans += val[i];
 		return ans;
 	}
 	T ask(int l, int r) const {return ask(r) - ask(l - 1);}
-	
+
 	int lower_bound(T x) const {
 		int ans = 0;
 		for (int i = 1 << __lg(sz - 1); i > 0; i >>= 1) 
@@ -52,7 +52,7 @@ template <typename T> struct BIT {
 template <typename T> struct BIT_max {
 	int sz; // n + 1
 	T* val;
-	
+
 	void init(int n) {
 		delete val; val = new T[sz = n + 1];
 		memset(val + 1, 0, sizeof(T) * n);
@@ -73,7 +73,7 @@ template <typename T> struct BIT_max {
 		for (int i = pos; i; i ^= i & -i) chmax(ans, val[i]);
 		return ans;
 	}
-	
+
 	void clear() {memset(val + 1, 0, sizeof(T) * (sz - 1));}
 };
 
