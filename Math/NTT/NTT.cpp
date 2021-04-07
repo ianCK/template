@@ -1,5 +1,5 @@
 // the answer is in 0 ~ size
-constexpr int NTT_size(int size) {return 1 << (__lg(size) + 2);}
+constexpr int NTT_size(int size) {return 1 << (__lg(size) + 1);}
 
 template <typename T> void NTT(T *v , int size) {
 	assert(size == (size & -size));
