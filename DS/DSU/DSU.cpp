@@ -14,7 +14,7 @@ struct DSU {
 
 	int Find(int n) {return p[n] < 0 ? n : p[n] = Find(p[n]);}
 
-	inline int union_size(int n) const {return -p[n];}
+	inline int union_size(int n) {return -p[Find(n)];}
 	inline bool same(int l, int r) {return Find(l) == Find(r);}
 
 	bool Merge(int l, int r) {
