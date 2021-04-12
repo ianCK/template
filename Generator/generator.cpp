@@ -22,10 +22,10 @@ int main(int argc, const char* argv[]) {
 		cin >> file_name;
 	}
 
-	if (file_name.find(".cpp") != int(file_name.size() - 4)) file_name += ".cpp";
+	if (file_name.find(".cpp") == string::npos) file_name += ".cpp";
 
 	if (file_exists(file_name)) {
-		cout << "File " << file_name << " already exists. Are you sure to replace it?(yes/no)\n";
+		cout << "File \"" << file_name << "\" already exists. Are you sure to replace it? (yes/no)" << endl;
 		string ans; cin >> ans;
 		if (ans != "yes") {
 			cout << "Generator ended\n";

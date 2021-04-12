@@ -1,7 +1,6 @@
-void Assert(bool b, string s) {
-	if (!b) {
-		cerr << s << "\n";
-		assert(b);
-	}
+void Assert(const char *c, bool b) {
+	if (!b) cout << c << "\n";
+	assert(b);
 	return ;
 }
+void Assert(string s, bool b) {return Assert(s.c_str(), b);}

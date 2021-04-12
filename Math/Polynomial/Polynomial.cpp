@@ -51,10 +51,9 @@ struct Polynomial {
 	Mint& operator [] (int idx) {return val[idx];}
 
 	Polynomial operator + (Polynomial B) const {
-		Polynomial ans;
+		Polynomial ans = *this;
 		int n = degree(), m = B.degree();
 
-		ans.val = val;
 		ans.val.resize(max(n, m) + 1);
 
 		for (int i = 0; i <= m; i++) ans[i] += B[i];
@@ -64,10 +63,9 @@ struct Polynomial {
 	}
 
 	Polynomial operator - (Polynomial B) const {
-		Polynomial ans;
+		Polynomial ans = *this;
 		int n = degree(), m = B.degree();
 
-		ans.val = val;
 		ans.val.resize(max(n, m) + 1);
 
 		for (int i = 0; i <= m; i++) ans[i] -= B[i];
@@ -77,10 +75,9 @@ struct Polynomial {
 	}
 
 	Polynomial operator * (Mint x) const {
-		Polynomial ans;
+		Polynomial ans = *this;
 		int n = degree();
 
-		ans.val = val;
 		for (int i = 0; i <= n; i++) ans[i] *= x;
 		
 		ans.pull();
@@ -88,10 +85,9 @@ struct Polynomial {
 	}
 
 	Polynomial operator / (Mint x) const {
-		Polynomial ans;
+		Polynomial ans = *this;
 		int n = degree();
 
-		ans.val = val;
 		for (int i = 0; i <= n; i++) ans[i] /= x;
 
 		ans.pull();
@@ -163,6 +159,17 @@ struct Polynomial {
 		else return NTT_Convolution(*this, B);
 	}
 
+	Polynomial operator % (int n) const {
+		int deg = degree();
+		if (deg <= n) return *this;
+
+		Polynomial ans = *this;
+		ans.val.resize(deg);
+
+		ans.pull();
+		return ans;
+	}
+
 	Mint operator ()(Mint x) const {}
 
 	Polynomial operator += (Polynomial B) {return *this = *this + B;}
@@ -174,14 +181,34 @@ struct Polynomial {
 	Polynomial operator *= (Polynomial B) {return *this = *this * B;}
 
 	Polynomial deriv() const {
-		Polynomial ans;
+		Polynomial ans = *this >> 1;
+		
+		int n = ans.degree();
+		for (int i = 0; i <= n; i++) ans[i] *= i + 1;
 
 		ans.pull();
 		return ans;
 	}
 	Polynomial integr() const {
+		using namespace Inverse;
+		Polynomial ans = *this << 1;
+
+		int n = ans.degree();
+		for (int i = 1; i <= n; i++) ans[i] *= inv[i];
+
+		ans.pull();
+		return ans;
 	}
 	Polynomial inv(int n) const {
+		Polynomial ans({val[0].inv()});
+		int cur_len = 1;
+
+		while (cur_len <= n) {
+			cur_len <<= 1;
+			ans = (ans * (Polynomial({2}) - ((*this % cur_len) * ans % cur_len))) % cur_len;
+		}
+
+		return ans % (n + 1);
 	}
 	Polynomial log(int n) const {
 	}
