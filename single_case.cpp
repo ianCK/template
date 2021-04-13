@@ -18,10 +18,10 @@ using namespace std;
 	#define Debugln_Array(n,x) ;
 	#define NL ;
 #else
-	#define Debug(x) printf("%s :", (#x)); _Debug(x)
-	#define Debugln(x) printf("%s :", (#x)); _Debugln(x)
-	#define Debug_Array(n,x) printf("%s :", (#x)); _Debug_Array((n), (x))
-	#define Debugln_Array(n,x) printf("%s :", (#x)); _Debugln_Array((n), (x))
+	#define Debug(x) printf("%s :", (#x)), _Debug(x)
+	#define Debugln(x) printf("%s :", (#x)), _Debugln(x)
+	#define Debug_Array(n,x) printf("%s :", (#x)), _Debug_Array((n), (x))
+	#define Debugln_Array(n,x) printf("%s :", (#x)), _Debugln_Array((n), (x))
 	#define NL printf("\n")
 #endif
 typedef long long int ll;
