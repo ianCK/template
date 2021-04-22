@@ -1,3 +1,12 @@
+namespace Matrix_Inner {
+	template <typename T> T ABS(T x) {return x >= 0 ? x : -x;}
+	bool IsZero(double x) {
+		static constexpr double kEps = 1E-10;
+		return ABS(x) <= kEps;
+	}
+	template <typename T> bool IsZero(T x) {return x == 0;}
+}
+
 template <typename T> struct Matrix {
 	T **val;
 	int _size;
@@ -125,10 +134,9 @@ template <typename T> struct Matrix {
 		//bool flip = false;
 
 		for (int i = 0; i < _size; i++) {
-			int id = -1;
-			if (tmp[i][i] != 0) id = i;
-			else {
-				for (int j = i + 1; j < _size; j++) if (tmp[j][i] != 0) {
+			if (Matrix_Inner::IsZero(tmp[i][i])) {
+				int id = -1;
+				for (int j = i + 1; j < _size; j++) if (!Matrix_Inner::IsZero(tmp[j][i])) {
 					id = j;
 					break;
 				}
@@ -137,8 +145,7 @@ template <typename T> struct Matrix {
 				flip = !flip;
 			}
 
-			for (int j = i + 1; j < _size; j++) {
-				if (tmp[j][i] == 0) continue;
+			for (int j = i + 1; j < _size; j++) if (!Matrix_Inner::IsZero(tmp[j][i])) {
 				T freq(tmp[j][i] / tmp[i][i]);
 				for (int k = i; k < _size; k++) tmp[j][k] -= freq * tmp[i][k];
 			}
