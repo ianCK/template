@@ -100,38 +100,40 @@ template <typename T> struct Matrix {
 	Matrix operator *= (const Matrix &x) {return *this = *this * x;} 
 	Matrix operator /= (const T &x) {return *this = *this / x;} 
 
-	bool random_piviting() {
-		bool ans = false;
-
-		int px[_size], py[_size];
-		int idx[_size], idy[_size];
-		for (int i = 0; i < _size; i++) idx[i] = idy[i] = px[i] = py[i] = i;
-		random_shuffle(px, px + _size);
-		random_shuffle(py, py + _size);
-
-		// px : row px[i] should be at i
-		// idx : row i is currently at idx[i]
-
-		for (int i = 0; i < _size; i++) if (idx[px[i]] != i) {
-			for (int j = 0; j < _size; j++) swap(val[idx[i]][j], val[idx[px[i]]][j]);
-			swap(idx[i], idx[px[i]]);
-			ans = !ans;
-		}
-
-		for (int i = 0; i < _size; i++) if (idy[py[i]] != i) {
-			for (int j = 0; j < _size; j++) swap(val[j][idy[i]], val[j][idy[py[i]]]);
-			swap(idy[i], idy[py[i]]);
-			ans = !ans;
-		}
-
-		return ans;
-	}
-
 	T det() const {
 		Matrix tmp;
 		tmp.copy(*this);
-		bool flip = tmp.random_piviting();
-		//bool flip = false;
+		bool flip = false;
+
+		for (int i = 0; i < _size; i++) {
+			if (Matrix_Inner::IsZero(tmp[i][i])) {
+				int id = -1;
+				for (int j = i + 1; j < _size; j++) if (!Matrix_Inner::IsZero(tmp[j][i])) {
+					id = j;
+					break;
+				}
+				if (id == -1) return 0;
+				for (int j = i; j < _size; j++) swap(tmp[i][j], tmp[id][j]);
+				flip = !flip;
+			}
+
+			for (int j = i + 1; j < _size; j++) if (!Matrix_Inner::IsZero(tmp[j][i])) {
+				T freq(tmp[j][i] / tmp[i][i]);
+				for (int k = i; k < _size; k++) tmp[j][k] -= freq * tmp[i][k];
+			}
+		}
+
+		T ans = (flip ? -1 : 1);
+		for (int i = 0; i < _size; i++) ans *= tmp[i][i];
+		tmp.clear();
+		return ans;
+	}
+
+	T det_piviting() const {
+		// !!! not finished
+		Matrix tmp;
+		tmp.copy(*this);
+		bool flip = false;
 
 		for (int i = 0; i < _size; i++) {
 			if (Matrix_Inner::IsZero(tmp[i][i])) {

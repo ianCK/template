@@ -1,3 +1,4 @@
+// TIOJ 2012
 #include <bits/stdc++.h>
 using namespace std;
 #define PB push_back
@@ -53,7 +54,7 @@ void solve() {
 	gauss.reset(n);
 	for (int i = 1; i <= n; i++) for (int j = 1; j <= n; j++) gauss.set(i - 1, j - 1, a[i][j]);
 	for (int i = 1; i <= n; i++) gauss.set_constant(i - 1, b[i]);
-	//gauss.need_piviting();
+	//gauss.no_piviting();
 	for (int i = 1; i <= n; i++) printf("%.10e\n", gauss[i - 1]);
 	return ;
 }
