@@ -1,7 +1,6 @@
 // Exported by Exporter.exe
 
-// Included from test.cpp
-// cf 1511 F
+// Included from test_det.cpp
 #include <bits/stdc++.h>
 using namespace std;
 #define PB push_back
@@ -22,16 +21,16 @@ using namespace std;
 	#define Debugln_Array(n,x) ;
 	#define NL ;
 #else
-	#define Debug(x) printf("%s :", (#x)); _Debug(x)
-	#define Debugln(x) printf("%s :", (#x)); _Debugln(x)
-	#define Debug_Array(n,x) printf("%s :", (#x)); _Debug_Array((n), (x))
-	#define Debugln_Array(n,x) printf("%s :", (#x)); _Debugln_Array((n), (x))
+	#define Debug(x) printf("%s :", (#x)), _Debug(x)
+	#define Debugln(x) printf("%s :", (#x)), _Debugln(x)
+	#define Debug_Array(n,x) printf("%s :", (#x)), _Debug_Array((n), (x))
+	#define Debugln_Array(n,x) printf("%s :", (#x)), _Debugln_Array((n), (x))
 	#define NL printf("\n")
 #endif
 typedef long long int ll;
 typedef unsigned long long int ull;
 
-constexpr int kN = 170;
+constexpr int kN = int(5E2 + 10);
 constexpr int kMod = 998244353;
 // constexpr int kMod = int(1E9 + 7);
 // constexpr int kInf = 0x3f3f3f3f;
@@ -332,6 +331,10 @@ template <typename T> void _Debugln_Array(int n, const T *x) {printf("\n"); for 
 // End of C:\Users\ianli\Desktop\CP\template\Various\Debug\Debug.cpp
 
 // Included from C:\Users\ianli\Desktop\CP\template\Math\Mod_Int\Mod_Int.cpp
+// !!! Mod_Int<kMod> a = 1 or Mod_Int<kMod> a(1) checks if the value is valid (and is slow)
+// !!! However, the following usage doesn't check if the value is valid
+// !!! Mod_Int<kMod> a;
+// !!! a = 1;
 template <typename T1, typename T2> T1 Pow(T1 a, T2 b) {
 	T1 ans(1);
 	while (b) {
@@ -343,12 +346,24 @@ template <typename T1, typename T2> T1 Pow(T1 a, T2 b) {
 }
 
 template <int kMod> struct Mod_Int {
-	constexpr static int Mod() {return kMod;}
+	static constexpr int Mod() {return kMod;}
 
 	int val;
-	Mod_Int() {val = 0;}
-	template <typename T> Mod_Int(const T &x) {val = x;}
-	template <int nMod> Mod_Int(const Mod_Int<nMod> &x) {val = x.val;}
+	Mod_Int() : val(0) {}
+	template <typename T> Mod_Int(const T &x) {
+		val = x % kMod;
+		if (val < 0) val += kMod;
+	}
+
+	Mod_Int operator = (const Mod_Int &x) {
+		val = x.val;
+		return *this;
+	}
+
+	template <typename T> Mod_Int operator = (const T &x) {
+		val = x;
+		return *this;
+	}
 
 	Mod_Int inv() const {return Pow(*this, kMod - 2);} 
 
@@ -444,30 +459,55 @@ namespace Inverse {
 };
 // End of C:\Users\ianli\Desktop\CP\template\Math\Mod_Int\Mod_Int.cpp
 
-// Included from C:\Users\ianli\Desktop\CP\template\Math\Matrix\Matrix_fixed_size.cpp
-template <typename T, int kN> struct Matrix {
-	T val[kN][kN];
+// Included from C:\Users\ianli\Desktop\CP\template\Math\Matrix\Matrix.cpp
+template <typename T> struct Matrix {
+	T **val;
 	int _size;
 
-	Matrix() : _size(0) {}
+	Matrix() : val(nullptr), _size(0) {}
 	Matrix(int x, T v = 0) {
 		_size = x;
+		val = new T* [_size];
 		for (int i = 0; i < _size; i++) {
+			val[i] = new T [_size];
 			memset(val[i], 0, sizeof(T) * _size);
 			val[i][i] = v;
 		}
 	}
 
+	void clear() {
+		for (int i = 0; i < _size; i++) delete [] val[i];
+		delete [] val;
+		return ;
+	}
+
 	void resize(int x) {
+		clear();
 		_size = x;
-		for (int i = 0; i < _size; i++) memset(val[i], 0, sizeof(T) * _size);
+		val = new T* [_size];
+		for (int i = 0; i < _size; i++) {
+			val[i] = new T [_size];
+			memset(val[i], 0, sizeof(T) * _size);
+		}
 		return ;
 	}
 	int size() const {return _size;}
 
+	void copy(const Matrix &x) {
+		clear();
+		_size = x.size();
+		val = new T* [_size];
+		for (int i = 0; i < _size; i++) {
+			val[i] = new T [_size];
+			memcpy(val[i], x[i], sizeof(T) * _size);
+		}
+		return ;
+	}
+
 	Matrix operator = (const Matrix &x) {
+		clear();
+		val = x.val;
 		_size = x._size;
-		for (int i = 0; i < _size; i++) memcpy(val[i], x[i], sizeof(T) * _size);
 		return *this;
 	}
 	T* operator [](int x) {return val[x];}
@@ -513,72 +553,87 @@ template <typename T, int kN> struct Matrix {
 	Matrix operator *= (const Matrix &x) {return *this = *this * x;} 
 	Matrix operator /= (const T &x) {return *this = *this / x;} 
 
+	bool random_piviting() {
+		bool ans = false;
+
+		int px[_size], py[_size];
+		int idx[_size], idy[_size];
+		for (int i = 0; i < _size; i++) idx[i] = idy[i] = px[i] = py[i] = i;
+		random_shuffle(px, px + _size);
+		random_shuffle(py, py + _size);
+
+		// px : row px[i] should be at i
+		// idx : row i is currently at idx[i]
+
+		for (int i = 0; i < _size; i++) if (idx[px[i]] != i) {
+			for (int j = 0; j < _size; j++) swap(val[idx[i]][j], val[idx[px[i]]][j]);
+			swap(idx[i], idx[px[i]]);
+			ans = !ans;
+		}
+
+		for (int i = 0; i < _size; i++) if (idy[py[i]] != i) {
+			for (int j = 0; j < _size; j++) swap(val[j][idy[i]], val[j][idy[py[i]]]);
+			swap(idy[i], idy[py[i]]);
+			ans = !ans;
+		}
+
+		return ans;
+	}
+
+	T det() const {
+		Matrix tmp;
+		tmp.copy(*this);
+		bool flip = tmp.random_piviting();
+		//bool flip = false;
+
+		for (int i = 0; i < _size; i++) {
+			int id = -1;
+			if (tmp[i][i] != 0) id = i;
+			else {
+				for (int j = i + 1; j < _size; j++) if (tmp[j][i] != 0) {
+					id = j;
+					break;
+				}
+				if (id == -1) return 0;
+				for (int j = i; j < _size; j++) swap(tmp[i][j], tmp[id][j]);
+				flip = !flip;
+			}
+
+			for (int j = i + 1; j < _size; j++) {
+				if (tmp[j][i] == 0) continue;
+				T freq(tmp[j][i] / tmp[i][i]);
+				for (int k = i; k < _size; k++) tmp[j][k] -= freq * tmp[i][k];
+			}
+		}
+
+		T ans = (flip ? -1 : 1);
+		for (int i = 0; i < _size; i++) ans *= tmp[i][i];
+		tmp.clear();
+		return ans;
+	}
+
 	void out() const {
 		for (int i = 0; i < _size; i++, printf("\n")) for (int j = 0; j < _size; j++) printf("%5d", val[i][j]);
 		return ;
 	}
 };
 
-template <typename T1, int kN, typename T2> Matrix<T1, kN> Pow(Matrix<T1, kN> A, T2 b) {
-	Matrix<T1, kN> ans(A.size(), 1);
+template <typename T1, typename T2> Matrix<T1> Pow(Matrix<T1> A, T2 b) {
+	Matrix<T1> ans(A.size(), 1);
 	for (; b; b >>= 1, A *= A) if (b & 1) ans *= A;
 	return ans;
 }
-// End of C:\Users\ianli\Desktop\CP\template\Math\Matrix\Matrix_fixed_size.cpp
+// End of C:\Users\ianli\Desktop\CP\template\Math\Matrix\Matrix.cpp
 
-string s[kN];
-int idx[kN][kN][kN];
-int len[kN];
-Matrix<Mint, kN> A;
+Matrix<Mint> A;
+int a[kN][kN];
 
 int main() {
-	int n, m; cin >> n >> m;
-	for (int i = 1; i <= n; i++) cin >> s[i];
+	int n; RP(n);
+	for (int i = 1; i <= n; i++) RLP(n, a[i]);
+	A.resize(n);
+	for (int i = 0; i < n; i++) for (int j = 0; j < n; j++) A[i][j] = Mint(a[i + 1][j + 1]);
 
-	for (int i = 1; i <= n; i++) len[i] = int(s[i].size());
-
-	constexpr int kLen = 5;
-
-	int cur = 0;
-	// idx : lst s, len diff, wait
-
-	for (int i = 1; i <= n; i++) for (int j = 1; j < len[i]; j++) for (int k = 0; k < kLen; k++) 
-		idx[i][j][k] = cur++;
-
-	for (int i = 0; i < kLen; i++) idx[0][0][i] = cur++;
-
-	A.resize(cur);
-
-	for (int i = 1; i <= n; i++) A.val[idx[0][0][len[i] - 1]][idx[0][0][0]]++;
-
-	for (int i = 1; i <= n; i++) for (int j = 1; j < len[i]; j++) for (int k = 1; k < kLen; k++)
-		A.val[idx[i][j][k - 1]][idx[i][j][k]]++;
-
-	for (int i = 1; i < kLen; i++) A.val[idx[0][0][i - 1]][idx[0][0][i]]++;
-
-	auto match = [&](int x, int idx, int y, int idy, int len) -> bool {
-		for (int i = 0; i < len; i++) if (s[x][idx + i] != s[y][idy + i]) return false;
-		return true;
-	};
-
-	for (int i = 1; i <= n; i++) for (int j = 1; j < len[i]; j++) for (int k = 1; k <= n; k++) {
-		int mn = min(j, len[k]);
-		if (!match(i, len[i] - j, k, 0, mn)) continue;
-
-		if (len[k] == j) A.val[idx[0][0][j - 1]][idx[i][j][0]]++;
-		else if (len[k] < j) A.val[idx[i][j - len[k]][len[k] - 1]][idx[i][j][0]]++;
-		else A.val[idx[k][len[k] - j][j - 1]][idx[i][j][0]]++;
-	}
-
-	for (int i = 1; i <= n; i++) for (int j = i + 1; j <= n; j++) {
-		int mn = min(len[i], len[j]);
-		if (match(i, 0, j, 0, mn)) {
-			if (len[i] < len[j]) A.val[idx[j][len[j] - len[i]][mn - 1]][idx[0][0][0]] += 2;
-			else A.val[idx[i][len[i] - len[j]][mn - 1]][idx[0][0][0]] += 2;
-		}
-	}
-
-	Mint ans = Pow(A, m)[idx[0][0][0]][idx[0][0][0]];
-	printf("%d\n", ans);
+	printf("%d\n", A.det());
 }
-// End of test.cpp
+// End of test_det.cpp
