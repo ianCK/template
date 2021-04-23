@@ -15,7 +15,21 @@ template <typename T> using PQ = priority_queue<T>;
 template <typename T> using PQ_R = priority_queue<T, vector<T>, greater<T>>;
 
 template <typename T> inline T ABS(T n) {return n >= 0 ? n : -n;}
-template <typename T> inline T gcd(T a, T b) {return b ? gcd(b, a % b) : a;}
+template <typename T> __attribute__((target("bmi"))) inline T gcd(T a, T b) {
+	if (a == 0 || b == 0) return a + b;
+	int n = __builtin_ctzll(a);
+	int m = __builtin_ctzll(b);
+	a >>= n;
+	b >>= m;
+	while (a != b) {
+		int m = __builtin_ctzll(a - b);
+		bool f = a > b;
+		T c = f ? a : b;
+		b = f ? b : a;
+		a = (c - b) >> m;
+	}
+	return a << min(n, m);
+}
 template <typename T> inline T lcm(T a, T b) {return a * b / gcd(a, b);}
 template <typename T, typename... Targs> inline T gcd(T a, T b, T c, Targs... args) {return gcd(a, gcd(b, c, args...));}
 template <typename T, typename... Targs> inline T lcm(T a, T b, T c, Targs... args) {return lcm(a, lcm(b, c, args...));}
@@ -33,7 +47,8 @@ template <typename T> inline int Digit_Sum(T a) {
 	return ans;
 }
 template <typename T> inline int Num_Length(T a) {
-	int ans = 1;
+	if (a == 0) return 1;
+	int ans = 0;
 	while (a /= 10) ans++;
 	return ans;
 }
