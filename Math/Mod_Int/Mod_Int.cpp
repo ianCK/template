@@ -1,7 +1,3 @@
-// !!! Mod_Int<kMod> a = 1 or Mod_Int<kMod> a(1) checks if the value is valid (and is slow)
-// !!! However, the following usage doesn't check if the value is valid
-// !!! Mod_Int<kMod> a;
-// !!! a = 1;
 template <typename T1, typename T2> T1 Pow(T1 a, T2 b) {
 	T1 ans(1);
 	while (b) {
@@ -17,20 +13,7 @@ template <int kMod> struct Mod_Int {
 
 	int val;
 	Mod_Int() : val(0) {}
-	template <typename T> Mod_Int(const T &x) {
-		val = x % kMod;
-		if (val < 0) val += kMod;
-	}
-
-	Mod_Int operator = (const Mod_Int &x) {
-		val = x.val;
-		return *this;
-	}
-
-	template <typename T> Mod_Int operator = (const T &x) {
-		val = x;
-		return *this;
-	}
+	template <typename T> constexpr Mod_Int(const T &x) {val = x;}
 
 	Mod_Int inv() const {return Pow(*this, kMod - 2);} 
 

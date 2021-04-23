@@ -1,7 +1,14 @@
 // Exported by Exporter.exe
 
 // Included from test_det.cpp
-#include <bits/stdc++.h>
+#include <stdio.h>
+#include <string.h>
+#include <algorithm>
+#include <deque>
+#include <vector>
+#include <stack>
+#include <queue>
+#include <iostream>
 using namespace std;
 #define PB push_back
 #define F first
@@ -188,10 +195,8 @@ template <typename T> inline T gcd(T a, T b) {return b ? gcd(b, a % b) : a;}
 template <typename T> inline T lcm(T a, T b) {return a * b / gcd(a, b);}
 template <typename T, typename... Targs> inline T min(T a, T b, T c, Targs... args) {return min(a, min(b, c, args...));}
 template <typename T, typename... Targs> inline T max(T a, T b, T c, Targs... args) {return max(a, max(b, c, args...));}
-template <typename T> inline void chmin(T &a, T b) {a = min(a, b); return ;}
-template <typename T> inline void chmax(T &a, T b) {a = max(a, b); return ;}
-template <typename T, typename... Targs> inline void chmin(T &a, T b, T c, Targs... args) {a = min(a, min(b, c, args...)); return ;}
-template <typename T, typename... Targs> inline void chmax(T &a, T b, T c, Targs... args) {a = max(a, max(b, c, args...)); return ;}
+template <typename T, typename... Targs> inline void chmin(T &a, T b, Targs... args) {a = min(a, b, args...); return ;}
+template <typename T, typename... Targs> inline void chmax(T &a, T b, Targs... args) {a = max(a, b, args...); return ;}
 
 template <typename T> inline int Digit_Sum(T a) {
 	int ans = 0;
@@ -331,10 +336,6 @@ template <typename T> void _Debugln_Array(int n, const T *x) {printf("\n"); for 
 // End of C:\Users\ianli\Desktop\CP\template\Various\Debug\Debug.cpp
 
 // Included from C:\Users\ianli\Desktop\CP\template\Math\Mod_Int\Mod_Int.cpp
-// !!! Mod_Int<kMod> a = 1 or Mod_Int<kMod> a(1) checks if the value is valid (and is slow)
-// !!! However, the following usage doesn't check if the value is valid
-// !!! Mod_Int<kMod> a;
-// !!! a = 1;
 template <typename T1, typename T2> T1 Pow(T1 a, T2 b) {
 	T1 ans(1);
 	while (b) {
@@ -350,20 +351,7 @@ template <int kMod> struct Mod_Int {
 
 	int val;
 	Mod_Int() : val(0) {}
-	template <typename T> Mod_Int(const T &x) {
-		val = x % kMod;
-		if (val < 0) val += kMod;
-	}
-
-	Mod_Int operator = (const Mod_Int &x) {
-		val = x.val;
-		return *this;
-	}
-
-	template <typename T> Mod_Int operator = (const T &x) {
-		val = x;
-		return *this;
-	}
+	template <typename T> constexpr Mod_Int(const T &x) {val = x;}
 
 	Mod_Int inv() const {return Pow(*this, kMod - 2);} 
 
@@ -459,55 +447,39 @@ namespace Inverse {
 };
 // End of C:\Users\ianli\Desktop\CP\template\Math\Mod_Int\Mod_Int.cpp
 
-// Included from C:\Users\ianli\Desktop\CP\template\Math\Matrix\Matrix.cpp
-template <typename T> struct Matrix {
-	T **val;
+// Included from C:\Users\ianli\Desktop\CP\template\Math\Matrix\Matrix_fixed_size.cpp
+namespace Matrix_Inner {
+	template <typename T> T ABS(T x) {return x >= 0 ? x : -x;}
+	bool IsZero(double x) {
+		static constexpr double kEps = 1E-10;
+		return ABS(x) <= kEps;
+	}
+	template <typename T> bool IsZero(T x) {return x == 0;}
+}
+
+template <typename T, int kN> struct Matrix {
+	T val[kN][kN];
 	int _size;
 
-	Matrix() : val(nullptr), _size(0) {}
+	Matrix() : _size(0) {}
 	Matrix(int x, T v = 0) {
 		_size = x;
-		val = new T* [_size];
 		for (int i = 0; i < _size; i++) {
-			val[i] = new T [_size];
 			memset(val[i], 0, sizeof(T) * _size);
 			val[i][i] = v;
 		}
 	}
 
-	void clear() {
-		for (int i = 0; i < _size; i++) delete [] val[i];
-		delete [] val;
-		return ;
-	}
-
 	void resize(int x) {
-		clear();
 		_size = x;
-		val = new T* [_size];
-		for (int i = 0; i < _size; i++) {
-			val[i] = new T [_size];
-			memset(val[i], 0, sizeof(T) * _size);
-		}
+		for (int i = 0; i < _size; i++) memset(val[i], 0, sizeof(T) * _size);
 		return ;
 	}
 	int size() const {return _size;}
 
-	void copy(const Matrix &x) {
-		clear();
-		_size = x.size();
-		val = new T* [_size];
-		for (int i = 0; i < _size; i++) {
-			val[i] = new T [_size];
-			memcpy(val[i], x[i], sizeof(T) * _size);
-		}
-		return ;
-	}
-
 	Matrix operator = (const Matrix &x) {
-		clear();
-		val = x.val;
 		_size = x._size;
+		for (int i = 0; i < _size; i++) memcpy(val[i], x[i], sizeof(T) * _size);
 		return *this;
 	}
 	T* operator [](int x) {return val[x];}
@@ -553,44 +525,13 @@ template <typename T> struct Matrix {
 	Matrix operator *= (const Matrix &x) {return *this = *this * x;} 
 	Matrix operator /= (const T &x) {return *this = *this / x;} 
 
-	bool random_piviting() {
-		bool ans = false;
-
-		int px[_size], py[_size];
-		int idx[_size], idy[_size];
-		for (int i = 0; i < _size; i++) idx[i] = idy[i] = px[i] = py[i] = i;
-		random_shuffle(px, px + _size);
-		random_shuffle(py, py + _size);
-
-		// px : row px[i] should be at i
-		// idx : row i is currently at idx[i]
-
-		for (int i = 0; i < _size; i++) if (idx[px[i]] != i) {
-			for (int j = 0; j < _size; j++) swap(val[idx[i]][j], val[idx[px[i]]][j]);
-			swap(idx[i], idx[px[i]]);
-			ans = !ans;
-		}
-
-		for (int i = 0; i < _size; i++) if (idy[py[i]] != i) {
-			for (int j = 0; j < _size; j++) swap(val[j][idy[i]], val[j][idy[py[i]]]);
-			swap(idy[i], idy[py[i]]);
-			ans = !ans;
-		}
-
-		return ans;
-	}
-
 	T det() const {
-		Matrix tmp;
-		tmp.copy(*this);
-		bool flip = tmp.random_piviting();
-		//bool flip = false;
-
+		Matrix tmp = *this;
+		bool flip = false;
 		for (int i = 0; i < _size; i++) {
-			int id = -1;
-			if (tmp[i][i] != 0) id = i;
-			else {
-				for (int j = i + 1; j < _size; j++) if (tmp[j][i] != 0) {
+			if (Matrix_Inner::IsZero(tmp[i][i])) {
+				int id = -1;
+				for (int j = i + 1; j < _size; j++) if (!Matrix_Inner::IsZero(tmp[j][i])) {
 					id = j;
 					break;
 				}
@@ -599,8 +540,7 @@ template <typename T> struct Matrix {
 				flip = !flip;
 			}
 
-			for (int j = i + 1; j < _size; j++) {
-				if (tmp[j][i] == 0) continue;
+			for (int j = i + 1; j < _size; j++) if (!Matrix_Inner::IsZero(tmp[j][i])) {
 				T freq(tmp[j][i] / tmp[i][i]);
 				for (int k = i; k < _size; k++) tmp[j][k] -= freq * tmp[i][k];
 			}
@@ -608,8 +548,12 @@ template <typename T> struct Matrix {
 
 		T ans = (flip ? -1 : 1);
 		for (int i = 0; i < _size; i++) ans *= tmp[i][i];
-		tmp.clear();
-		return ans;
+		return ans + 0 - 0;
+	}
+
+	T det_piviting() const {
+		// !!! not finished
+		return 0;
 	}
 
 	void out() const {
@@ -618,14 +562,14 @@ template <typename T> struct Matrix {
 	}
 };
 
-template <typename T1, typename T2> Matrix<T1> Pow(Matrix<T1> A, T2 b) {
-	Matrix<T1> ans(A.size(), 1);
+template <typename T1, int kN, typename T2> Matrix<T1, kN> Pow(Matrix<T1, kN> A, T2 b) {
+	Matrix<T1, kN> ans(A.size(), 1);
 	for (; b; b >>= 1, A *= A) if (b & 1) ans *= A;
 	return ans;
 }
-// End of C:\Users\ianli\Desktop\CP\template\Math\Matrix\Matrix.cpp
+// End of C:\Users\ianli\Desktop\CP\template\Math\Matrix\Matrix_fixed_size.cpp
 
-Matrix<Mint> A;
+Matrix<Mint, kN> A;
 int a[kN][kN];
 
 int main() {

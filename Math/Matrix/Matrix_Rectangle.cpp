@@ -170,3 +170,4 @@ template <typename T1, typename T2> Matrix<T1> Pow(Matrix<T1> A, T2 b) {
 	for (; b; b >>= 1, A *= A) if (b & 1) ans *= A;
 	return ans;
 }
+

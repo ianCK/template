@@ -98,7 +98,7 @@ template <typename T, int kN> struct Matrix {
 
 		T ans = (flip ? -1 : 1);
 		for (int i = 0; i < _size; i++) ans *= tmp[i][i];
-		return ans;
+		return ans + 0 - 0;
 	}
 
 	T det_piviting() const {

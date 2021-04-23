@@ -1,26 +1,30 @@
 template <typename T> struct BIT {
-	int sz; // n + 1
+	int _size; // n + 1
 	T* val;
-	T tot;
+	T _sum;
+
+	BIT() : _size(0), val(nullptr), _sum(0) {}
+	int size() const {return _size;}
+	T sum() const {return _sum;}
 
 	void init(int n) {
-		delete [] val; val = new T[sz = n + 1];
+		delete [] val; val = new T[_size = n + 1];
 		memset(val + 1, 0, sizeof(T) * n);
-		tot = 0;
+		_sum = 0;
 		return ;
 	}
 
 	void init(int n, T *a) {
-		delete [] val; val = new T[sz = n + 1];
+		delete [] val; val = new T[_size = n + 1];
 		memcpy(val + 1, a + 1, sizeof(T) * n);
 		for (int i = 1; i <= n; i++) if (i + (i & -i) <= n) val[i + (i & -i)] += val[i];
-		for (int i = 1; i <= n; i++) tot += a[i];
+		for (int i = 1; i <= n; i++) _sum += a[i];
 		return ;
 	}
 
 	void add(int pos, T x) {
-		tot += x;
-		for (int i = pos; i < sz; i += i & -i) val[i] += x;
+		_sum += x;
+		for (int i = pos; i < _size; i += i & -i) val[i] += x;
 		return ;
 	}
 
@@ -33,40 +37,40 @@ template <typename T> struct BIT {
 
 	int lower_bound(T x) const {
 		int ans = 0;
-		for (int i = 1 << __lg(sz - 1); i > 0; i >>= 1) 
-			if (ans + i < sz && val[ans + i] < x) x -= val[ans += i];
+		for (int i = 1 << __lg(_size - 1); i > 0; i >>= 1) 
+			if (ans + i < _size && val[ans + i] < x) x -= val[ans += i];
 		return ans + 1;
 	}
 
 	int upper_bound(T x) const {
 		int ans = 0;
-		for (int i = 1 << __lg(sz - 1); i > 0; i >>= 1) 
-			if (ans + i < sz && val[ans + i] <= x) x -= val[ans += i];
+		for (int i = 1 << __lg(_size - 1); i > 0; i >>= 1) 
+			if (ans + i < _size && val[ans + i] <= x) x -= val[ans += i];
 		return ans + 1;
 	}
 
-	void clear() {memset(val + 1, 0, sizeof(T) * (sz - 1));}
-	void clear(int pos) {for (int i = pos; i < sz; i += i & -i) val[i] = 0;}
+	void clear() {memset(val + 1, 0, sizeof(T) * (_size - 1));}
+	void clear(int pos) {for (int i = pos; i < _size; i += i & -i) val[i] = 0;}
 };
 
 template <typename T> struct BIT_max {
-	int sz; // n + 1
+	int _size; // n + 1
 	T* val;
 
 	void init(int n) {
-		delete val; val = new T[sz = n + 1];
+		delete val; val = new T[_size = n + 1];
 		memset(val + 1, 0, sizeof(T) * n);
 		return ;
 	}
 
 	void init(int n, T *a) {
-		delete val; val = new T[sz = n + 1];
+		delete val; val = new T[_size = n + 1];
 		memcpy(val + 1, a + 1, sizeof(T) * n);
 		for (int i = 1; i <= n; i++) if (i + (i & -i) <= n) chmax(val[i + (i & -i)], val[i]);
 		return ;
 	}
 
-	void fix(int pos, T x) {for (int i = pos; i < sz; i += i & -i) chmax(val[i], x);}
+	void fix(int pos, T x) {for (int i = pos; i < _size; i += i & -i) chmax(val[i], x);}
 
 	T ask(int pos) const {
 		T ans = 0;
@@ -74,7 +78,7 @@ template <typename T> struct BIT_max {
 		return ans;
 	}
 
-	void clear() {memset(val + 1, 0, sizeof(T) * (sz - 1));}
+	void clear() {memset(val + 1, 0, sizeof(T) * (_size - 1));}
 };
 
 template <typename T> struct BIT_2D {

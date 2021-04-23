@@ -11,19 +11,19 @@ struct MCH {
 
 	static inline long long int intersect(const Line &l, const Line &r) {return (long long int)floor(double(l.b - r.b) / (r.a - l.a));}
 
-	int size;
+	int _size;
 	vector<Line> lines;
 	MCH() {}
 	void init() {return lines.clear();}
 	void insert(Line l) {return lines.push_back(l);}
 	void insert(long long int a, long long int b) {return insert(Line(a, b));}
 	void build() {
-		size = int(lines.size());
+		_size = int(lines.size());
 		vector<Line> tmp;
 		swap(tmp, lines);
 
 		bool is_sorted = true;
-		for (int i = 1; i < size; i++) if (!(tmp[i - 1] < tmp[i])) {
+		for (int i = 1; i < _size; i++) if (!(tmp[i - 1] < tmp[i])) {
 			is_sorted = false;
 			break;
 		}
@@ -32,7 +32,7 @@ struct MCH {
 
 		lines.PB(tmp[0]);
 		int cur_size = 1;
-		for (int i = 1; i < size; i++) {
+		for (int i = 1; i < _size; i++) {
 			while (cur_size >= 2) {
 				long long int x = intersect(lines[cur_size - 1], tmp[i]);
 				if (x < lines[cur_size - 1].l) {
@@ -48,11 +48,13 @@ struct MCH {
 			cur_size++;
 		}
 
-		size = cur_size;
+		_size = cur_size;
 		return ;
 	}
-	long long int operator () (long long int x) const {
-		int l = 0, r = size;
+	int size() const {return _size;}
+	// void Monotone_Query() {}
+	long long int Query(long long int x) const {
+		int l = 0, r = _size;
 		while (r - l > 1) {
 			int mid = (l + r) >> 1;
 			if (lines[mid].l <= x) l = mid;
@@ -60,4 +62,15 @@ struct MCH {
 		}
 		return lines[l](x);
 	}
+	long long int operator () (long long int x) const {
+		return Query(x);
+	}
 };
+
+MCH Merge(const MCH &lhs, const MCH &rhs) {
+	MCH ans;
+	ans.lines.resize(lhs.size() + rhs.size());
+	merge(lhs.lines.begin(), lhs.lines.end(), rhs.lines.begin(), rhs.lines.end(), ans.lines.begin());
+
+	return ans;
+}

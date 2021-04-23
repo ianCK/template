@@ -1,5 +1,5 @@
 Counts the number of spanning trees.
-Denote L to be an n*n matrix, where L_{ii} = d_i, L_{ij} = e(i, j)
+Denote L to be an n*n matrix, where L_{ii} = d_i, L_{ij} = -e(i, j)
 
-Unidirected : ans = |det(L')|, where L' is the (n-1)*(n-1) martix by removing i-th row and i-th column.
-Directed : The root of the tree is at i.
+Unidirected : ans = det(L'), where L' is the (n-1)*(n-1) martix by removing i-th row and i-th column.
+Directed : The root of the tree is at i. (use either indegree or outdegree)
