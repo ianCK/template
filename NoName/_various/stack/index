@@ -1,0 +1,17 @@
+---
+title: "Stack Size Increase"
+---
+
+``` cpp
+void __attribute__((noinline)) Main() {}
+constexpr int main_size = 256 << 20;
+char *main_p, *main_bak;
+int main() {
+  register long rsp asm("rsp");
+  main_p = (char *)(malloc(main_size)) + main_size;
+	main_bak = (char *)(rsp);
+  __asm__ volatile("movq %0, %%rsp\n" ::"r"(main_p));
+  Main();
+  __asm__ volatile("movq %0, %%rsp\n" ::"r"(main_bak));
+}
+```

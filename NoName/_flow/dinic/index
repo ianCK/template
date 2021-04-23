@@ -1,0 +1,55 @@
+---
+title: "Dinic's Algorithm"
+problems: ['NTUJ2581', 'https://onlinejudge.u-aizu.ac.jp/status/users/ianCK/submissions/1/GRL_6_A/judge/4939426/C++11', 'HDU-3549']
+references: ['https://github.com/edisonhello/waynedisonitau123/blob/ca4cce03f003ed88ca34873ec1f75516b39fc1d6/Codebook/flow/Model.tex', 'https://github.com/tzupengwang/PECaveros/blob/6dbc07460fcd85762d708dc46c4a59489f439537/codebook/flow/FlowMethod.txt']
+---
+
+Maximum flow with lower & upper bound from $s$ to $t$:
+
+1. For each edge $(x, y, l, u)$, connect $x \to y$ with capacity $u - l$.
+2. For each node $u$, denote $d[u]$ as the difference between the sum of incoming lower bounds and the sum of outgoing lower bounds. If $d[u] > 0$, connect $S \to u$ with capacity $d[u]$, otherwise connect $u \to T$ with capacity $-d[u]$.
+3. Connect $t\to s$ with capacity $\infty$.
+4. Let $k$ be the sum of all $in[u] > 0$. If $Maxflow(S, T) \neq k$, there's no solution.
+5. Otherwise, $Maxflow(s, t)$ is the maxflow from $s$ to $t$.
+6. Furthermore, let $ff$ be the flow on $t\to s$. Remove this edge and run $f = Maxflow(t, s)$. $ff - f$ is the minimum flow from $s$ to $t$.
+
+- - -
+
+Maximize $c^T x$ subject to $Ax ≤ b$, $x ≥ 0$;
+with the corresponding symmetric dual problem,
+Minimize $b^T y$ subject to $A^T y ≥ c$, $y ≥ 0$.
+
+Maximize $c^T x$ subject to $Ax ≤ b$;
+with the corresponding asymmetric dual problem,
+Minimize $b^T y$ subject to $A^T y = c$, $y ≥ 0$.
+
+- - -
+
+Minimum vertex cover on bipartite graph =
+Maximum matching on bipartite graph =
+Max flow with source to one side, other side to sink
+
+To reconstruct the minimum vertex cover, dfs from each
+unmatched vertex on the left side and with unused edges
+only. Equivalently, dfs from source with unused edges
+only and without visiting sink. Then, a vertex is chosen
+iff. it is on the left side and without visited or on
+the right side and visited through dfs.
+
+- - -
+
+Maximum density subgraph $(\sum W_e + \sum W_v) / |V|$
+
+Binary search on answer:
+For a fixed $D$, construct a Max flow model as follows:
+Let $S$ be the sum of all weights (or $\infty$)
+
+1. from source to each node with $cap = S$
+2. For each $(u,v,w)$ in $E$, add $(u->v,cap=w)$ and $(v->u,cap=w)$
+3. For each node $v$, from $v$ to sink with $cap = S + 2 * D - deg_v - 2 * (w_v)$
+
+where $deg_v = \sum_{j} w_{v, j}$
+If $maxflow < S * |V|$, $D$ is an answer.
+
+Requiring subgraph: all vertex can be reached from source with
+edge whose cap > 0.

@@ -1,0 +1,8 @@
+---
+title: "3D Convex Hull (Untested)"
+references: ['https://codeforces.com/blog/entry/81768']
+---
+
+**Delaunay Triangulation** Convex hull w/ $(x, y, x^2 + y^2)$ and take bottom side.
+
+**Voronoi Diagram** Connect center of circumcircles.

@@ -1,0 +1,21 @@
+---
+title: "Stuff to Test @ Practice Round"
+---
+
+- `__int128`, `__float128`
+- `pb_ds`, `rope`
+- `clock()`
+- C++ version (__cplusplus == `199711`, `201103`, `201402`, `201703`)
+- Benchmarks (local versus judge) (memory accesses, RNG)
+- SIMD (bitset)
+- Optimization pragmas
+- Inline assembly
+- Verdicts (`assert(0)`, TLE, MLE, OLE, CE, CTLE, CMLE, ...)
+- Stack size
+- Tools (sanitizers, gdb, valgrind, perf, bc, time)
+- Java / Python
+- Language docs
+- Max file size
+- Printing
+- Clarifications
+- Whitespace sensitivity

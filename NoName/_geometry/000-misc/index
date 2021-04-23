@@ -1,0 +1,11 @@
+---
+title: "Misc"
+references: ['https://github.com/edisonhello/waynedisonitau123/tree/master/Codebook/geometry']
+---
+
+To abort on NaNs and other floating point particularities:
+
+``` cpp
+#include <fenv.h>
+feenableexcept(FE_INEXACT | FE_DIVBYZERO | FE_UNDERFLOW | FE_INVALID | FE_OVERFLOW);
+```

@@ -1,0 +1,19 @@
+---
+title: vimrc
+libpath: vimrc
+---
+
+**.bashrc**
+
+```
+export ASAN_OPTIONS=detect_leaks=0,strict_init_order=true,detect_stack_use_after_return=true
+alias g++="g++ -DDEBUG -D_GLIBCXX_DEBUG -fsanitize=undefined -fsanitize=address -Wall -Wextra -Wshadow -Wconversion -Wformat=2 -Wfloat-equal -std=c++17 -Og -g3 -pg"
+```
+
+**Various stuff**
+
+- `gprof ./a.out` for profiling
+- `sed -e 's#\/\/.*##' $file | tr -s '\n\t ' ' ' | md5sum` to compare snippets
+- `cin.exceptions(ios_base::failbit);` to fail on bad input
+
+**vimrc**

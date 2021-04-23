@@ -1,0 +1,35 @@
+---
+title: "Stirling Number"
+---
+
+### First Kind
+
+$S_1(n, k)$ counts the number of the permutation of $n$ elements with $k$ disjoing cycles.
+
+$$
+S_1(n, k) = (n - 1) \cdot S_1(n - 1, k) + S_1(n - 1, k - 1)
+$$
+
+$$
+x (x + 1) \ldots (x + n - 1) = \sum\limits_{k = 0}^n S_1(n, k) x^k
+$$
+
+$$
+\begin{gathered}
+g(x) = x(x + 1) \ldots (x + n - 1) = \sum\limits_{k = 0}^n a_kx^k \\ 
+\Rightarrow g(x + n) = \sum\limits_{k = 0}^n \frac{b_k}{(n - k)!} x^{n - k}, \\
+b_k = \sum\limits_{i = 0}^k ((n - i)! a_{n - i}) \cdot (\frac{n^{k - i}}{(k - i)!})
+\end{gathered}
+$$ 
+
+### Second Kind
+
+$S_2(n, k)$ counts the number of the number of ways to partition a set of $n$ elements into $k$ nonempty sets.
+
+$$
+S_2(n, k) = S_2(n - 1, k - 1) + k \cdot S_2(n - 1, k)
+$$
+
+$$
+S_2(n, k) = \sum\limits_{i = 0}^k \binom{k}{i}i^n (-1)^{k - i} = \sum\limits_{i = 0}^k \frac{(-1)^i}{i!} \cdot \frac{(k - i)^n}{(k - i)!}
+$$

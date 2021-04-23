@@ -1,0 +1,12 @@
+---
+title: "FFT / NTT"
+problems:
+  - "NTUJ3118"
+  - "NTUJ2394"
+---
+$$
+\begin{gathered}
+g=3,3,3 \\
+mod=998244353,1004535809,469762049
+\end{gathered}
+$$

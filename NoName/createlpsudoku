@@ -1,0 +1,91 @@
+#!/bin/bash
+#
+# createlpsudoku [options] [-o output] -i input
+#
+# transforms Sudokus in 81 format (-e) or Simple Sudoku format (-s)
+# into lpsudoku environments for lpsudoku.sty
+#
+# License: LPPL
+#
+FORMAT="81"
+VERSION="v1.1"
+LINEENDINGS="UNIX"
+IFILE=""
+OFILE=""
+#
+typeset -i SLBEGIN=1
+typeset -i SLEND=9
+typeset -i COUNT=9
+#
+while getopts "eshwvi:o:" FLAG
+do
+	case "$FLAG" in
+		e) FORMAT="81";;
+		s) FORMAT="ss";;
+		w) LINEENDINGS="WINDOWS";;
+		i) IFILE="$OPTARG";;
+		o) OFILE="$OPTARG";;
+		h) echo "`basename $0` [options] [-o output] -i input"; exit 0;;
+		v) echo "`basename $0` $VERSION (C) 2013 Josef Kleber"; exit 0;;
+	esac
+done
+#
+if [ -z "$IFILE" ]
+then
+	echo "no input file"
+	echo "Usage: `basename $0` [options] [-o output] -i input"
+	exit 1
+fi
+#
+if [ ! -e "$IFILE" ]
+then
+	echo "ERROR: input file $IFILE does not exist"
+	exit 1
+fi
+#
+if [ -n "$OFILE" ]
+then
+	exec 1> $OFILE
+fi
+#
+if [ "$FORMAT" = "ss" ]
+then
+	echo "\begin{lpsudoku}"
+	for SDLINE in `cat $IFILE | sed -e '1d' -e'5d' -e'9d' -e'13,200d' | sed -e 's/|//g' | sed -e's/^[[:space:]]//g'`
+	do
+		ROWARG=`echo $SDLINE | sed -e's/\./{},/g' -e's/\([[:digit:]]\)/\1,/g' | sed -e's/,$//'`
+		echo "  \setrow{$COUNT}{$ROWARG}"
+		((COUNT--)) 
+	done
+	echo "\end{lpsudoku}"
+	echo 
+fi
+#
+if [ "$FORMAT" = "81" ]
+then
+	for SUDOKU in `cat $IFILE | sed -e's/#.*//'`
+	do
+		echo "\begin{lpsudoku}"
+		while [ $COUNT -gt 0 ]
+		do
+			SDLINE=`echo $SUDOKU | cut -c${SLBEGIN}-${SLEND}`
+			ROWARG=`echo $SDLINE | sed -e's/\./{},/g' -e's/\([[:digit:]]\)/\1,/g' | sed -e's/,$//'`
+			echo "  \setrow{$COUNT}{$ROWARG}"
+			((COUNT--))
+			((SLBEGIN+=9))
+			((SLEND+=9))
+		done
+		SLBEGIN=1
+		SLEND=9
+		COUNT=9
+		echo "\end{lpsudoku}"
+		echo
+	done
+fi
+#
+if [ -n "$OFILE" -a "$LINEENDINGS" = "WINDOWS" ]
+then
+	unix2dos -q $OFILE
+fi
+#
+exit 0

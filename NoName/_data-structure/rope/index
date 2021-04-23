@@ -1,0 +1,11 @@
+---
+title: "Rope"
+problems: ['UVa12538']
+---
+
+``` cpp
+#include <ext/rope>
+using namespace __gnu_cxx;
+rope<char> r = rope<char>();
+r.insert(p, ch), r.erase(p, cnt), r.at(i);
+```

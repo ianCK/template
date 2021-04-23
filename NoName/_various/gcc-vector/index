@@ -1,0 +1,9 @@
+---
+title: "GCC Vector Extensions"
+---
+
+``` cpp
+typedef int v4si __attribute__((vector_size(16)));
+__builtin_shuffle(vec, mask); __builtin_shuffle(vec0, vec1, mask);
+__builtin_convertvector(vec, v4si);
+```

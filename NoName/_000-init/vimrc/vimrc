@@ -1,0 +1,14 @@
+unl! g:skip_defaults_vim
+so $VIMRUNTIME/defaults.vim
+se ai bg=dark fo+=j hls nu rnu scs ic ts=2 sw=2 sr udf tgc
+colo slate
+function! HighlightChar()
+	let alpha = map(range(char2nr('a'),char2nr('z')),'nr2char(v:val)')
+	let colors = ['cyan', 'gold', 'green', 'salmon', 'maroon', 'purple', 'teal']
+	for i in range(len(alpha))
+		execute 'syntax keyword var_' . alpha[i] alpha[i]
+		execute 'highlight default var_' . alpha[i]
+			\ 'guifg=' . colors[i % len(colors)]
+	endfor
+endfunction
+nnoremap <silent> <Leader>hv :call HighlightChar() <CR>

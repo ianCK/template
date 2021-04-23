@@ -1,0 +1,31 @@
+name: Codebook
+author: "NoName @ National Taiwan University"
+message: "Rushia Boing Boing"
+
+collections:
+  000-init:
+    title: "Init"
+  string:
+    title: "String"
+  data-structure:
+    title: "Data Structure"
+  flow:
+    title: "Flow"
+  math:
+    title: "Math"
+  graph:
+    title: "Graph"
+  geometry:
+    title: "Geometry"
+  various:
+    title: "Various"
+
+defaults:
+  - scope:
+      path: ""
+    values:
+      libpath: "_lib.cpp"
+      testpath: "_test.cpp"
+
+kramdown:
+  hard_wrap: true

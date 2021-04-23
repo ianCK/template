@@ -1,0 +1,33 @@
+---
+title: "Dirichlet Convolution"
+---
+
+Memoization $\implies$ complexity $\mathcal{O}(N^{\frac{3}{4}})$.
+
+Linear sieve to $n = N^{\frac{2}{3}}$ $\implies$ complexity $\mathcal{O}(N^{\frac{2}{3}})$.
+
+$$
+\begin{gathered}
+s_{f * g} = \sum_{i = 1}^n \sum_{d | i} \operatorname{g}(d) \operatorname{f}(\frac{i}{d}) \\
+\operatorname{s_f}(n) = \frac{\operatorname{s_{f * g}(n)} - \sum_{d = 2}^n \operatorname{s_f}{\lfloor \frac{n}{d} \rfloor} \operatorname{g}(d)}{\operatorname{g}(1)}
+\end{gathered}
+$$
+
+Common functions:
+
+$$
+\begin{gathered}
+\epsilon(x) = (\mu * I)(x) \\
+\operatorname{Id}(x) = (\phi * I)(x)
+\end{gathered}
+$$
+
+Stuff easy to prefix:
+
+$$
+\begin{gathered}
+\epsilon(x) = [n = 1] \\
+\operatorname{I}(x) = 1 \\
+\operatorname{Id}(x) = x
+\end{gathered}
+$$

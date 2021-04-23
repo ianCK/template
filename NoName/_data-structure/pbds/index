@@ -1,0 +1,46 @@
+---
+title: "Policy Based Data Structures"
+problems:
+  - "UVa10810"
+---
+
+``` cpp
+using namespace __gnu_pbds;
+```
+
+Tree:
+
+``` cpp
+#include <ext/pb_ds/assoc_container.hpp>
+#include <ext/pb_ds/tree_policy.hpp>
+template <class T>
+using Tree =
+  tree<T, null_type, less<T>, rb_tree_tag,
+    tree_order_statistics_node_update>;
+tree.order_of_key(...), tree.find_by_order(...);
+```
+
+Pairing Heap:
+
+``` cpp
+#include <ext/pb_ds/priority_queue.hpp>
+template <class T>
+using Heap = __gnu_pbds::priority_queue<T,
+  less<T>, pairing_heap_tag>;
+hp.join(...), hp.modify(it, ...), hp.erase(it);
+```
+
+Hash Table:
+
+``` cpp
+using Gp = gp_hash_table<Key, Value, Hash,
+  equal_to<uint64_t>,
+  direct_mask_range_hashing<uint64_t>,
+  linear_probe_fn<>,
+  hash_standard_resize_policy<
+    hash_exponential_size_policy<>,
+    hash_load_check_resize_trigger<true>,
+    true>>;
+gp_table.resize(...);
+gp_table.set_loads({0.25, 0.5});
+```

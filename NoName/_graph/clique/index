@@ -1,0 +1,6 @@
+---
+title: "Maximum Clique"
+problems:
+  - "HDU1530"
+references: ["https://github.com/robert1003/998244353/blob/165e4a32c437fedfc163fa39deb10b6907810e27/graph/MaxCliqueDyn.cpp"]
+---

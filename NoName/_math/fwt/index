@@ -1,0 +1,63 @@
+---
+title: "Fast Walsh–Hadamard Transform"
+---
+
+### General Case
+
+Goal: $c_k = \sum_{i \oplus j = k} a_i b_j$
+
+Construct $T$ s.t. $Ta Tb = Tc$ with $i \oplus j = k \implies T_{x, i} T_{x, j} = T_{x, k}$. Let $fwt(a) = Ta$.
+
+FWT on $k$-ary numbers: $fwt(a)_i = \sum_{t = 0}^{k - 1} T_{h(i), t} fwt(a_t)_{i - h(i)}$, where $h(i)$ is the highest bit of $i$.
+
+For carryless addition, take $T_{x, i} = w_k^{xi}$, where $w_k^k = 1$.
+
+### Or
+
+``` cpp
+// Def : FWT(A) = (FWT(A_0), FWT(A_0 + A_1))
+// (Upper triangular matrix)
+// Lemma : FWT(A . B) = FWT(A) * FWT(B)
+void FWT(vector<ll> &a, bool inverse) {
+  int n = int(a.size());
+  for (int i = 2; i <= n; i <<= 1)
+    for (int j = 0; j < n; j += i)
+      for (int k = j; k < j + (i >> 1); k++)
+        inverse ? a[k + (i >> 1)] -= a[k] :
+                  a[k + (i >> 1)] += a[k];
+  for (int i = 0; i < n; i++) a[i] %= kMod;
+  if (inverse)
+    for (int i = 0; i < n; i++)
+      if (a[i] < 0) a[i] += kMod;
+}
+```
+
+### And
+
+``` cpp
+// Def : FWT(A) = (FWT(A_0 + A_1), FWT(A_0))
+// (Lower triangular matrix)
+```
+
+### Xor
+
+``` cpp
+// Def : FWT(A) = (FWT(A_0 + A_1), FWT(A_0 - A_1))
+void FWT(vector<ll> &a, bool inverse) {
+  int n = int(a.size());
+  ll inv = Pow(n, (kMod - 2));
+  auto fix = [](ll &x, ll &y) {
+    x += y;
+    y = x - (y << 1);
+  };
+  for (int i = 2; i <= n; i <<= 1)
+    for (int j = 0; j < n; j += i)
+      for (int k = j; k < j + (i >> 1); k++)
+        fix(a[k], a[k + (i >> 1)]);
+  for (int i = 0; i < n; i++)
+    a[i] = (inverse ? (a[i] % kMod * inv) : a[i]) %
+      kMod;
+  for (int i = 0; i < n; i++)
+    if (a[i] < 0) a[i] += kMod;
+}
+```

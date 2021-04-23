@@ -1,0 +1,64 @@
+---
+---
+
+---
+title: {{ site.name }}
+author: {{ site.author }}
+date: "{{ site.message }} - {VERSION}"
+CJKmainfont: "AR PL KaitiM Big5"
+geometry:
+- margin=0.55in
+- left=0.3in
+- right=0.3in
+documentclass: extarticle
+fontsize: 9pt
+linestretch: 0.3
+pagestyle: headings
+classoption:
+- twocolumn
+links-as-notes: true
+toc-depth: 2
+block-headings: false
+header-includes:
+- \usepackage{anyfontsize}
+- \lstset{basicstyle=\ttfamily\fontsize{8.5}{5}\selectfont, breaklines=true, tabsize=2, aboveskip=\smallskipamount, belowskip=\smallskipamount}
+- \usepackage{savetrees}
+- \usepackage{savesym}
+- \savesymbol{titleformat}
+- \usepackage{draftwatermark} \usepackage{logicpuzzle} \SetWatermarkText{\input{sudoku/\arabic{page}.tex}} \SetWatermarkScale{2} \SetWatermarkFontSize{1cm} \SetWatermarkAngle{0} \SetWatermarkColor[gray]{0.75}
+- \restoresymbol{PZ}{titleformat}
+- \usepackage{tocloft}
+- \renewcommand\cftsecfont{\footnotesize\bfseries} \renewcommand\cftsubsecfont{\footnotesize} \renewcommand\cftsecpagefont{\footnotesize\bfseries} \renewcommand\cftsubsecpagefont{\footnotesize} \renewcommand\cftsecafterpnum{\par} \renewcommand\cftsubsecafterpnum{\par\vspace*{-1.5mm}}
+---
+
+\thispagestyle{headings}
+
+{% for collection in site.collections %}
+
+{% if collection.label != "posts" %}
+
+# {{ collection.title }} #
+
+{% for item in site[collection.label] %}
+
+{% if item.visible != 0 %}
+
+{% capture path %}{{ item.path | split: '/' | reverse | shift | reverse | join: '/' }}/{{ item.libpath }}{% endcapture %}
+{% capture hash %}{{ path }}.md5hash{% endcapture %}
+
+
+## {{ item.title }} {% raw %}\textit{\footnotesize {% endraw %}{% include_relative {{ hash }} %}{% raw %}}{% endraw %} ##
+
+
+{{ item.content }}
+
+```
+{% include_relative {{ path }} %}```
+
+{% endif %}
+
+{% endfor %}
+
+{% endif %}
+
+{% endfor %}

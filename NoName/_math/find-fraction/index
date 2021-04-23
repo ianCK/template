@@ -1,0 +1,9 @@
+---
+title: "Find Fraction w/ Smallest Denumerator"
+---
+
+$f(p, q, n) = \sum_{i = 1}^n \lfloor \frac{pi}{q} \rfloor$
+
+To find $l < \frac{p}{q} \le r$, binary search $\sum_{i = 1}^x \lfloor \frac{Ry}{10^9} \rfloor - \lfloor \frac{Ly}{10^9} \rfloor$, where $L, R = 10^9(l, r)$, for the smallest x s.t. the result is non-zero.
+
+`InfInt` needs to be calculated under modulo $p$ in case of overflow.
