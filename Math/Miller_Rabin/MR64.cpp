@@ -1,9 +1,9 @@
-// this set could kill all numbers under 2^64
-// since the value could be up to x^2, we need unsigned __int128 here
-unsigned __int128 PowMod(unsigned __int128 a, unsigned __int128 b, unsigned __int128 kMod) {
-	unsigned __int128 ans = 1;
-	for (; b; b >>= 1, a = a * a % kMod) if (b & 1) ans = ans * a % kMod;
-	return ans;
+namespace MR64_Inner {
+	unsigned __int128 PowMod(unsigned __int128 a, unsigned __int128 b, unsigned __int128 kMod) {
+		unsigned __int128 ans = 1;
+		for (; b; b >>= 1, a = a * a % kMod) if (b & 1) ans = ans * a % kMod;
+		return ans;
+	}
 }
 
 bool IsPrime(unsigned long long int x) {

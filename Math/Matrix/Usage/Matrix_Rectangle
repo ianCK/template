@@ -23,7 +23,6 @@
 	Matrix operator /= (const T &x)
 	T det()
 	T det_piviting() : use full piviting to aviod float point error
-	!!! not finished
 
 	void out() : for Debug
 
@@ -52,7 +51,6 @@
 	} same as above
 	T det() : O(n^3)
 	T det_piviting() : O(n^3)
-	!!! not finished
 
 	Matrix<T1> Pow(Matrix<T1> A, T2 b) : O(n^3 * lgb)
 

@@ -1,0 +1,9 @@
+!!! __int128 is needed
+---Abstract---
+	bool IsPrime(unsigned long long int x) : return true if prime
+
+---Complexity---
+	bool IsPrime(unsigned long long int x) : O(lgx)
+
+---Test Source---
+	Verification/KickStart2021B_C

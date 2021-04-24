@@ -1,0 +1,8 @@
+---Abstract---
+	bool IsPrime(unsigned int x) : return true if prime
+
+---Complexity---
+	bool IsPrime(unsigned int x) : O(lgx)
+
+---Test Source---
+	Verification/KickStart2021B_C
