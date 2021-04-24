@@ -131,33 +131,41 @@ template <typename T> class Matrix {
 		}
 
 		T det_piviting() const {
-			// !!! not finished
+			assert(_n == _m);
 			Matrix tmp;
 			tmp.copy(*this);
 			bool flip = false;
 
 			for (int i = 0; i < _n; i++) {
-				if (Matrix_Inner::IsZero(tmp[i][i])) {
-					int id = -1;
-					for (int j = i + 1; j < _n; j++) if (!Matrix_Inner::IsZero(tmp[j][i])) {
-						id = j;
-						break;
+				int mx = -1, my = -1;
+				T cur_mx = 0;
+				for (int j = i; j < _n; j++) for (int k = i; k < _m; k++) {
+					if (Matrix_Inner::ABS(tmp[j][k]) > cur_mx) {
+						cur_mx = Matrix_Inner::ABS(tmp[j][k]);
+						mx = j, my = k;
 					}
-					if (id == -1) return 0;
-					for (int j = i; j < _n; j++) swap(tmp[i][j], tmp[id][j]);
+				}
+
+				if (mx == -1) return 0;
+				if (mx != i) {
+					for (int j = i; j < _m; j++) swap(tmp[i][j], tmp[mx][j]);
+					flip = !flip;
+				}
+				if (my != i) {
+					for (int j = i; j < _n; j++) swap(tmp[j][i], tmp[j][my]);
 					flip = !flip;
 				}
 
 				for (int j = i + 1; j < _n; j++) if (!Matrix_Inner::IsZero(tmp[j][i])) {
 					T freq(tmp[j][i] / tmp[i][i]);
-					for (int k = i; k < _n; k++) tmp[j][k] -= freq * tmp[i][k];
+					for (int k = i; k < _m; k++) tmp[j][k] -= freq * tmp[i][k];
 				}
 			}
 
 			T ans = (flip ? -1 : 1);
 			for (int i = 0; i < _n; i++) ans *= tmp[i][i];
 			tmp.clear();
-			return ans;
+			return (ans + 0 - 0);
 		}
 
 		void out() const {

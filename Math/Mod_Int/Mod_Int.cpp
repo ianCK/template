@@ -17,6 +17,11 @@ template <int kMod> struct Mod_Int {
 
 	Mod_Int inv() const {return Pow(*this, kMod - 2);} 
 
+	Mod_Int operator -() const {
+		if (val) return Mod_Int(kMod - val);
+		else return Mod_Int(0);
+	}
+
 	Mod_Int operator + (const Mod_Int &x) const {
 		Mod_Int ans(val + x.val);
 		if (ans.val >= kMod) ans.val -= kMod;

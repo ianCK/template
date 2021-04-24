@@ -51,5 +51,5 @@ int main() {
 	A.resize(n);
 	for (int i = 0; i < n; i++) for (int j = 0; j < n; j++) A[i][j] = Mint(a[i + 1][j + 1]);
 
-	printf("%d\n", A.det());
+	printf("%d\n", A.det_piviting());
 }
