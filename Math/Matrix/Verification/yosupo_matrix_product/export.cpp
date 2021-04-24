@@ -1,14 +1,7 @@
 // Exported by Exporter.exe
 
-// Included from test_det.cpp
-#include <stdio.h>
-#include <string.h>
-#include <algorithm>
-#include <deque>
-#include <vector>
-#include <stack>
-#include <queue>
-#include <iostream>
+// Included from Matrix_Rectangle.cpp
+#include <bits/stdc++.h>
 using namespace std;
 #define PB push_back
 #define F first
@@ -37,7 +30,7 @@ using namespace std;
 typedef long long int ll;
 typedef unsigned long long int ull;
 
-constexpr int kN = int(5E2 + 10);
+constexpr int kN = int(1E3 + 100);
 constexpr int kMod = 998244353;
 // constexpr int kMod = int(1E9 + 7);
 // constexpr int kInf = 0x3f3f3f3f;
@@ -191,8 +184,24 @@ template <typename T> using PQ = priority_queue<T>;
 template <typename T> using PQ_R = priority_queue<T, vector<T>, greater<T>>;
 
 template <typename T> inline T ABS(T n) {return n >= 0 ? n : -n;}
-template <typename T> inline T gcd(T a, T b) {return b ? gcd(b, a % b) : a;}
+template <typename T> __attribute__((target("bmi"))) inline T gcd(T a, T b) {
+	if (a == 0 || b == 0) return a + b;
+	int n = __builtin_ctzll(a);
+	int m = __builtin_ctzll(b);
+	a >>= n;
+	b >>= m;
+	while (a != b) {
+		int m = __builtin_ctzll(a - b);
+		bool f = a > b;
+		T c = f ? a : b;
+		b = f ? b : a;
+		a = (c - b) >> m;
+	}
+	return a << min(n, m);
+}
 template <typename T> inline T lcm(T a, T b) {return a * b / gcd(a, b);}
+template <typename T, typename... Targs> inline T gcd(T a, T b, T c, Targs... args) {return gcd(a, gcd(b, c, args...));}
+template <typename T, typename... Targs> inline T lcm(T a, T b, T c, Targs... args) {return lcm(a, lcm(b, c, args...));}
 template <typename T, typename... Targs> inline T min(T a, T b, T c, Targs... args) {return min(a, min(b, c, args...));}
 template <typename T, typename... Targs> inline T max(T a, T b, T c, Targs... args) {return max(a, max(b, c, args...));}
 template <typename T, typename... Targs> inline void chmin(T &a, T b, Targs... args) {a = min(a, b, args...); return ;}
@@ -207,7 +216,8 @@ template <typename T> inline int Digit_Sum(T a) {
 	return ans;
 }
 template <typename T> inline int Num_Length(T a) {
-	int ans = 1;
+	if (a == 0) return 1;
+	int ans = 0;
 	while (a /= 10) ans++;
 	return ans;
 }
@@ -447,7 +457,7 @@ namespace Inverse {
 };
 // End of C:\Users\ianli\Desktop\CP\template\Math\Mod_Int\Mod_Int.cpp
 
-// Included from C:\Users\ianli\Desktop\CP\template\Math\Matrix\Matrix_fixed_size.cpp
+// Included from C:\Users\ianli\Desktop\CP\template\Math\Matrix\Matrix_Rectangle.cpp
 namespace Matrix_Inner {
 	template <typename T> T ABS(T x) {return x >= 0 ? x : -x;}
 	bool IsZero(double x) {
@@ -457,127 +467,195 @@ namespace Matrix_Inner {
 	template <typename T> bool IsZero(T x) {return x == 0;}
 }
 
-template <typename T, int kN> struct Matrix {
-	T val[kN][kN];
-	int _size;
+template <typename T> class Matrix {
+	private:
+		T **_val;
+		int _n, _m;
 
-	Matrix() : _size(0) {}
-	Matrix(int x, T v = 0) {
-		_size = x;
-		for (int i = 0; i < _size; i++) {
-			memset(val[i], 0, sizeof(T) * _size);
-			val[i][i] = v;
-		}
-	}
-
-	void resize(int x) {
-		_size = x;
-		for (int i = 0; i < _size; i++) memset(val[i], 0, sizeof(T) * _size);
-		return ;
-	}
-	int size() const {return _size;}
-
-	Matrix operator = (const Matrix &x) {
-		_size = x._size;
-		for (int i = 0; i < _size; i++) memcpy(val[i], x[i], sizeof(T) * _size);
-		return *this;
-	}
-	T* operator [](int x) {return val[x];}
-	const T* operator [](int x) const {return val[x];}
-
-	Matrix operator + (const Matrix &x) const {
-		Matrix ans(_size);
-		for (int i = 0; i < _size; i++) for (int j = 0; j < _size; j++) ans[i][j] = val[i][j] + x[i][j];
-		return ans;
-	}
-	Matrix operator - (const Matrix &x) const {
-		Matrix ans(_size);
-		for (int i = 0; i < _size; i++) for (int j = 0; j < _size; j++) ans[i][j] = val[i][j] - x[i][j];
-		return ans;
-	}
-	Matrix operator * (const T &x) const {
-		Matrix ans(_size);
-		for (int i = 0; i < _size; i++) for (int j = 0; j < _size; j++) ans[i][j] = val[i][j] * x;
-		return ans;
-	} 
-	Matrix operator * (const Matrix &x) const {
-		static constexpr int kCacheSize = 8 * 1024 * 1024 * sizeof(bool);
-		static constexpr int kT = (1 << (__lg(kCacheSize) >> 1)) / sizeof(T);
-		Matrix ans(_size);
-		for (int I = 0; I < _size; I += kT) for (int J = 0; J < _size; J += kT) for (int K = 0; K < _size; K += kT) {
-			int limi = min(I + kT, _size), limj = min(J + kT, _size), limk = min(K + kT, _size);
-			for (int i = I; i < limi; i++) for (int j = J; j < limj; j++) {
-				T sum = 0;
-				for (int k = K; k < limk; k++) sum += val[i][k] * x[k][j];
-				ans[i][j] += sum;
+	public:
+		Matrix() : _val(nullptr), _n(0), _m(0) {}
+		Matrix(int n, int m) : _n(n), _m(m), _val(new T* [n]) {
+			for (int i = 0; i < _n; i++) {
+				_val[i] = new T [_m];
+				memset(_val[i], 0, sizeof(T) * _m);
 			}
 		}
-		return ans;
-	} 
-	Matrix operator / (const T &x) const {
-		Matrix ans(_size);
-		for (int i = 0; i < _size; i++) for (int j = 0; j < _size; j++) ans[i][j] = val[i][j] * x;
-		return ans;
-	}
-	Matrix operator += (const Matrix &x) {return *this = *this + x;} 
-	Matrix operator -= (const Matrix &x) {return *this = *this - x;} 
-	Matrix operator *= (const T &x) {return *this = *this * x;} 
-	Matrix operator *= (const Matrix &x) {return *this = *this * x;} 
-	Matrix operator /= (const T &x) {return *this = *this / x;} 
+		Matrix(const Matrix &rhs) : _n(rhs.row_size()), _m(rhs.col_size()), _val(rhs._val) {}
 
-	T det() const {
-		Matrix tmp = *this;
-		bool flip = false;
-		for (int i = 0; i < _size; i++) {
-			if (Matrix_Inner::IsZero(tmp[i][i])) {
-				int id = -1;
-				for (int j = i + 1; j < _size; j++) if (!Matrix_Inner::IsZero(tmp[j][i])) {
-					id = j;
-					break;
+		void clear() {
+			for (int i = 0; i < _n; i++) delete [] _val[i];
+			delete [] _val;
+			_val = nullptr;
+			_n = _m = 0;
+			return ;
+		}
+
+		void resize(int n, int m) {
+			clear();
+			_n = n, _m = m;
+			_val = new T* [_n];
+			for (int i = 0; i < _n; i++) {
+				_val[i] = new T [_m];
+				memset(_val[i], 0, sizeof(T) * _m);
+			}
+			return ;
+		}
+		int row_size() const {return _n;}
+		int col_size() const {return _m;}
+
+		void copy(const Matrix &x) {
+			clear();
+			_n = x.row_size(), _m = x.col_size();
+			_val = new T* [_n];
+			for (int i = 0; i < _n; i++) {
+				_val[i] = new T [_m];
+				memcpy(_val[i], x[i], sizeof(T) * _m);
+			}
+			return ;
+		}
+
+		T* operator [](int x) {return _val[x];}
+		const T* operator [](int x) const {return _val[x];}
+
+		Matrix operator + (const Matrix &x) const {
+			Matrix ans(_n, _m);
+			for (int i = 0; i < _n; i++) for (int j = 0; j < _m; j++) ans[i][j] = _val[i][j] + x[i][j];
+			return ans;
+		}
+		Matrix operator - (const Matrix &x) const {
+			Matrix ans(_n, _m);
+			for (int i = 0; i < _n; i++) for (int j = 0; j < _m; j++) ans[i][j] = _val[i][j] - x[i][j];
+			return ans;
+		}
+		Matrix operator * (const T &x) const {
+			Matrix ans(_n, _m);
+			for (int i = 0; i < _n; i++) for (int j = 0; j < _m; j++) ans[i][j] = _val[i][j] * x;
+			return ans;
+		} 
+		Matrix operator * (const Matrix &x) const {
+			static constexpr int kCacheSize = 8 * 1024 * 1024 * sizeof(bool);
+			static constexpr int kT = (1 << (__lg(kCacheSize) >> 1)) / sizeof(T);
+			assert(_m == x._n);
+			int n = _n, m = _m, p = x._m;
+			Matrix ans(n, p);
+			for (int I = 0; I < n; I += kT) for (int J = 0; J < p; J += kT) for (int K = 0; K < m; K += kT) {
+				int limi = min(I + kT, n), limj = min(J + kT, p), limk = min(K + kT, m);
+				for (int i = I; i < limi; i++) for (int j = J; j < limj; j++) {
+					T sum = 0;
+					for (int k = K; k < limk; k++) sum += _val[i][k] * x[k][j];
+					ans[i][j] += sum;
 				}
-				if (id == -1) return 0;
-				for (int j = i; j < _size; j++) swap(tmp[i][j], tmp[id][j]);
-				flip = !flip;
+			}
+			return ans;
+		} 
+		Matrix operator / (const T &x) const {
+			Matrix ans(_n, _m);
+			for (int i = 0; i < _n; i++) for (int j = 0; j < _m; j++) ans[i][j] = _val[i][j] / x;
+			return ans;
+		}
+		Matrix operator += (const Matrix &x) {return *this = *this + x;} 
+		Matrix operator -= (const Matrix &x) {return *this = *this - x;} 
+		Matrix operator *= (const T &x) {return *this = *this * x;} 
+		Matrix operator *= (const Matrix &x) {return *this = *this * x;} 
+		Matrix operator /= (const T &x) {return *this = *this / x;} 
+
+		T det() const {
+			assert(_n == _m);
+
+			Matrix tmp;
+			tmp.copy(*this);
+			bool flip = false;
+
+			for (int i = 0; i < _n; i++) {
+				if (Matrix_Inner::IsZero(tmp[i][i])) {
+					int id = -1;
+					for (int j = i + 1; j < _n; j++) if (!Matrix_Inner::IsZero(tmp[j][i])) {
+						id = j;
+						break;
+					}
+					if (id == -1) return 0;
+					for (int j = i; j < _n; j++) swap(tmp[i][j], tmp[id][j]);
+					flip = !flip;
+				}
+
+				for (int j = i + 1; j < _n; j++) if (!Matrix_Inner::IsZero(tmp[j][i])) {
+					T freq(tmp[j][i] / tmp[i][i]);
+					for (int k = i; k < _n; k++) tmp[j][k] -= freq * tmp[i][k];
+				}
 			}
 
-			for (int j = i + 1; j < _size; j++) if (!Matrix_Inner::IsZero(tmp[j][i])) {
-				T freq(tmp[j][i] / tmp[i][i]);
-				for (int k = i; k < _size; k++) tmp[j][k] -= freq * tmp[i][k];
-			}
+			T ans = (flip ? -1 : 1);
+			for (int i = 0; i < _n; i++) ans *= tmp[i][i];
+			tmp.clear();
+			return (ans + 0 - 0);
 		}
 
-		T ans = (flip ? -1 : 1);
-		for (int i = 0; i < _size; i++) ans *= tmp[i][i];
-		return ans + 0 - 0;
-	}
+		T det_piviting() const {
+			// !!! not finished
+			Matrix tmp;
+			tmp.copy(*this);
+			bool flip = false;
 
-	T det_piviting() const {
-		// !!! not finished
-		return 0;
-	}
+			for (int i = 0; i < _n; i++) {
+				if (Matrix_Inner::IsZero(tmp[i][i])) {
+					int id = -1;
+					for (int j = i + 1; j < _n; j++) if (!Matrix_Inner::IsZero(tmp[j][i])) {
+						id = j;
+						break;
+					}
+					if (id == -1) return 0;
+					for (int j = i; j < _n; j++) swap(tmp[i][j], tmp[id][j]);
+					flip = !flip;
+				}
 
-	void out() const {
-		for (int i = 0; i < _size; i++, printf("\n")) for (int j = 0; j < _size; j++) printf("%5d", val[i][j]);
-		return ;
-	}
+				for (int j = i + 1; j < _n; j++) if (!Matrix_Inner::IsZero(tmp[j][i])) {
+					T freq(tmp[j][i] / tmp[i][i]);
+					for (int k = i; k < _n; k++) tmp[j][k] -= freq * tmp[i][k];
+				}
+			}
+
+			T ans = (flip ? -1 : 1);
+			for (int i = 0; i < _n; i++) ans *= tmp[i][i];
+			tmp.clear();
+			return ans;
+		}
+
+		void out() const {
+			for (int i = 0; i < _n; i++, printf("\n")) for (int j = 0; j < _m; j++) printf("%5d", _val[i][j]);
+			return ;
+		}
 };
 
-template <typename T1, int kN, typename T2> Matrix<T1, kN> Pow(Matrix<T1, kN> A, T2 b) {
-	Matrix<T1, kN> ans(A.size(), 1);
+template <typename T1, typename T2> Matrix<T1> Pow(Matrix<T1> A, T2 b) {
+	assert(A.row_size() == A.col_size());
+	int n = A.row_size();
+	Matrix<T1> ans(n, n);
+	for (int i = 0; i < n; i++) ans[i][i] = 1;
 	for (; b; b >>= 1, A *= A) if (b & 1) ans *= A;
 	return ans;
 }
-// End of C:\Users\ianli\Desktop\CP\template\Math\Matrix\Matrix_fixed_size.cpp
 
-Matrix<Mint, kN> A;
-int a[kN][kN];
+// End of C:\Users\ianli\Desktop\CP\template\Math\Matrix\Matrix_Rectangle.cpp
+
+Matrix<Mint> A, B, C;
+
+int a[kN][kN], b[kN][kN];
 
 int main() {
-	int n; RP(n);
-	for (int i = 1; i <= n; i++) RLP(n, a[i]);
-	A.resize(n);
-	for (int i = 0; i < n; i++) for (int j = 0; j < n; j++) A[i][j] = Mint(a[i + 1][j + 1]);
+	int n, m, k; RP(n, m, k);
+	for (int i = 1; i <= n; i++) RLP(m, a[i]);
+	for (int i = 1; i <= m; i++) RLP(k, b[i]);
 
-	printf("%d\n", A.det());
+	A.resize(n, m);
+	B.resize(m, k);
+	for (int i = 1; i <= n; i++) for (int j = 1; j <= m; j++) A[i - 1][j - 1] = a[i][j];
+	for (int i = 1; i <= m; i++) for (int j = 1; j <= k; j++) B[i - 1][j - 1] = b[i][j];
+
+	C = A * B;
+	for (int i = 0; i < n; i++) {
+		printf("%d", C[i][0]);
+		for (int j = 1; j < k; j++) printf(" %d", C[i][j]);
+		printf("\n");
+	}
 }
-// End of test_det.cpp
+// End of Matrix_Rectangle.cpp

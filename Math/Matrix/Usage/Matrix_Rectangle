@@ -1,0 +1,62 @@
+!!! Note that the values are usually passed by reference without copying
+!!! copy() is slower, but safer
+
+---Abstract---
+	Matrix<T>
+	Matrix<T>(int n, int m) : initialize with size n*m
+	Matrix<T>(const Matrix &x) : copy by reference
+	void clear() : release used memories
+	void resize(int n, int m)
+	int row_size()
+	int col_size()
+	void copy() : create a copy
+	T* operator [](int x) : making A[x][y] a valid expression (same as A._val[x][y])
+	Matrix operator + (const Matrix &x)
+	Matrix operator - (const Matrix &x)
+	Matrix operator * (const T &x)
+	Matrix operator * (const Matrix &x)
+	Matrix operator / (const T &x)
+	Matrix operator += (const Matrix &x)
+	Matrix operator -= (const Matrix &x)
+	Matrix operator *= (const T &x)
+	Matrix operator *= (const Matrix &x)
+	Matrix operator /= (const T &x)
+	T det()
+	T det_piviting() : use full piviting to aviod float point error
+	!!! not finished
+
+	void out() : for Debug
+
+	Matrix<T1> Pow(Matrix<T1> A, T2 b)
+
+---Complexity---
+	Matrix<T> : O(1)
+	Matrix<T>(int n, int m) : O(nm)
+	void clear() : O(nm)
+	void resize(int n, int m) : O(original_nm + nm)
+	int row_size() : O(1)
+	int col_size() : O(1)
+	void copy() : O(nm)
+	T* operator [](int x) : O(1)
+	Matrix operator + (const Matrix &x) : O(nm)
+	Matrix operator - (const Matrix &x) : O(nm)
+	Matrix operator * (const T &x) : O(nm)
+	Matrix operator * (const Matrix &x) : O(nmp)
+	Matrix operator / (const T &x) : O(nm)
+	{
+		Matrix operator += (const Matrix &x)
+		Matrix operator -= (const Matrix &x)
+		Matrix operator *= (const T &x)
+		Matrix operator *= (const Matrix &x)
+		Matrix operator /= (const T &x)
+	} same as above
+	T det() : O(n^3)
+	T det_piviting() : O(n^3)
+	!!! not finished
+
+	Matrix<T1> Pow(Matrix<T1> A, T2 b) : O(n^3 * lgb)
+
+---Test Source---
+	Verification/CF_1511F
+	Verification/yosupo_matrix_det
+	Verification/yosupo_matrix_product

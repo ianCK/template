@@ -1,3 +1,4 @@
+// yosupo matrix determinant
 #include <bits/stdc++.h>
 using namespace std;
 #define PB push_back
@@ -27,8 +28,8 @@ using namespace std;
 typedef long long int ll;
 typedef unsigned long long int ull;
 
-constexpr int kN = int(1E5 + 10);
-// constexpr int kMod = 998244353;
+constexpr int kN = int(5E2 + 10);
+constexpr int kMod = 998244353;
 // constexpr int kMod = int(1E9 + 7);
 // constexpr int kInf = 0x3f3f3f3f;
 // constexpr ll kInf = 0x3f3f3f3f3f3f3f3f;
@@ -38,19 +39,17 @@ constexpr int kN = int(1E5 + 10);
 #include "C:\Users\ianli\Desktop\CP\template\Various\Fast_IO\Fast_IO.cpp"
 #include "C:\Users\ianli\Desktop\CP\template\Various\Useful_Functions\Useful_Functions.cpp"
 #include "C:\Users\ianli\Desktop\CP\template\Various\Debug\Debug.cpp"
-#include "C:\Users\ianli\Desktop\CP\template\Math\Matrix\Matrix.cpp"
+#include "C:\Users\ianli\Desktop\CP\template\Math\Mod_Int\Mod_Int.cpp"
+#include "C:\Users\ianli\Desktop\CP\template\Math\Matrix\Matrix_Rectangle.cpp"
 
-Matrix<int> A[kN];
+Matrix<Mint> A;
+int a[kN][kN];
 
 int main() {
+	int n; RP(n);
+	for (int i = 1; i <= n; i++) RLP(n, a[i]);
+	A.resize(n, n);
+	for (int i = 0; i < n; i++) for (int j = 0; j < n; j++) A[i][j] = Mint(a[i + 1][j + 1]);
 
-	A[0] = Matrix<int>(2, 1);
-	A[0][0][1] = 1;
-	for (int i = 1; i <= 10; i++) A[i] = A[i - 1] * A[0];
-	for (int i = 0; i <= 10; i++) {
-		printf("A[%d]\n", i);
-		A[i].out();
-	}
-
-	
+	printf("%d\n", A.det());
 }

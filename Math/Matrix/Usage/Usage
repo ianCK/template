@@ -1,0 +1,6 @@
+There are 2 files in this folder.
+1) Matrix.cpp
+2) Matrix_Rectangle.cpp
+
+Matrix.cpp : For square matrices
+Matrix_Rectangle.cpp : For rectangle matrices

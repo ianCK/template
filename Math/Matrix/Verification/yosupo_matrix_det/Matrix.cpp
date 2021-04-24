@@ -40,9 +40,9 @@ constexpr int kMod = 998244353;
 #include "C:\Users\ianli\Desktop\CP\template\Various\Useful_Functions\Useful_Functions.cpp"
 #include "C:\Users\ianli\Desktop\CP\template\Various\Debug\Debug.cpp"
 #include "C:\Users\ianli\Desktop\CP\template\Math\Mod_Int\Mod_Int.cpp"
-#include "C:\Users\ianli\Desktop\CP\template\Math\Matrix\Matrix_fixed_size.cpp"
+#include "C:\Users\ianli\Desktop\CP\template\Math\Matrix\Matrix.cpp"
 
-Matrix<Mint, kN> A;
+Matrix<Mint> A;
 int a[kN][kN];
 
 int main() {

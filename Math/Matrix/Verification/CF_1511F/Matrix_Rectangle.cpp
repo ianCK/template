@@ -40,12 +40,12 @@ constexpr int kMod = 998244353;
 #include "C:\Users\ianli\Desktop\CP\template\Various\Useful_Functions\Useful_Functions.cpp"
 #include "C:\Users\ianli\Desktop\CP\template\Various\Debug\Debug.cpp"
 #include "C:\Users\ianli\Desktop\CP\template\Math\Mod_Int\Mod_Int.cpp"
-#include "C:\Users\ianli\Desktop\CP\template\Math\Matrix\Matrix_fixed_size.cpp"
+#include "C:\Users\ianli\Desktop\CP\template\Math\Matrix\Matrix_Rectangle.cpp"
 
 string s[kN];
 int idx[kN][kN][kN];
 int len[kN];
-Matrix<Mint, kN> A;
+Matrix<Mint> A;
 
 int main() {
 	int n, m; cin >> n >> m;
@@ -63,14 +63,14 @@ int main() {
 
 	for (int i = 0; i < kLen; i++) idx[0][0][i] = cur++;
 
-	A.resize(cur);
+	A.resize(cur, cur);
 
-	for (int i = 1; i <= n; i++) A.val[idx[0][0][len[i] - 1]][idx[0][0][0]]++;
+	for (int i = 1; i <= n; i++) A[idx[0][0][len[i] - 1]][idx[0][0][0]]++;
 
 	for (int i = 1; i <= n; i++) for (int j = 1; j < len[i]; j++) for (int k = 1; k < kLen; k++)
-		A.val[idx[i][j][k - 1]][idx[i][j][k]]++;
+		A[idx[i][j][k - 1]][idx[i][j][k]]++;
 
-	for (int i = 1; i < kLen; i++) A.val[idx[0][0][i - 1]][idx[0][0][i]]++;
+	for (int i = 1; i < kLen; i++) A[idx[0][0][i - 1]][idx[0][0][i]]++;
 
 	auto match = [&](int x, int idx, int y, int idy, int len) -> bool {
 		for (int i = 0; i < len; i++) if (s[x][idx + i] != s[y][idy + i]) return false;
@@ -81,19 +81,20 @@ int main() {
 		int mn = min(j, len[k]);
 		if (!match(i, len[i] - j, k, 0, mn)) continue;
 
-		if (len[k] == j) A.val[idx[0][0][j - 1]][idx[i][j][0]]++;
-		else if (len[k] < j) A.val[idx[i][j - len[k]][len[k] - 1]][idx[i][j][0]]++;
-		else A.val[idx[k][len[k] - j][j - 1]][idx[i][j][0]]++;
+		if (len[k] == j) A[idx[0][0][j - 1]][idx[i][j][0]]++;
+		else if (len[k] < j) A[idx[i][j - len[k]][len[k] - 1]][idx[i][j][0]]++;
+		else A[idx[k][len[k] - j][j - 1]][idx[i][j][0]]++;
 	}
 
 	for (int i = 1; i <= n; i++) for (int j = i + 1; j <= n; j++) {
 		int mn = min(len[i], len[j]);
 		if (match(i, 0, j, 0, mn)) {
-			if (len[i] < len[j]) A.val[idx[j][len[j] - len[i]][mn - 1]][idx[0][0][0]] += 2;
-			else A.val[idx[i][len[i] - len[j]][mn - 1]][idx[0][0][0]] += 2;
+			if (len[i] < len[j]) A[idx[j][len[j] - len[i]][mn - 1]][idx[0][0][0]] += 2;
+			else A[idx[i][len[i] - len[j]][mn - 1]][idx[0][0][0]] += 2;
 		}
 	}
 
 	Mint ans = Pow(A, m)[idx[0][0][0]][idx[0][0][0]];
+
 	printf("%d\n", ans);
 }

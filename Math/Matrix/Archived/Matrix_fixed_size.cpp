@@ -8,46 +8,46 @@ namespace Matrix_Inner {
 }
 
 template <typename T, int kN> struct Matrix {
-	T val[kN][kN];
+	T _val[kN][kN];
 	int _size;
 
 	Matrix() : _size(0) {}
 	Matrix(int x, T v = 0) {
 		_size = x;
 		for (int i = 0; i < _size; i++) {
-			memset(val[i], 0, sizeof(T) * _size);
-			val[i][i] = v;
+			memset(_val[i], 0, sizeof(T) * _size);
+			_val[i][i] = v;
 		}
 	}
 
 	void resize(int x) {
 		_size = x;
-		for (int i = 0; i < _size; i++) memset(val[i], 0, sizeof(T) * _size);
+		for (int i = 0; i < _size; i++) memset(_val[i], 0, sizeof(T) * _size);
 		return ;
 	}
 	int size() const {return _size;}
 
 	Matrix operator = (const Matrix &x) {
 		_size = x._size;
-		for (int i = 0; i < _size; i++) memcpy(val[i], x[i], sizeof(T) * _size);
+		for (int i = 0; i < _size; i++) memcpy(_val[i], x[i], sizeof(T) * _size);
 		return *this;
 	}
-	T* operator [](int x) {return val[x];}
-	const T* operator [](int x) const {return val[x];}
+	T* operator [](int x) {return _val[x];}
+	const T* operator [](int x) const {return _val[x];}
 
 	Matrix operator + (const Matrix &x) const {
 		Matrix ans(_size);
-		for (int i = 0; i < _size; i++) for (int j = 0; j < _size; j++) ans[i][j] = val[i][j] + x[i][j];
+		for (int i = 0; i < _size; i++) for (int j = 0; j < _size; j++) ans[i][j] = _val[i][j] + x[i][j];
 		return ans;
 	}
 	Matrix operator - (const Matrix &x) const {
 		Matrix ans(_size);
-		for (int i = 0; i < _size; i++) for (int j = 0; j < _size; j++) ans[i][j] = val[i][j] - x[i][j];
+		for (int i = 0; i < _size; i++) for (int j = 0; j < _size; j++) ans[i][j] = _val[i][j] - x[i][j];
 		return ans;
 	}
 	Matrix operator * (const T &x) const {
 		Matrix ans(_size);
-		for (int i = 0; i < _size; i++) for (int j = 0; j < _size; j++) ans[i][j] = val[i][j] * x;
+		for (int i = 0; i < _size; i++) for (int j = 0; j < _size; j++) ans[i][j] = _val[i][j] * x;
 		return ans;
 	} 
 	Matrix operator * (const Matrix &x) const {
@@ -58,7 +58,7 @@ template <typename T, int kN> struct Matrix {
 			int limi = min(I + kT, _size), limj = min(J + kT, _size), limk = min(K + kT, _size);
 			for (int i = I; i < limi; i++) for (int j = J; j < limj; j++) {
 				T sum = 0;
-				for (int k = K; k < limk; k++) sum += val[i][k] * x[k][j];
+				for (int k = K; k < limk; k++) sum += _val[i][k] * x[k][j];
 				ans[i][j] += sum;
 			}
 		}
@@ -66,7 +66,7 @@ template <typename T, int kN> struct Matrix {
 	} 
 	Matrix operator / (const T &x) const {
 		Matrix ans(_size);
-		for (int i = 0; i < _size; i++) for (int j = 0; j < _size; j++) ans[i][j] = val[i][j] * x;
+		for (int i = 0; i < _size; i++) for (int j = 0; j < _size; j++) ans[i][j] = _val[i][j] / x;
 		return ans;
 	}
 	Matrix operator += (const Matrix &x) {return *this = *this + x;} 
@@ -107,7 +107,7 @@ template <typename T, int kN> struct Matrix {
 	}
 
 	void out() const {
-		for (int i = 0; i < _size; i++, printf("\n")) for (int j = 0; j < _size; j++) printf("%5d", val[i][j]);
+		for (int i = 0; i < _size; i++, printf("\n")) for (int j = 0; j < _size; j++) printf("%5d", _val[i][j]);
 		return ;
 	}
 };
