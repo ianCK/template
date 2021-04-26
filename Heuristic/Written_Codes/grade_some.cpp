@@ -25,10 +25,12 @@ constexpr int kN = int(1E5 + 10);
 #include "C:\Users\ianli\Desktop\CP\template\Various\Fast_IO\Fast_IO.cpp"
 #include "C:\Users\ianli\Desktop\CP\template\Various\Useful_Functions\Useful_Functions.cpp"
 #include "C:\Users\ianli\Desktop\CP\template\Various\Debug\Debug.cpp"
-#include "C:\Users\ianli\Desktop\CP\Atcoder\AHC\Utilities\System.cpp"
-#include "C:\Users\ianli\Desktop\CP\Atcoder\AHC\Utilities\parsing.cpp"
+#include "C:\Users\ianli\Desktop\CP\template\Heuristic\Assert.cpp"
+#include "C:\Users\ianli\Desktop\CP\template\Heuristic\System.cpp"
+#include "C:\Users\ianli\Desktop\CP\template\Heuristic\Parsing.cpp"
 
 int scores[kN];
+constexpr int kLen = 3;
 
 int main() {
 	System("g++ -O2 sol.cpp -o sol.exe");
@@ -43,24 +45,24 @@ int main() {
 			first = false;
 		}
 		else printf("\b\b\b%3d", i);
-		System("sol < sample_in/" + my_to_string(4, i) + ".txt > sample_out/out" + my_to_string(4, i));
+		System("sol < in/in" + my_to_string(kLen, i) + " > out/out" + my_to_string(kLen, i));
 	}
 	printf("\n");
 
 	printf("calculating...\n");
 	System("g++ -O2 grader.cpp -o grade.exe");
-	for (int i : v) System("grade sample_in/" + my_to_string(4, i) + ".txt sample_out/out" + my_to_string(4, i) + " > score" + my_to_string(4, i));
+	for (int i : v) System("grade in/in" + my_to_string(kLen, i) + " out/out" + my_to_string(kLen, i) + " > score" + my_to_string(kLen, i));
 
 	System_wait();
 
 	for (int i : v) {
 		fstream score;
-		score.open("score" + my_to_string(4, i), ios::in);
+		score.open("score" + my_to_string(kLen, i), ios::in);
 		score >> scores[i];
 		score.close();
-		System("del score" + my_to_string(4, i));
+		System("del score" + my_to_string(kLen, i));
 	}
 
-	for (int i : v) cout << "case " << my_to_string(4, i) << " : score = " << scores[i] << "\n";
+	for (int i : v) cout << "case " << my_to_string(kLen, i) << " : score = " << scores[i] << "\n";
 }
 

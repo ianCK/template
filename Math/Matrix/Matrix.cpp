@@ -21,7 +21,7 @@ template <typename T> class Matrix {
 				_val[i][i] = v;
 			}
 		}
-		Matrix(const Matrix &rhs) : _size(rhs.size()), _val(rhs._val()) {}
+		Matrix(const Matrix &rhs) : _size(rhs.size()), _val(rhs._val) {}
 
 		void clear() {
 			for (int i = 0; i < _size; i++) delete [] _val[i];

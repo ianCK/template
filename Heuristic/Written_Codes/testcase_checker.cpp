@@ -25,6 +25,7 @@ constexpr int kN = int(1E5 + 10);
 #include "C:\Users\ianli\Desktop\CP\template\Various\Fast_IO\Fast_IO.cpp"
 #include "C:\Users\ianli\Desktop\CP\template\Various\Useful_Functions\Useful_Functions.cpp"
 #include "C:\Users\ianli\Desktop\CP\template\Various\Debug\Debug.cpp"
+#include "C:\Users\ianli\Desktop\CP\template\Heuristic\Assert.cpp"
 
 int x[kN], y[kN], r[kN];
 

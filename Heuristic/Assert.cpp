@@ -1,5 +1,5 @@
 void Assert(const char *c, bool b) {
-	if (!b) cout << c << "\n";
+	if (!b) cerr << c << "\n";
 	assert(b);
 	return ;
 }

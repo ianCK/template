@@ -25,9 +25,9 @@ constexpr int kN = int(1E5 + 10);
 #include "C:\Users\ianli\Desktop\CP\template\Various\Fast_IO\Fast_IO.cpp"
 #include "C:\Users\ianli\Desktop\CP\template\Various\Useful_Functions\Useful_Functions.cpp"
 #include "C:\Users\ianli\Desktop\CP\template\Various\Debug\Debug.cpp"
-#include "C:\Users\ianli\Desktop\CP\Atcoder\AHC\Utilities\random.cpp"
-#include "C:\Users\ianli\Desktop\CP\Atcoder\AHC\Utilities\System.cpp"
-#include "C:\Users\ianli\Desktop\CP\Atcoder\AHC\Utilities\parsing.cpp"
+#include "C:\Users\ianli\Desktop\CP\template\Heuristic\Assert.cpp"
+#include "C:\Users\ianli\Desktop\CP\template\Heuristic\System.cpp"
+#include "C:\Users\ianli\Desktop\CP\template\Heuristic\Parsing.cpp"
 
 constexpr int kLen = 3;
 
@@ -38,7 +38,7 @@ int main() {
 	int cases; RP(cases);
 
 	for (int i = 1; i <= cases; i++) 
-		System("echo " + to_string(rng_int<0, numeric_limits<int>::max()>()) + " | generate_testcase > input/in" + my_to_string(kLen, i));
+		System("generate_testcase > input/in" + my_to_string(kLen, i));
 
 	for (int i = 1; i <= cases; i++)
 		System("check_testcase < input/in" + my_to_string(kLen, i));

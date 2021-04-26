@@ -25,38 +25,11 @@ constexpr int kN = int(1E5 + 10);
 #include "C:\Users\ianli\Desktop\CP\template\Various\Fast_IO\Fast_IO.cpp"
 #include "C:\Users\ianli\Desktop\CP\template\Various\Useful_Functions\Useful_Functions.cpp"
 #include "C:\Users\ianli\Desktop\CP\template\Various\Debug\Debug.cpp"
-
-double rng_double() {
-	static random_device rd;
-	static mt19937 eng(rd());
-	static uniform_real_distribution<double> distr(0.0, 1.0);
-	return distr(eng);
-}
-
-template <int l, int r> int rng_int() {
-	static random_device rd;
-	static mt19937 eng(rd());
-	static uniform_int_distribution<int> distr(l, r);
-	return distr(eng);
-}
-
-template <int l, int r> void rng_array(int n, int *a) {
-	unordered_set<int> used;
-
-	int cnt = 0;
-	while (cnt < n) {
-		int tmp = rng_int<l, r>();
-		if (used.find(tmp) == used.end()) used.insert(a[++cnt] = tmp);
-	}
-
-	return ;
-}
+#include "C:\Users\ianli\Desktop\CP\template\Various\Random\Random.cpp"
 
 int x[kN], y[kN], r[kN], q[kN];
 
 int main() {
-	int seed; RP(seed);
-
 	int n = int(50 * pow(4, rng_double()));
 	for (int i = 1; i <= n; i++) x[i] = rng_int<0, 9999>();
 	for (int i = 1; i <= n; i++) y[i] = rng_int<0, 9999>();
