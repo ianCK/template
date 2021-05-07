@@ -1,5 +1,5 @@
 template <typename T1, typename T2> T1 Pow(T1 a, T2 b) {
-	T1 ans(1);
+	T1 ans({1});
 	while (b) {
 		if (b & 1) ans *= a;
 		a *= a;

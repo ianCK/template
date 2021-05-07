@@ -15,6 +15,9 @@ template <typename T> struct Dinic {
 		delete []  went; went  = new int[size];
 		delete []  iter; iter  = new int[size];
 		delete []   dep; dep   = new int[size];
+		memset(went, 0, sizeof(int) * size);
+		memset(iter, 0, sizeof(int) * size);
+		memset(dep, 0, sizeof(int) * size);
 		return ;
 	}
 
