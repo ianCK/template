@@ -1,59 +1,75 @@
-# Templates
-
-## Files
-
-### Utilities
-- generator.cpp
-- exporter.cpp
-
-### Global
-- Multi.cpp 
-- Single.cpp
-
-### Data Structures
-- Sliding\_Window.cpp
-- BIT.cpp
-- Segment Tree.cpp
-- Treap.cpp
+### DS
+O BIT
+O Sliding\_Window
+O Dividing\_Tree
+O Dynamic\_Convex\_Hull
+O Monotone\_Convex\_Hull
+O Linear\_Basis
+O DSU
+? Treap
+X Seg\_tree
+X PQ
 
 ### Flow
-- Dinic.cpp
-- Gomory hu.cpp
+O Dinic
+O MCMF
+? Gomory hu
 
 ### Geometry
-- Circle.cpp
-- Misc.cpp
-- Convex Hull.cpp
-- Point in Poly.cpp
+O Misc
+? Circle
+? Convex Hull
+? Point in Poly
+? Half\_Plane\_Intersection
+? Library
 
 ### Graph
-- Stoer Wanger.cpp
-- Clique.cpp
-- Tutte
-- C4.cpp
-- C3.cpp
-- Clique.cpp
-- Chromatic.cpp
+O Graph\_Note
+O Bipartite\_Matching
+O Chromatic
+O KM
+? 2SAT
+? C4.cpp
+? C3.cpp
+? Clique
+? Clique\_sq2m
+? SCC
+? SCC\_B
+? Stoer Wanger
+? Tutte
 
 ### Math
-- CRT.cpp
-- ExtGcd.cpp
-- FWT.cpp
-- Gauss.cpp
-- Mod\_Int.cpp
-- Mod\_Int\_Dynamic.cpp
-- Mod Mul.cpp
-- NTT.cpp
-- Kirchoff
-- Pick's theorem
+O CRT
+O Derangement
+O ExtGcd
+O FWT
+O Floor\_Sum
+O Gauss
+O Mod\_Int
+O NTT
+O Binomial\_notes
+O Kirchoff
+O Pick's theorem
+? Mod\_Int\_Dynamic
+? Mod\_Mul
+? Polynomial
 
 ### String
-- Hash.cpp
-- Rotation.cpp
-- SA.cpp
-- SAIS.cpp
+O RollingHash
+O Rotation
+O SAIS
+? Palindrome\_Tree
 
 ### Various
-- Fast\_IO.cpp
-- Fraction.cpp
-- PBDS.cpp
+O Debug
+O Fast\_IO
+O Fraction
+O Gray\_Code
+O Pragma
+O Random
+O Useful\_Functions
+O bitset\_notes
+O builtin
+O PBDS
+? bitset
+X Matrix
