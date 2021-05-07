@@ -45,6 +45,9 @@
 - O FWT
 - O Floor\_Sum
 - O Gauss
+- O Martingale
+- O Matrix
+- O Miller\_Rabin
 - O Mod\_Int
 - O NTT
 - O Binomial\_notes
