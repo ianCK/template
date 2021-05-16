@@ -8,14 +8,23 @@ template <typename T> inline void Merge(vector<T> &a, vector<T> &b, vector<T> &c
 	merge(a.begin(), a.end(), b.begin(), b.end(), c.begin());
 	return ;
 }
+template <typename T> inline void Concatanate(vector<T> &a, vector<T> &b, vector<T> &c) {
+	int a_size = int(a.size()), b_size = int(b.size());
+	c.resize(a_size + b_size);
+	for (int i = 0; i < a_size; i++) c[i] = a[i];
+	for (int i = 0; i < b_size; i++) c[i + a_size] = b[i];
+	return ;
+}
 
-template <typename T> inline void Discrete(vector<T> &v) {sort(v); v.resize(unique(v.begin(), v.end()) - v.begin());}
+template <typename T> inline void Discrete(vector<T> &v) {sort(v); v.resize(unique(v.begin(), v.end()) - v.begin()); return ;}
 
 template <typename T> using PQ = priority_queue<T>;
 template <typename T> using PQ_R = priority_queue<T, vector<T>, greater<T>>;
 
 template <typename T> inline T ABS(T n) {return n >= 0 ? n : -n;}
 template <typename T> __attribute__((target("bmi"))) inline T gcd(T a, T b) {
+	if (a < 0) a = -a;
+	if (b < 0) b = -b;
 	if (a == 0 || b == 0) return a + b;
 	int n = __builtin_ctzll(a);
 	int m = __builtin_ctzll(b);
@@ -38,17 +47,30 @@ template <typename T, typename... Targs> inline T max(T a, T b, T c, Targs... ar
 template <typename T, typename... Targs> inline void chmin(T &a, T b, Targs... args) {a = min(a, b, args...); return ;}
 template <typename T, typename... Targs> inline void chmax(T &a, T b, Targs... args) {a = max(a, b, args...); return ;}
 
-template <typename T> inline int Digit_Sum(T a) {
-	int ans = 0;
-	while (a) {
-		ans += a % 10;
-		a /= 10;
+vector<int> Primes(int n) {
+	// 2 ~ n
+	vector<int> primes;
+	vector<bool> isPrime(n + 1, true);
+
+	primes.reserve(n / __lg(n));
+
+	for (int i = 2; i <= n; i++) {
+		if (isPrime[i]) primes.push_back(i);
+		for (int j : primes) {
+			if (i * j > n) break;
+			isPrime[i * j] = false;
+			if (i % j == 0) break;
+		}
 	}
-	return ans;
+	return primes;
 }
-template <typename T> inline int Num_Length(T a) {
-	if (a == 0) return 1;
-	int ans = 0;
-	while (a /= 10) ans++;
-	return ans;
+
+int mex(vector<int> vec) {
+	int n = int(vec.size());
+	vector<bool> have(n, false);
+	for (int i : vec) if (i < n) have[i] = true;
+	for (int i = 0; i < n; i++) if (!have[i]) return i;
+	return n;
 }
+
+template <typename T> T Mdist(pair<T, T> lhs, pair<T, T> rhs) {return ABS(lhs.first - rhs.first) + ABS(lhs.second - rhs.second);}

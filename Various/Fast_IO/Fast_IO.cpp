@@ -10,7 +10,7 @@ static inline char Get_Raw_Char() {
 
 // --- Read ---
 template <typename T> static inline void Read_P(T &n) {
-	static_assert(is_integral<T>::value);
+	static_assert(is_integral<T>::value, "Read_P requires an integral type");
 	char c;
 	while (!isdigit(c = Get_Raw_Char())) ;
 	n = int(c - '0');
@@ -19,7 +19,7 @@ template <typename T> static inline void Read_P(T &n) {
 }
 
 template <typename T> static inline void Read(T &n) {
-	static_assert(is_integral<T>::value);
+	static_assert(is_integral<T>::value, "Read requires an integral type");
 	char c;
 	bool neg = false;
 	while (!isdigit(c = Get_Raw_Char())) if (c == '-') neg = true;
@@ -30,7 +30,7 @@ template <typename T> static inline void Read(T &n) {
 }
 
 template <typename T> static inline void Read_Digit(T &n) {
-	static_assert(is_integral<T>::value);
+	static_assert(is_integral<T>::value, "Read_Digit requires an integral type");
 	char c;
 	while (!isdigit(c = Get_Raw_Char())) ;
 	n = int(c - '0');
@@ -102,8 +102,8 @@ template <int mul, typename T, typename... Targs> static inline void Read(T &n, 
 template <int mul, typename T, typename... Targs> static inline void Read_P(T &n, Targs&... Fargs) {Read_P<mul>(n); return Read_P<mul>(Fargs...);}
 
 // --- init ---
-inline void IOS() {ios::sync_with_stdio(false); cin.tie(0);}
-inline void Freopen(const char *in, const char *out) {freopen(in, "r", stdin); freopen(out, "w", stdout);}
+inline void IOS() {ios::sync_with_stdio(false); cin.tie(0); return ;}
+inline void Freopen(const char *in, const char *out) {freopen(in, "r", stdin); freopen(out, "w", stdout); return ;}
 
 // --- Output ---
 template <typename T> void Print(T x) {

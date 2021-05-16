@@ -1,5 +1,5 @@
 template <typename T> struct BIT_min {
-	static constexpr T kInf = numeric_limits<T>::max() / 2;
+	static constexpr T kInf = numeric_limits<T>::max() / 2 - 10;
 	int _size; // n + 1
 	T* val;
 
@@ -27,5 +27,8 @@ template <typename T> struct BIT_min {
 		return ans;
 	}
 
-	void clear() {memset(val + 1, 0, sizeof(T) * (_size - 1));}
+	void clear() {
+		for (int i = 1; i < _size; i++) val[i] = kInf;
+		return ;
+	}
 };
