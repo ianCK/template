@@ -24,7 +24,10 @@ struct DCH {
 		auto it = lines_.lower_bound(now);
 		auto prv = (it == lines_.begin()) ? it : prev(it);
 		if (it != lines_.end()) {
-			if (it == lines_.begin() && it -> a == now.a) return ;
+			if (it == lines_.begin() && it -> a == now.a) {
+				if (it -> b >= now.b) return ;
+				else it = lines_.erase(it);
+			}
 			double x = it -> l;
 			if (it != lines_.begin() && now(x) <= (*it)(x)) return ;
 		}

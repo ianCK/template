@@ -51,7 +51,7 @@ static inline char Get_Raw_Char() {
 
 // --- Read ---
 template <typename T> static inline void Read_P(T &n) {
-	static_assert(is_integral<T>::value);
+	static_assert(is_integral<T>::value, "Read_P requires an integral type");
 	char c;
 	while (!isdigit(c = Get_Raw_Char())) ;
 	n = int(c - '0');
@@ -60,7 +60,7 @@ template <typename T> static inline void Read_P(T &n) {
 }
 
 template <typename T> static inline void Read(T &n) {
-	static_assert(is_integral<T>::value);
+	static_assert(is_integral<T>::value, "Read requires an integral type");
 	char c;
 	bool neg = false;
 	while (!isdigit(c = Get_Raw_Char())) if (c == '-') neg = true;
@@ -71,7 +71,7 @@ template <typename T> static inline void Read(T &n) {
 }
 
 template <typename T> static inline void Read_Digit(T &n) {
-	static_assert(is_integral<T>::value);
+	static_assert(is_integral<T>::value, "Read_Digit requires an integral type");
 	char c;
 	while (!isdigit(c = Get_Raw_Char())) ;
 	n = int(c - '0');
@@ -143,8 +143,8 @@ template <int mul, typename T, typename... Targs> static inline void Read(T &n, 
 template <int mul, typename T, typename... Targs> static inline void Read_P(T &n, Targs&... Fargs) {Read_P<mul>(n); return Read_P<mul>(Fargs...);}
 
 // --- init ---
-inline void IOS() {ios::sync_with_stdio(false); cin.tie(0);}
-inline void Freopen(const char *in, const char *out) {freopen(in, "r", stdin); freopen(out, "w", stdout);}
+inline void IOS() {ios::sync_with_stdio(false); cin.tie(0); return ;}
+inline void Freopen(const char *in, const char *out) {freopen(in, "r", stdin); freopen(out, "w", stdout); return ;}
 
 // --- Output ---
 template <typename T> void Print(T x) {
@@ -176,32 +176,75 @@ template <typename T> inline void Merge(vector<T> &a, vector<T> &b, vector<T> &c
 	merge(a.begin(), a.end(), b.begin(), b.end(), c.begin());
 	return ;
 }
+template <typename T> inline void Concatanate(vector<T> &a, vector<T> &b, vector<T> &c) {
+	int a_size = int(a.size()), b_size = int(b.size());
+	c.resize(a_size + b_size);
+	for (int i = 0; i < a_size; i++) c[i] = a[i];
+	for (int i = 0; i < b_size; i++) c[i + a_size] = b[i];
+	return ;
+}
 
-template <typename T> inline void Discrete(vector<T> &v) {sort(v); v.resize(unique(v.begin(), v.end()) - v.begin());}
+template <typename T> inline void Discrete(vector<T> &v) {sort(v); v.resize(unique(v.begin(), v.end()) - v.begin()); return ;}
 
 template <typename T> using PQ = priority_queue<T>;
 template <typename T> using PQ_R = priority_queue<T, vector<T>, greater<T>>;
 
 template <typename T> inline T ABS(T n) {return n >= 0 ? n : -n;}
-template <typename T> inline T gcd(T a, T b) {return b ? gcd(b, a % b) : a;}
+template <typename T> __attribute__((target("bmi"))) inline T gcd(T a, T b) {
+	if (a < 0) a = -a;
+	if (b < 0) b = -b;
+	if (a == 0 || b == 0) return a + b;
+	int n = __builtin_ctzll(a);
+	int m = __builtin_ctzll(b);
+	a >>= n;
+	b >>= m;
+	while (a != b) {
+		int m = __builtin_ctzll(a - b);
+		bool f = a > b;
+		T c = f ? a : b;
+		b = f ? b : a;
+		a = (c - b) >> m;
+	}
+	return a << min(n, m);
+}
 template <typename T> inline T lcm(T a, T b) {return a * b / gcd(a, b);}
+template <typename T, typename... Targs> inline T gcd(T a, T b, T c, Targs... args) {return gcd(a, gcd(b, c, args...));}
+template <typename T, typename... Targs> inline T lcm(T a, T b, T c, Targs... args) {return lcm(a, lcm(b, c, args...));}
 template <typename T, typename... Targs> inline T min(T a, T b, T c, Targs... args) {return min(a, min(b, c, args...));}
 template <typename T, typename... Targs> inline T max(T a, T b, T c, Targs... args) {return max(a, max(b, c, args...));}
 template <typename T, typename... Targs> inline void chmin(T &a, T b, Targs... args) {a = min(a, b, args...); return ;}
 template <typename T, typename... Targs> inline void chmax(T &a, T b, Targs... args) {a = max(a, b, args...); return ;}
 
-template <typename T> inline int Digit_Sum(T a) {
-	int ans = 0;
-	while (a) {
-		ans += a % 10;
-		a /= 10;
+vector<int> Primes(int n) {
+	// 2 ~ n
+	vector<int> primes;
+	vector<bool> isPrime(n + 1, true);
+
+	primes.reserve(n / __lg(n));
+
+	for (int i = 2; i <= n; i++) {
+		if (isPrime[i]) primes.push_back(i);
+		for (int j : primes) {
+			if (i * j > n) break;
+			isPrime[i * j] = false;
+			if (i % j == 0) break;
+		}
 	}
-	return ans;
+	return primes;
 }
-template <typename T> inline int Num_Length(T a) {
-	int ans = 1;
-	while (a /= 10) ans++;
-	return ans;
+
+int mex(vector<int> vec) {
+	int n = int(vec.size());
+	vector<bool> have(n, false);
+	for (int i : vec) if (i < n) have[i] = true;
+	for (int i = 0; i < n; i++) if (!have[i]) return i;
+	return n;
+}
+
+template <typename T> T Mdist(pair<T, T> lhs, pair<T, T> rhs) {return ABS(lhs.first - rhs.first) + ABS(lhs.second - rhs.second);}
+template <typename T> T Dist2(pair<T, T> lhs, pair<T, T> rhs) {
+	T x = lhs.F - rhs.F, y = lhs.S - rhs.S;
+	return x * x + y * y;
 }
 // End of C:\Users\ianli\Desktop\CP\template\Various\Useful_Functions\Useful_Functions.cpp
 
@@ -332,6 +375,8 @@ template <typename T> void _Debugln_Array(int n, const T *x) {printf("\n"); for 
 // 0-index
 // init before using
 struct Chromatic {
+	static constexpr int kMod = 1'000'000'007;
+
 	private:
 	int n;
 	int *neighbor;
@@ -362,34 +407,34 @@ struct Chromatic {
 		I[0] = 1;
 		for (int S = 1; S < tot; S++) I[S] = I[S & (S - 1)] + I[S & ~neighbor[__builtin_ctz(S)]];
 
-		unsigned int *val = new unsigned int[tot + 1];
-		memset(val, 0, sizeof(unsigned int) * (tot + 1));
+		int *val = new int[tot + 1];
+		memset(val, 0, sizeof(int) * (tot + 1));
 		for (int S = 0; S < tot; S++) 
 			if (__builtin_parity(S)) val[I[S]]++;
 			else val[I[S]]--;
 
-		//delete [] I;
+		delete [] I;
 
 		int cnt = 0;
 		for (int S = 1; S <= tot; S++) if (val[S]) cnt++;
 
-		pair<unsigned int, unsigned int> *M = new pair<unsigned int, unsigned int>[cnt];
-		for (unsigned int S = 1, idx = 0; S < tot; S++) if (val[S]) M[idx++] = make_pair(val[S], S);
+		pair<int, int> *M = new pair<int, int>[cnt];
+		for (int S = 1, idx = 0; S < tot; S++) if (val[S]) M[idx++] = make_pair(val[S], S);
 
-		//delete [] val;
+		delete [] val;
 
 		int ans = n;
 
 		for (int c = 1; c <= n; c++) {
-			unsigned int sum = 0;
-			for (int idx = 0; idx < cnt; idx++) sum += (M[idx].first = M[idx].first * M[idx].second);
-			if (sum) {
+			long long int sum = 0;
+			for (int idx = 0; idx < cnt; idx++) sum += (M[idx].first = 1LL * M[idx].first * M[idx].second % kMod);
+			if (sum % kMod != 0) {
 				ans = c;
 				break;
 			}
 		}
 
-		//delete [] M;
+		delete [] M;
 		return ans;
 	}
 

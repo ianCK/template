@@ -2,31 +2,21 @@
 // 0-index
 // init before using
 struct Chromatic {
-	static constexpr uint64_t kMod = (1LL << 61) - 1;
-
-	uint64_t Mul(uint64_t a, uint64_t b) {
-		uint64_t l1 = uint32_t(a), h1 = a >> 32, l2 = uint32_t(b), h2 = b >> 32;
-		uint64_t l = l1 * l2, m = l1 * h2 + l2 * h1, h = h1 * h2;
-		uint64_t ret = (l & kMod) + (l >> 61) + (h << 3) + (m >> 29) + (m << 35 >> 3) + 1;
-		ret = (ret & kMod) + (ret >> 61);
-		ret = (ret & kMod) + (ret >> 61);
-		return ret - 1;
-	}
+	static constexpr int kMod = 1'000'000'007;
 
 	private:
-	int _size;
+	int n;
 	int *neighbor;
 
 	public:
-	Chromatic() : _size(0), neighbor(nullptr) {}
-	int size() const {return _size;}
+	Chromatic() : n(0), neighbor(nullptr) {}
 
-	void init(int n) {
+	void init(int _n) {
 		delete [] neighbor;
 
-		_size = n;
-		neighbor = new int[_size];
-		for (int i = 0; i < _size; i++) neighbor[i] = 1 << i;
+		n = _n;
+		neighbor = new int[n];
+		for (int i = 0; i < n; i++) neighbor[i] = 1 << i;
 		return ;
 	}
 
@@ -37,7 +27,7 @@ struct Chromatic {
 	}
 
 	int solve() const {
-		int tot = 1 << _size;
+		int tot = 1 << n;
 		int *I = new int[tot];
 		// I[S] = the number of independent subsets in S
 		// I[S] = I[S / {v}] + I[S / N(v)]
@@ -63,8 +53,8 @@ struct Chromatic {
 		int ans = n;
 
 		for (int c = 1; c <= n; c++) {
-			uint64_t sum = 0;
-			for (int idx = 0; idx < cnt; idx++) sum += (M[idx].first = Mul(M[idx].first, M[idx].second));
+			long long int sum = 0;
+			for (int idx = 0; idx < cnt; idx++) sum += (M[idx].first = 1LL * M[idx].first * M[idx].second % kMod);
 			if (sum % kMod != 0) {
 				ans = c;
 				break;

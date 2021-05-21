@@ -48,6 +48,7 @@ template <typename T, typename... Targs> inline void chmin(T &a, T b, Targs... a
 template <typename T, typename... Targs> inline void chmax(T &a, T b, Targs... args) {a = max(a, b, args...); return ;}
 
 vector<int> Primes(int n) {
+	if (n == 1) return {};
 	// 2 ~ n
 	vector<int> primes;
 	vector<bool> isPrime(n + 1, true);
@@ -74,3 +75,7 @@ int mex(vector<int> vec) {
 }
 
 template <typename T> T Mdist(pair<T, T> lhs, pair<T, T> rhs) {return ABS(lhs.first - rhs.first) + ABS(lhs.second - rhs.second);}
+template <typename T> T Dist2(pair<T, T> lhs, pair<T, T> rhs) {
+	T x = lhs.F - rhs.F, y = lhs.S - rhs.S;
+	return x * x + y * y;
+}

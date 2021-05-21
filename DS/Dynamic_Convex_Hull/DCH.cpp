@@ -11,7 +11,7 @@ struct DCH {
 		long long int operator () (long long int x) const {return a * x + b;}
 	};
 
-	static inline long long int intersect(const Line &l, const Line &r) {return (long long int)floor(double(l.b - r.b) / (r.a - l.a));}
+	static inline long long int intersect(const Line &l, const Line &r) {return (l.b - r.b) / (r.a - l.a);}
 
 	set<Line> lines;
 	DCH() {}
@@ -21,7 +21,15 @@ struct DCH {
 		Line::flag = true;
 		set<Line>::iterator u = lines.lower_bound(l);
 
-		for (; u != lines.end(); u = lines.lower_bound(l)) {
+		if (u -> a == l.a) {
+			if (u -> b >= l.b) return ;
+			else {
+				lines.erase(u);
+				u = lines.lower_bound(l);
+			}
+		}
+
+		while (u != lines.end()) {
 			long long int x = intersect(l, *u);
 
 			if (x < u -> l) break;
@@ -29,15 +37,15 @@ struct DCH {
 				u -> l = x + 1;
 				break;
 			}
-			else lines.erase(u);
+			else u = lines.erase(u);
 		}
 
-		for (; u != lines.begin(); u = lines.lower_bound(l)) {
+		while (u != lines.begin()) {
 			u = prev(u);
 
 			long long int x = intersect(*u, l);
 
-			if (x < u -> l) lines.erase(u);
+			if (x < u -> l) u = lines.erase(u);
 			else {
 				l.l = x + 1;
 				u = next(u);
@@ -54,6 +62,11 @@ struct DCH {
 	long long int operator () (long long int x) {
 		Line::flag = false;
 		return (*prev(lines.upper_bound(Line(kInf, kInf, x))))(x);
+	}
+
+	void out() {
+		for (Line i : lines) printf("(%lld, %lld, %lld)\n", i.a, i.b, i.l);
+		return ;
 	}
 };
 bool DCH::Line::flag = false;

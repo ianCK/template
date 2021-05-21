@@ -1,7 +1,6 @@
 // Exported by Exporter.exe
 
-// Included from test3.cpp
-// yosupo Line Add Get Min
+// Included from test.cpp
 #include <bits/stdc++.h>
 using namespace std;
 #define PB push_back
@@ -31,7 +30,7 @@ using namespace std;
 typedef long long int ll;
 typedef unsigned long long int ull;
 
-constexpr int kN = int(2E5 + 10);
+constexpr int kN = int(5E5 + 10);
 // constexpr int kMod = 998244353;
 // constexpr int kMod = int(1E9 + 7);
 // constexpr int kInf = 0x3f3f3f3f;
@@ -218,7 +217,6 @@ template <typename T, typename... Targs> inline void chmin(T &a, T b, Targs... a
 template <typename T, typename... Targs> inline void chmax(T &a, T b, Targs... args) {a = max(a, b, args...); return ;}
 
 vector<int> Primes(int n) {
-	if (n == 1) return {};
 	// 2 ~ n
 	vector<int> primes;
 	vector<bool> isPrime(n + 1, true);
@@ -373,102 +371,141 @@ template <typename T> void _Debug_Array(int n, const T *x) {for (int i = 1; i <=
 template <typename T> void _Debugln_Array(int n, const T *x) {printf("\n"); for (int i = 1; i <= n; i++) _print(x[i]), printf("\n");}
 // End of C:\Users\ianli\Desktop\CP\template\Various\Debug\Debug.cpp
 
-// Included from C:\Users\ianli\Desktop\CP\template\DS\Dynamic_Convex_Hull\DCH.cpp
-struct DCH {
-	static constexpr long long int kInf = 0x3f3f3f3f3f3f3f3f;
-	struct Line {
-		static bool flag;
-		long long int a, b;
-		mutable long long int l;
-		Line() {}
-		Line(long long int _a, long long int _b, long long int _l = -kInf) : a(_a), b(_b), l(_l) {}
-		Line(const Line &rhs) : a(rhs.a), b(rhs.b), l(rhs.l) {}
-		bool operator < (const Line &rhs) const {return flag ? a < rhs.a : l < rhs.l;}
-		long long int operator () (long long int x) const {return a * x + b;}
-	};
+// Included from C:\Users\ianli\Desktop\CP\template\DS\Seg_tree\min.cpp
+// range add, min
+template <typename T> struct seg_tree_min {
+	static constexpr T kInf = numeric_limits<T>::max() / 2 - 10;
+	private :
+	int _size;
+	T *val, *flag;
 
-	static inline long long int intersect(const Line &l, const Line &r) {return (long long int)floor((long double)(l.b - r.b) / (long double)(r.a - l.a));}
-
-	set<Line> lines;
-	DCH() {}
-	void init() {return lines.clear();}
-
-	void insert(Line l) {
-		Line::flag = true;
-		set<Line>::iterator u = lines.lower_bound(l);
-
-		if (u -> a == l.a) {
-			if (u -> b >= l.b) return ;
-			else {
-				lines.erase(u);
-				u = lines.lower_bound(l);
-			}
+	void addtag(int n, T x) {
+		val[n] += x;
+		flag[n] += x;
+		return ;
+	}
+	void push(int n) {
+		if (flag[n]) {
+			addtag(n << 1, flag[n]);
+			addtag(n << 1 | 1, flag[n]);
+			flag[n] = 0;
 		}
-
-		while (u != lines.end()) {
-			long long int x = intersect(l, *u);
-
-			if (x < u -> l) break;
-			else if (next(u) == lines.end() || x + 1 < next(u) -> l) {
-				u -> l = x + 1;
-				break;
-			}
-			else u = lines.erase(u);
-		}
-
-		while (u != lines.begin()) {
-			u = prev(u);
-
-			long long int x = intersect(*u, l);
-
-			if (x < u -> l) u = lines.erase(u);
-			else {
-				l.l = x + 1;
-				u = next(u);
-				break;
-			}
-		}
-
-		if (u == lines.end() || l.l < u -> l) lines.insert(l);
+		return ;
+	}
+	void pull(int n) {
+		val[n] = min(val[n << 1], val[n << 1 | 1]);
 		return ;
 	}
 
-	void insert(long long int a, long long int b) {return insert(Line(a, b));}
-
-	long long int operator () (long long int x) {
-		Line::flag = false;
-		return (*prev(lines.upper_bound(Line(kInf, kInf, x))))(x);
-	}
-
-	void out() {
-		for (Line i : lines) printf("(%lld, %lld, %lld)\n", i.a, i.b, i.l);
+	void init(int n, int l, int r) {
+		val[n] = kInf;
+		flag[n] = 0;
+		if (l < r) {
+			int mid = (l + r) >> 1;
+			init(n << 1, l, mid);
+			init(n << 1 | 1, mid + 1, r);
+		}
 		return ;
 	}
+
+	void init(int n, int l, int r, T *v) {
+		flag[n] = 0;
+		if (l == r) val[n] = v[l];
+		else {
+			int mid = (l + r) >> 1;
+			init(n << 1, l, mid, v);
+			init(n << 1 | 1, mid + 1, r, v);
+			pull(n);
+		}
+		return ;
+	}
+
+	void set(int n, int l, int r, int pos, T x) {
+		if (l == r) val[n] = x;
+		else {
+			int mid = (l + r) >> 1;
+			push(n);
+			if (pos <= mid) set(n << 1, l, mid, pos, x);
+			else set(n << 1 | 1, mid + 1, r, pos, x);
+			pull(n);
+		}
+		return ;
+	}
+	void add(int n, int l, int r, int L, int R, T x) {
+		if (L <= l && r <= R) addtag(n, x);
+		else if (!(L > r || l > R)) {
+			int mid = (l + r) >> 1;
+			push(n);
+			add(n << 1, l, mid, L, R, x);
+			add(n << 1 | 1, mid + 1, r, L, R, x);
+			pull(n);
+		}
+		return ;
+	}
+
+	void fix(int n, int l, int r, int pos, T x) {
+		chmin(val[n], x);
+		if (l < r) {
+			int mid = (l + r) >> 1;
+			push(n);
+			if (pos <= mid) fix(n << 1, l, mid, pos, x);
+			else fix(n << 1 | 1, mid + 1, r, pos, x);
+		}
+		return ;
+	}
+
+	T ask(int n, int l, int r, int pos) {
+		if (l == r) return val[n];
+		else {
+			int mid = (l + r) >> 1;
+			push(n);
+			if (pos <= mid) return ask(n << 1, l, mid, pos);
+			else return ask(n << 1 | 1, mid + 1, r, pos);
+		}
+	}
+	T ask(int n, int l, int r, int L, int R) {
+		if (L <= l && r <= R) return val[n];
+		else if (l > R || L > r) return kInf;
+		else {
+			int mid = (l + r) >> 1;
+			push(n);
+			return min(ask(n << 1, l, mid, L, R), ask(n << 1 | 1, mid + 1, r, L, R));
+		}
+	}
+
+	public:
+	seg_tree_min() : _size(0), val(nullptr), flag(nullptr) {}
+	void init(int n) {
+		delete [] val; val = new T [n << 2];
+		delete [] flag; flag = new T [n << 2];
+		return init(1, 1, _size = n);
+	}
+	void init(int n, T *v) {
+		delete [] val; val = new T [n << 2];
+		delete [] flag; flag = new T [n << 2];
+		return init(1, 1, _size = n, v);
+	}
+	void set(int pos, T x) {return set(1, 1, _size, pos, x);}
+	void add(int L, int R, T x) {return add(1, 1, _size, L, R, x);}
+	void fix(int pos, T x) {return fix(1, 1, _size, pos, x);}
+	T ask(int pos) {return ask(1, 1, _size, pos);}
+	T ask(int L, int R) {return ask(1, 1, _size, L, R);}
+	T top() const {return val[1];}
 };
-bool DCH::Line::flag = false;
-// End of C:\Users\ianli\Desktop\CP\template\DS\Dynamic_Convex_Hull\DCH.cpp
+// End of C:\Users\ianli\Desktop\CP\template\DS\Seg_tree\min.cpp
 
-DCH dch;
-ll t[kN], a[kN], b[kN], qa[kN], qb[kN], p[kN];
-ll ans[kN];
+seg_tree_min<int> sg;
+int a[kN], l[kN], r[kN];
+int ans[kN];
 
 int main() {
 	int n, q; RP(n, q);
-	RL(n, a, b);
-	for (int i = 1; i <= q; i++) {
-		RD(t[i]);
-		if (!t[i]) R(qa[i], qb[i]);
-		else R(p[i]);
-	}
+	RLP(n, a);
+	RLP(q, l, r);
 
-	dch.init();
-	for (int i = 1; i <= n; i++) dch.insert(-a[i], -b[i]);
+	sg.init(n, a);
+	for (int i = 1; i <= q; i++) ans[i] = sg.ask(l[i] + 1, r[i]);
 
-	for (int i = 1; i <= q; i++) {
-		if (!t[i]) dch.insert(-qa[i], -qb[i]);
-		else ans[i] = -dch(p[i]);
-	}
-
-	for (int i = 1; i <= q; i++) if (t[i]) printf("%lld\n", ans[i]);
+	for (int i = 1; i <= q; i++) printf("%d\n", ans[i]);
 }
-// End of test3.cpp
+// End of test.cpp
