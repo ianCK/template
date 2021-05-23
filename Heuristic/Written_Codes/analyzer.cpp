@@ -43,7 +43,7 @@ int main() {
 
 	double sum = 0, sqsum = 0;
 	for (int i = 1; i <= kTestcases; i++) sum += score[i];
-	for (int i = 1; i <= n; i++) sqsum += score[i] * score[i];
+	for (int i = 1; i <= kTestcases; i++) sqsum += score[i] * score[i];
 	
 	double avg = sum / kTestcases;
 	double sd = sqrt(sqsum / kTestcases - avg * avg);
@@ -54,8 +54,8 @@ int main() {
 	printf("95%% : %.0lf ~ %.0lf\n", avg - se * 2, avg + se * 2);
 	printf("99%% : %.0lf ~ %.0lf\n", avg - se * 3, avg + se * 3);
 
-	printf("95%% points : %.0lf ~ %.0lf\n", (avg - se * 2) * n, (avg + se * 2) * n);
-	printf("99%% points : %.0lf ~ %.0lf\n", (avg - se * 3) * n, (avg + se * 3) * n);
+	printf("95%% points : %.0lf ~ %.0lf\n", (avg - se * 2) * kTestcases, (avg + se * 2) * kTestcases);
+	printf("99%% points : %.0lf ~ %.0lf\n", (avg - se * 3) * kTestcases, (avg + se * 3) * kTestcases);
 
 	for (int i = 1; i <= kTestcases; i++) p[i] = MP(score[i], i);
 	sort(p + 1, p + kTestcases + 1);

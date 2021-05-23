@@ -74,8 +74,11 @@ int mex(vector<int> vec) {
 	return n;
 }
 
+template <typename T> T SQ(T x) {return x * x;}
+
 template <typename T> T Mdist(pair<T, T> lhs, pair<T, T> rhs) {return ABS(lhs.first - rhs.first) + ABS(lhs.second - rhs.second);}
 template <typename T> T Dist2(pair<T, T> lhs, pair<T, T> rhs) {
-	T x = lhs.F - rhs.F, y = lhs.S - rhs.S;
-	return x * x + y * y;
+	return SQ(lhs.F - rhs.F) + SQ(lhs.S - rhs.S);
 }
+
+template <typename T> T LUBound(T LB, T val, T UB) {return min(max(LB, val), UB);}
