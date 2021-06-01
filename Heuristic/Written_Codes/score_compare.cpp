@@ -25,39 +25,38 @@ constexpr int kN = int(1E5 + 10);
 #include "C:\Users\ianli\Desktop\CP\template\Various\Fast_IO\Fast_IO.cpp"
 #include "C:\Users\ianli\Desktop\CP\template\Various\Useful_Functions\Useful_Functions.cpp"
 #include "C:\Users\ianli\Desktop\CP\template\Various\Debug\Debug.cpp"
+#include "C:\Users\ianli\Desktop\CP\template\Heuristic\Assert.cpp"
 
-constexpr int n = 50;
+constexpr int n = 100;
 
-int gen[kN], single[kN], beam[kN];
+ll A[kN], B[kN];
 
-int main() {
-	fstream input;
-	input.open("score_gen", ios::in);
-	for (int i = 0; i < 50; i++) input >> gen[i];
-	input.close();
-	input.open("score_single", ios::in);
-	for (int i = 0; i < 50; i++) input >> single[i];
-	input.close();
-	input.open("score_beam", ios::in);
-	for (int i = 0; i < 50; i++) input >> beam[i];
-	input.close();
+int main(const int argc, const char *argv[]) {
+	Assert(argc == 3, "Usage : Compare [input] [output]");
 
-	vector<pair<int, int>> vs, vb;
+	fstream inputA, inputB;
+	inputA.open(argv[1], ios::in);
+	inputB.open(argv[2], ios::in);
 
-	for (int i = 0; i < 50; i++) 
-		if (single[i] > beam[i]) vs.PB(MP(gen[i], single[i] - beam[i]));
-		else vb.PB(MP(gen[i], beam[i] - single[i]));
+	for (int i = 0; i < n; i++) inputA >> A[i];
+	for (int i = 0; i < n; i++) inputB >> B[i];
 
-	sort(vs);
-	printf("single count = %d\n", int(vs.size()));
-	printf("single min = %d, single max = %d\n", vs.front().F, vs.back().F);
+	inputA.close();
+	inputB.close();
+
+	vector<pair<ll, int>> va, vb;
+
+	for (int i = 0; i < n; i++) 
+		if (A[i] > B[i]) va.PB(MP(A[i] - B[i], i + 1));
+		else if (A[i] < B[i]) vb.PB(MP(B[i] - A[i], i + 1));
+
+	sort(va);
+	printf("A count = %d\n", int(va.size()));
+	printf("A min = (%d, %lld), A max = (%d, %lld)\n", va.front().S, va.front().F, va.back().S, va.back().F);
+
 	sort(vb);
-	printf("beam count = %d\n", int(vb.size()));
-	printf("beam min = %d, beam max = %d\n", vb.front().F, vb.back().F);
-
-	printf("vs :\n");
-	for (pair<int, int> i : vs) printf("%d %d\n", i.F, i.S);
-
-	printf("vb :\n");
-	for (pair<int, int> i : vb) printf("%d %d\n", i.F, i.S);
+	printf("B count = %d\n", int(vb.size()));
+	printf("B min = (%d, %lld), B max = (%d, %lld)\n", vb.front().S, vb.front().F, vb.back().S, vb.back().F);
 }
+
+

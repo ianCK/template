@@ -54,6 +54,12 @@ template <typename T> class Matrix {
 			return ;
 		}
 
+		Matrix transpose() const {
+			Matrix ans(_m, _n);
+			for (int i = 0; i < _n; i++) for (int j = 0; j < _m; j++) ans[j][i] = _val[i][j];
+			return ans;
+		}
+
 		T* operator [](int x) {return _val[x];}
 		const T* operator [](int x) const {return _val[x];}
 
@@ -168,8 +174,80 @@ template <typename T> class Matrix {
 			return (ans + 0 - 0);
 		}
 
+		bool invertible() const {
+			if (_n != _m) return false;
+			Matrix tmp, I(_n, _m);
+			tmp.copy(*this);
+			for (int i = 0; i < _n; i++) I[i][i] = 1;
+
+			for (int i = 0; i < _n; i++) {
+				if (Matrix_Inner::IsZero(tmp[i][i])) {
+					int id = -1;
+					for (int j = i + 1; j < _n; j++) if (!Matrix_Inner::IsZero(tmp[j][i])) {
+						id = j;
+						break;
+					}
+					if (id == -1) return false;
+					for (int j = 0; j < _n; j++) {
+						swap(tmp[i][j], tmp[id][j]);
+						swap(I[i][j], I[id][j]);
+					}
+				}
+
+				for (int j = 0; j < _n; j++) if (j != i && !Matrix_Inner::IsZero(tmp[j][i])) {
+					T freq(tmp[j][i] / tmp[i][i]);
+					for (int k = 0; k < _n; k++) {
+						tmp[j][k] -= freq * tmp[i][k];
+						I[j][k] -= freq * I[i][k];
+					}
+				}
+			}
+
+			for (int i = 0; i < _n; i++) if (Matrix_Inner::IsZero(tmp[i][i])) return false;
+			tmp.clear(), I.clear();
+			return true;
+		}
+
+		Matrix inv() const {
+			assert(_n == _m);
+			Matrix tmp, I(_n, _m);
+			tmp.copy(*this);
+			for (int i = 0; i < _n; i++) I[i][i] = 1;
+
+			for (int i = 0; i < _n; i++) {
+				if (Matrix_Inner::IsZero(tmp[i][i])) {
+					int id = -1;
+					for (int j = i + 1; j < _n; j++) if (!Matrix_Inner::IsZero(tmp[j][i])) {
+						id = j;
+						break;
+					}
+					assert(id != -1);
+					for (int j = 0; j < _n; j++) {
+						swap(tmp[i][j], tmp[id][j]);
+						swap(I[i][j], I[id][j]);
+					}
+				}
+
+				for (int j = 0; j < _n; j++) if (j != i && !Matrix_Inner::IsZero(tmp[j][i])) {
+					T freq(tmp[j][i] / tmp[i][i]);
+					for (int k = 0; k < _n; k++) {
+						tmp[j][k] -= freq * tmp[i][k];
+						I[j][k] -= freq * I[i][k];
+					}
+				}
+			}
+
+			for (int i = 0; i < _n; i++) {
+				for (int j = 0; j < _n; j++) I[i][j] /= tmp[i][i];
+			}
+
+			tmp.clear();
+
+			return I;
+		}
+
 		void out() const {
-			for (int i = 0; i < _n; i++, printf("\n")) for (int j = 0; j < _m; j++) printf("%5d", _val[i][j]);
+			for (int i = 0; i < _n; i++, printf("\n")) for (int j = 0; j < _m; j++) printf("%10lf", _val[i][j]);
 			return ;
 		}
 };

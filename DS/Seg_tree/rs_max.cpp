@@ -4,17 +4,19 @@ template <typename T> struct seg_tree_max {
 	private :
 	int _size;
 	T *val, *flag;
+	vector<bool> has_flag;
 
 	void addtag(int n, T x) {
-		val[n] += x;
-		flag[n] += x;
+		val[n] = x;
+		flag[n] = x;
+		has_flag[n] = true;
 		return ;
 	}
 	void push(int n) {
-		if (flag[n]) {
+		if (has_flag[n]) {
 			addtag(n << 1, flag[n]);
 			addtag(n << 1 | 1, flag[n]);
-			flag[n] = 0;
+			has_flag[n] = false;
 		}
 		return ;
 	}
@@ -25,7 +27,7 @@ template <typename T> struct seg_tree_max {
 
 	void init(int n, int l, int r) {
 		val[n] = -kInf;
-		flag[n] = 0;
+		has_flag[n] = false;
 		if (l < r) {
 			int mid = (l + r) >> 1;
 			init(n << 1, l, mid);
@@ -35,7 +37,7 @@ template <typename T> struct seg_tree_max {
 	}
 
 	void init(int n, int l, int r, T *v) {
-		flag[n] = 0;
+		has_flag[n] = false;
 		if (l == r) val[n] = v[l];
 		else {
 			int mid = (l + r) >> 1;
@@ -57,13 +59,14 @@ template <typename T> struct seg_tree_max {
 		}
 		return ;
 	}
-	void add(int n, int l, int r, int L, int R, T x) {
+
+	void set(int n, int l, int r, int L, int R, T x) {
 		if (L <= l && r <= R) addtag(n, x);
-		else if (!(L > r || l > R)) {
+		else if (!(l > R || L > r)) {
 			int mid = (l + r) >> 1;
 			push(n);
-			add(n << 1, l, mid, L, R, x);
-			add(n << 1 | 1, mid + 1, r, L, R, x);
+			set(n << 1, l, mid, L, R, x);
+			set(n << 1 | 1, mid + 1, r, L, R, x);
 			pull(n);
 		}
 		return ;
@@ -93,15 +96,17 @@ template <typename T> struct seg_tree_max {
 	void init(int n) {
 		delete [] val; val = new T [n << 2];
 		delete [] flag; flag = new T [n << 2];
+		has_flag.resize(n << 2);
 		return init(1, 1, _size = n);
 	}
 	void init(int n, T *v) {
 		delete [] val; val = new T [n << 2];
 		delete [] flag; flag = new T [n << 2];
+		has_flag.resize(n << 2);
 		return init(1, 1, _size = n, v);
 	}
 	void set(int pos, T x) {return set(1, 1, _size, pos, x);}
-	void add(int L, int R, T x) {return add(1, 1, _size, L, R, x);}
+	void set(int l, int r, T x) {return set(1, 1, _size, l, r, x);}
 	T ask(int pos) {return ask(1, 1, _size, pos);}
 	T ask(int L, int R) {return ask(1, 1, _size, L, R);}
 	T top() const {return val[1];}
