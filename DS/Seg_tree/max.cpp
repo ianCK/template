@@ -111,8 +111,10 @@ template <typename T> struct seg_tree_max {
 		return init(1, 1, _size = n, v);
 	}
 	void set(int pos, T x) {return set(1, 1, _size, pos, x);}
+	// void add(int pos, T x)
 	void add(int L, int R, T x) {return add(1, 1, _size, L, R, x);}
 	void fix(int pos, T x) {return fix(1, 1, _size, pos, x);}
+	// fix = take max
 	T ask(int pos) {return ask(1, 1, _size, pos);}
 	T ask(int L, int R) {return ask(1, 1, _size, L, R);}
 	T top() const {return val[1];}

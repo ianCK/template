@@ -27,7 +27,7 @@ using namespace std;
 typedef long long int ll;
 typedef unsigned long long int ull;
 
-constexpr int kN = int(5E5 + 10);
+constexpr int kN = int(1E5 + 10);
 // constexpr int kMod = 998244353;
 // constexpr int kMod = int(1E9 + 7);
 // constexpr int kInf = 0x3f3f3f3f;
@@ -38,19 +38,10 @@ constexpr int kN = int(5E5 + 10);
 #include "C:\Users\ianli\Desktop\CP\template\Various\Fast_IO\Fast_IO.cpp"
 #include "C:\Users\ianli\Desktop\CP\template\Various\Useful_Functions\Useful_Functions.cpp"
 #include "C:\Users\ianli\Desktop\CP\template\Various\Debug\Debug.cpp"
-#include "C:\Users\ianli\Desktop\CP\template\DS\Seg_tree\min.cpp"
+#include "C:\Users\ianli\Desktop\CP\template\DS\Seg_tree\rsa_id_max.cpp"
 
-seg_tree_min<int> sg;
-int a[kN], l[kN], r[kN];
-int ans[kN];
+seg_tree_rsa_id_max<int> sg;
 
 int main() {
-	int n, q; RP(n, q);
-	RLP(n, a);
-	RLP(q, l, r);
 
-	sg.init(n, a);
-	for (int i = 1; i <= q; i++) ans[i] = sg.ask(l[i] + 1, r[i]);
-
-	for (int i = 1; i <= q; i++) printf("%d\n", ans[i]);
 }

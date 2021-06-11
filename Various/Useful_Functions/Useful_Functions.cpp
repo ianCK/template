@@ -66,6 +66,17 @@ vector<int> Primes(int n) {
 	return primes;
 }
 
+vector<int> factors(int x) {
+	vector<int> ans;
+	for (int i = 1; i * i <= x; i++) if (x % i == 0) ans.PB(i);
+
+	int id = int(ans.size()) - 1;
+	if (ans[id] * ans[id] == x) id--;
+	for (int i = id; i >= 0; i--) ans.PB(x / ans[i]);
+
+	return ans;
+}
+
 int mex(vector<int> vec) {
 	int n = int(vec.size());
 	vector<bool> have(n, false);
@@ -82,3 +93,23 @@ template <typename T> T Dist2(pair<T, T> lhs, pair<T, T> rhs) {
 }
 
 template <typename T> T LUBound(T LB, T val, T UB) {return min(max(LB, val), UB);}
+
+template <typename T, typename Comp> T Binary_Search(T L, T R, Comp f) {
+	// L good R bad
+	static_assert(is_integral<T>::value, "Binary_Search requires an integral type");
+	while (R - L > 1) {
+		T mid = (L + R) >> 1;
+		if (f(mid)) L = mid;
+		else R = mid;
+	}
+	return L;
+}
+
+template <typename Comp> double Binary_Search(double L, double R, Comp f, int n = 30) {
+	for (int i = 1; i <= n; i++) {
+		double mid = (L + R) / 2;
+		if (f(mid)) L = mid;
+		else R = mid;
+	}
+	return L;
+}

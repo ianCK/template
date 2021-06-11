@@ -18,7 +18,7 @@ using namespace std;
 #else
 	#define Debug(...) {printf("(%s) = ", (#__VA_ARGS__)), _print(__VA_ARGS__), printf("\n");}
 	#define Debug_Array(n,x) {for (int i = 1; i <= n; i++) {printf("%s", (#x)); printf("[%d] = ", i); _print(x[i]); printf("\n");}}
-	#define NL {printf("\n");}
+	#define NL printf("\n")
 #endif
 typedef long long int ll;
 typedef unsigned long long int ull;
@@ -35,6 +35,13 @@ constexpr int kN = int(1E5 + 10);
 #include "C:\Users\ianli\Desktop\CP\template\Various\Useful_Functions\Useful_Functions.cpp"
 #include "C:\Users\ianli\Desktop\CP\template\Various\Debug\Debug.cpp"
 
-int main() {
+int abc[] = {0, 1, 2, 3, 3, 4, 2, 1};
 
+int main() {
+	int a = 3;
+	bool b = false;
+	char c = 'A';
+	Debug(a, b, c);
+
+	Debug_Array(7, abc);
 }
