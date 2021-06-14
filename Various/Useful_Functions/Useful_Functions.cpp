@@ -1,5 +1,7 @@
 template <typename T> inline void sort(vector<T> &v) {return sort(v.begin(), v.end());}
 template <typename T> inline void sort_r(vector<T> &v) {return sort(v.begin(), v.end(), greater<T>());}
+inline void sort(string &s) {return sort(s.begin(), s.end());}
+inline void sort_r(string &s) {return sort(s.begin(), s.end(), greater<char>());}
 
 template <typename T> inline void reverse(vector<T> &v) {return reverse(v.begin(), v.end());}
 
@@ -39,7 +41,7 @@ template <typename T> __attribute__((target("bmi"))) inline T gcd(T a, T b) {
 	}
 	return a << min(n, m);
 }
-template <typename T> inline T lcm(T a, T b) {return a * b / gcd(a, b);}
+template <typename T> inline T lcm(T a, T b) {return a * (b / gcd(a, b));}
 template <typename T, typename... Targs> inline T gcd(T a, T b, T c, Targs... args) {return gcd(a, gcd(b, c, args...));}
 template <typename T, typename... Targs> inline T lcm(T a, T b, T c, Targs... args) {return lcm(a, lcm(b, c, args...));}
 template <typename T, typename... Targs> inline T min(T a, T b, T c, Targs... args) {return min(a, min(b, c, args...));}
@@ -112,4 +114,134 @@ template <typename Comp> double Binary_Search(double L, double R, Comp f, int n 
 		else R = mid;
 	}
 	return L;
+}
+
+template <typename T> T nearest(set<T> &se, T val) {
+	static constexpr T kInf = numeric_limits<T>::max() / 2 - 10;
+
+	if (se.empty()) return kInf;
+	else if (val <= *se.begin()) return *se.begin() - val;
+	else if (val >= *prev(se.end())) return val - *prev(se.end());
+	else {
+		auto u = se.lower_bound(val);
+		auto v = prev(u);
+		return min(*u - val, val - *v);
+	}
+}
+
+namespace MR32 {
+	using ull = unsigned long long int;
+	using uint = unsigned int;
+	ull PowMod(ull a, ull b, ull kMod) {
+		ull ans = 1;
+		for (; b; b >>= 1, a = a * a % kMod) if (b & 1) ans = ans * a % kMod;
+		return ans;
+	}
+
+	bool IsPrime(uint x) {
+		static constexpr bool low[8] = {false, false, true, true, false, true, false, true};
+		static constexpr uint as = 3, a[3] = {2, 7, 61};
+		if (x < 8) return low[x];
+
+		uint t = x - 1;
+		int r = 0;
+		while ((t & 1) == 0) {
+			t >>= 1;
+			r++;
+		}
+		for (uint i = 0; i < as; i++) if (a[i] <= x - 2) {
+			bool ok = false;
+			ull tt = PowMod(a[i], t, x);
+			if (tt == 1) continue;
+			for (int j = 0; j < r; j++, tt = tt * tt % x) if (tt == x - 1) {
+				ok = true;
+				break;
+			}
+			if (!ok) return false;
+		}
+		return true;
+	}
+}
+
+namespace MR64 {
+	using uint128 = unsigned __int128;
+	using ull = unsigned long long int;
+	using uint = unsigned int;
+	uint128 PowMod(uint128 a, uint128 b, uint128 kMod) {
+		uint128 ans = 1;
+		for (; b; b >>= 1, a = a * a % kMod) if (b & 1) ans = ans * a % kMod;
+		return ans;
+	}
+
+	bool IsPrime(ull x) {
+		static constexpr bool low[8] = {false, false, true, true, false, true, false, true};
+		static constexpr uint as = 7, a[7] = {2, 325, 9375, 28178, 450775, 9780504, 1795265022};
+		if (x < 8) return low[x];
+		ull t = x - 1;
+		int r = 0;
+		while ((t & 1) == 0) {
+			t >>= 1;
+			r++;
+		}
+		for (uint i = 0; i < as; i++) if (a[i] <= x - 2) {
+			bool ok = false;
+			uint128 tt = PowMod(a[i], t, x);
+			if (tt == 1) continue;
+			for (int j = 0; j < r; j++, tt = tt * tt % x) if (tt == x - 1) {
+				ok = true;
+				break;
+			}
+			if (!ok) return false;
+		}
+		return true;
+	}
+}
+
+bool IsPrime(unsigned long long int x) {
+	if ((x >> 32) == 0) return MR32::IsPrime(x);
+	else return MR64::IsPrime(x);
+}
+
+uint64_t PollardRho(uint64_t x) {
+	static mt19937 rng;
+	if (!(x & 1)) return 2;
+	if (IsPrime(x)) return x;
+  int64_t a = rng() % (x - 2) + 2, b = a;
+  uint64_t c = rng() % (x - 1) + 1, d = 1;
+  while (d == 1) {
+    a = (__int128(a) * a + c) % x;
+    b = (__int128(b) * b + c) % x;
+    b = (__int128(b) * b + c) % x;
+    d = __gcd(uint64_t(abs(a - b)), x);
+    if (d == x) return PollardRho(x);
+  }
+  return d;
+}
+
+template <typename T> vector<T> factorize(T x) {
+	if (x <= 1) return {};
+	T p = PollardRho(x);
+	if (p == x) return {x};
+	vector<T> ans, lhs = factorize(p), rhs = factorize(x / p);
+	Merge(lhs, rhs, ans);
+	return ans;
+}
+
+template <typename T> vector<pair<T, int>> Compress(vector<T> vec) {
+	// vec must me sorted
+	if (vec.empty()) return {};
+
+	vector<pair<T, int>> ans;
+	int cnt = 1, sz = int(vec.size());
+	T lst = vec[0];
+	for (int i = 1; i < sz; i++) {
+		if (lst != vec[i]) {
+			ans.push_back(make_pair(lst, cnt));
+			lst = vec[i];
+			cnt = 1;
+		}
+		else cnt++;
+	}
+	ans.push_back(make_pair(lst, cnt));
+	return ans;
 }

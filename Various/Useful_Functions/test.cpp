@@ -12,17 +12,15 @@ using namespace std;
 #define RLD Read_Loop_Digit
 #define RLP Read_Loop_P
 #ifdef ONLINE_JUDGE
-	#define Debug(x) ;
-	#define Debugln(x) ;
+	#define Debug(...) ;
 	#define Debug_Array(n,x) ;
 	#define Debugln_Array(n,x) ;
 	#define NL ;
 #else
-	#define Debug(x) printf("%s :", (#x)), _Debug(x)
-	#define Debugln(x) printf("%s :", (#x)), _Debugln(x)
-	#define Debug_Array(n,x) printf("%s :", (#x)), _Debug_Array((n), (x))
-	#define Debugln_Array(n,x) printf("%s :", (#x)), _Debugln_Array((n), (x))
-	#define NL printf("\n")
+	#define Debug(...) {printf("(%s) = ",(#__VA_ARGS__)),_print(__VA_ARGS__),printf("\n");}
+	#define Debug_Array(n,x) {printf("%s :",(#x));for(int i=1;i<=n;i++)printf(" "),_print(x[i]);printf("\n");}
+	#define Debugln_Array(n,x) {for(int i=1;i<=n;i++){printf("%s",(#x));printf("[%d] = ", i);_print(x[i]);printf("\n");}}
+	#define NL {printf("\n");}
 #endif
 typedef long long int ll;
 typedef unsigned long long int ull;
@@ -40,13 +38,5 @@ constexpr int kN = int(1E5 + 10);
 #include "C:\Users\ianli\Desktop\CP\template\Various\Debug\Debug.cpp"
 
 int main() {
-	int n, a, b; RP(n, a, b);
 
-	vector<int> primes = Primes(n);
-	int pi = int(primes.size());
-
-	vector<int> ans; for (int i = b; i < pi; i += a) ans.PB(primes[i]);
-	printf("%d %d\n", pi, int(ans.size()));
-	if (!ans.empty()) printf("%d", ans[0]);
-	for (int i = 1; i < int(ans.size()); i++) printf(" %d", ans[i]);
 }

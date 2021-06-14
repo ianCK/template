@@ -1,3 +1,4 @@
+template <typename T> void _print(vector<T> v) ;
 void _print(bool x) {printf("%d", x ? 1 : 0);}
 void _print(char x) {printf("%c", x);}
 void _print(short x) {printf("%hd", x);}
@@ -13,37 +14,67 @@ template <typename T1, typename T2> void _print(pair<T1, T2> x) {printf("("); _p
 template <typename T1, typename T2, typename T3> void _print(tuple<T1, T2, T3> x) {printf("("); _print(get<0>(x)); printf(", "); _print(get<1>(x)); printf(", "); _print(get<2>(x)); printf(")");}
 template <typename T> void _print(vector<T> v) {
 	if (v.empty()) printf(" empty");
-	else for (T i : v) printf(" "), _print(i);
+	else {
+		bool first = true;
+		for (T i : v) {
+			if (first) first = false;
+			else printf(", ");
+			_print(i);
+		}
+	}
 }
 template <typename T> void _print(set<T> s) {
 	if (s.empty()) printf(" empty");
-	else for (T i : s) printf(" "), _print(i);
+	else {
+		bool first = true;
+		for (T i : s) {
+			if (first) first = false;
+			else printf(", ");
+			_print(i);
+		}
+	}
 }
 template <typename T> void _print(stack<T> s) {
 	if (s.empty()) printf(" empty");
-	else while (!s.empty()) {printf(" "); _print(s.top()); s.pop();}
+	else {
+		_print(s.top()); s.pop();
+		while (!s.empty()) {printf(", "); _print(s.top()); s.pop();}
+	}
 }
 template <typename T> void _print(queue<T> q) {
 	if (q.empty()) printf(" empty");
-	else while (!q.empty()) {printf(" "); _print(q.front()); q.pop();}
+	else {
+		_print(q.front()); q.pop();
+		while (!q.empty()) {printf(", "); _print(q.front()); q.pop();}
+	}
 }
 template <typename T> void _print(deque<T> dq) {
 	if (dq.empty()) printf(" empty");
 	else {
-		int sz = int(dq.size());
-		for (int i = 0; i < sz; i++) printf(" "), _print(dq[i]);
+		_print(dq.front()); dq.pop_front();
+		while (!dq.empty()) {printf(", "); _print(dq.front()); dq.pop_front();}
 	}
 }
 template <typename T1, typename T2, typename T3> void _print(priority_queue<T1, T2, T3> pq) {
 	if (pq.empty()) printf(" empty");
-	else while (!pq.empty()) {printf(" "); _print(pq.top()); pq.pop();}
+	else {
+		_print(pq.top()); pq.pop();
+		while (!pq.empty()) {printf(", "); _print(pq.top()); pq.pop();}
+	}
 }
 template <int size> void _print(bitset<size> bs) {
 	for (int i = 0; i < size; i++) printf("%d", bs[i] ? 1 : 0);
 }
 template <typename T1, typename T2> void _print(map<T1, T2> m) {
 	if (m.empty()) printf(" empty");
-	else for (pair<T1, T2> i : m) {printf(" "); _print(i);}
+	else {
+		bool first = true;
+		for (pair<T1, T2> i : m) {
+			if (first) first = false;
+			else printf(", ");
+			_print(i);
+		}
+	}
 }
 
 template <typename T> void _print(T x) {return x.out();}

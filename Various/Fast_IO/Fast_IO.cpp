@@ -1,5 +1,8 @@
+bool Fast_IO_activated = false;
+bool IOS_activated = false;
 // --- Get ---
 static inline char Get_Raw_Char() {
+	static bool pre = Fast_IO_activated = true;
 	static char buf[1 << 16], *p = buf, *end = buf;
 	if (p == end) {
 		if ((end = buf + fread(buf, 1, 1 << 16, stdin)) == buf) return '\0';
@@ -62,7 +65,7 @@ template <int mul, typename T> static inline void Read(T &n) {
 	while (!isdigit(c = Get_Raw_Char())) if (c == '-') neg = true;
 	n = int(c - '0');
 	while (isdigit(c = Get_Raw_Char())) n = n * 10 + int(c - '0');
-	
+
 	int cnt = 0;
 
 	if (c == '.') {
@@ -81,10 +84,10 @@ template <int mul, typename T> static inline void Read(T &n) {
 template <int mul, typename T> static inline void Read_P(T &n) {
 	char c;
 	while (!isdigit(c = Get_Raw_Char())) ;
-	
+
 	n = int(c - '0');
 	while (isdigit(c = Get_Raw_Char())) n = n * 10 + int(c - '0');
-	
+
 	int cnt = 0;
 
 	if (c == '.') {
@@ -102,7 +105,10 @@ template <int mul, typename T, typename... Targs> static inline void Read(T &n, 
 template <int mul, typename T, typename... Targs> static inline void Read_P(T &n, Targs&... Fargs) {Read_P<mul>(n); return Read_P<mul>(Fargs...);}
 
 // --- init ---
-inline void IOS() {ios::sync_with_stdio(false); cin.tie(0); return ;}
+inline void IOS() {
+	IOS_activated = true;
+	ios::sync_with_stdio(false); cin.tie(0);
+}
 inline void Freopen(const char *in, const char *out) {freopen(in, "r", stdin); freopen(out, "w", stdout); return ;}
 
 // --- Output ---

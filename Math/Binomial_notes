@@ -1,2 +1,9 @@
 sum [j = 0 ~ k] C(m, j) * C(n - m, k - j) = C(n, k)
 sum [m = 0 ~ n] C(m, j) * C(n - m, k - j) = C(n + 1, k + 1)
+sum [m = 0 ~ n] C(m, k) = C(n + 1, k + 1)
+sum [k = 0 ~ m] C(n + k, k) = C(n + m + 1, m)
+sum [m = 0 ~ n] C(n, m)^2 = C(2n, n)
+sum [m = 0 ~ n] m * C(n, m) = n * 2^{n-1}
+sum [m = 0 ~ n] C(n - m, m) = F_{n + 1} (F is the Fibonacci numbers)
+
+Lucas's theorem

@@ -18,7 +18,7 @@ bool IsPrime(unsigned long long int x) {
 	}
 	for (unsigned int i = 0; i < as; i++) if (a[i] <= x - 2) {
 		bool ok = false;
-		unsigned __int128 tt = PowMod(a[i], t, x);
+		unsigned __int128 tt = MR64_Inner::PowMod(a[i], t, x);
 		if (tt == 1) continue;
 		for (int j = 0; j < r; j++, tt = tt * tt % x) if (tt == x - 1) {
 			ok = true;

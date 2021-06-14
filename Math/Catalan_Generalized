@@ -1,0 +1,13 @@
+Let a >= b, the amount of GOOD paths from (0, 0) to (a, b) is C(a + b, b) - C(a + b, b - 1)
+	A GOOD path must satisfy the following 2 restrictions
+		1. Is a NE lattice path (each edge is (x, y) to (x + 1, y) or (x, y + 1))
+		2. Never crosses the main Diagonal
+
+Proof :
+	The amount of NE lattice paths from (0, 0) to (a, b) is C(a + b, b)
+	For those paths crossing the main Diagonal, it must reach some (x, x + 1)
+	Let (x0, x0 + 1) be the first time the path crosses the main Diagonal
+	Reflect the remaining part of the path
+	Originally the path goes (x0, x0 + 1) and (a - x0, b - x0 - 1)
+	After reflecting, the path goes (x0, x0 + 1) and (b - x0 - 1, a - x0)
+	The path ends up reaching (b - 1, a + 1) => there are C(a + b, b - 1) such paths

@@ -14,12 +14,10 @@ using namespace std;
 #ifdef ONLINE_JUDGE
 	#define Debug(...) ;
 	#define Debug_Array(n,x) ;
-	#define Debugln_Array(n,x) ;
 	#define NL ;
 #else
-	#define Debug(...) {printf("(%s) = ",(#__VA_ARGS__)),_print(__VA_ARGS__),printf("\n");}
-	#define Debug_Array(n,x) {printf("%s :",(#x));for(int i=1;i<=n;i++)printf(" "),_print(x[i]);printf("\n");}
-	#define Debugln_Array(n,x) {for(int i=1;i<=n;i++){printf("%s",(#x));printf("[%d] = ", i);_print(x[i]);printf("\n");}}
+	#define Debug(...) {printf("(%s) = ", (#__VA_ARGS__)), _print(__VA_ARGS__), printf("\n");}
+	#define Debug_Array(n,x) {for (int i = 1; i <= n; i++) {printf("%s", (#x)); printf("[%d] = ", i); _print(x[i]); printf("\n");}}
 	#define NL {printf("\n");}
 #endif
 typedef long long int ll;
@@ -36,6 +34,7 @@ constexpr int kN = int(1E5 + 10);
 #include "C:\Users\ianli\Desktop\CP\template\Various\Fast_IO\Fast_IO.cpp"
 #include "C:\Users\ianli\Desktop\CP\template\Various\Useful_Functions\Useful_Functions.cpp"
 #include "C:\Users\ianli\Desktop\CP\template\Various\Debug\Debug.cpp"
+#include "C:\Users\ianli\Desktop\CP\template\Math\FFT\FFT.cpp"
 
 int main() {
 
