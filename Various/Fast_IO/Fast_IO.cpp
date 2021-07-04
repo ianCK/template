@@ -40,10 +40,21 @@ template <typename T> static inline void Read_Digit(T &n) {
 	return ;
 }
 
+static inline void Read_String(string &s) {
+	char c = Get_Raw_Char();
+	while (c == ' ' || c == '\n') c = Get_Raw_Char();
+	while (c != ' ' && c != '\n') {
+		s += c;
+		c = Get_Raw_Char();
+	}
+	return ;
+}
+
 // --- Read multiple ---
 template <typename T, typename... Targs> static inline void Read(T &n, Targs&... Fargs) {Read(n); return Read(Fargs...);}
 template <typename T, typename... Targs> static inline void Read_Digit(T &n, Targs&... Fargs) {Read_Digit(n); return Read_Digit(Fargs...);}
 template <typename T, typename... Targs> static inline void Read_P(T &n, Targs&... Fargs) {Read_P(n); return Read_P(Fargs...);}
+template <typename... Targs> static inline void Read_String(string &s, Targs&... Fargs) {Read_String(s); return Read_String(Fargs...);}
 
 // --- Read Loop ---
 template <typename T> static inline void Read_Loop_i(int i, T *a) {return Read(a[i]);}
@@ -57,6 +68,10 @@ template <typename... Targs> static inline void Read_Loop_Digit(int n, Targs*...
 template <typename T> static inline void Read_Loop_P_i(int i, T *a) {return Read_P(a[i]);}
 template <typename T, typename... Targs> static inline void Read_Loop_P_i(int i, T *a, Targs*... Fargs) {Read_P(a[i]); return Read_Loop_P_i(i, Fargs...);}
 template <typename... Targs> static inline void Read_Loop_P(int n, Targs*... Fargs) {for (int i = 1; i <= n; i++) Read_Loop_P_i(i, Fargs...);}
+
+static inline void Read_Loop_String_i(int i, string *a) {return Read_String(a[i]);}
+template <typename... Targs> static inline void Read_Loop_String_i(int i, string *a, Targs*... Fargs) {Read_String(a[i]); return Read_Loop_String_i(i, Fargs...);}
+template <typename... Targs> static inline void Read_Loop_String(int n, Targs*... Fargs) {for (int i = 1; i <= n; i++) Read_Loop_String_i(i, Fargs...);}
 
 // --- Float ---
 template <int mul, typename T> static inline void Read(T &n) {

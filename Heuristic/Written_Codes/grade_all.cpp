@@ -35,8 +35,8 @@ constexpr int kTestcases = 100;
 int scores[kN];
 
 int main() {
-	System("g++ -O2 sol.cpp -o sol.exe");
-	System("g++ -O2 grader.cpp -o grade.exe");
+	System("g++ -O2 -std=c++17 sol.cpp -o sol.exe");
+	System("g++ -O2 -std=c++17 grader.cpp -o grade.exe");
 
 	for (int i = 1; i <= kTestcases; i++) {
 		if (i > 1) printf("\b\b\b%3d", i);

@@ -8,9 +8,11 @@ using namespace std;
 #define R Read
 #define RD Read_Digit
 #define RP Read_P
+#define RS Read_String
 #define RL Read_Loop
 #define RLD Read_Loop_Digit
 #define RLP Read_Loop_P
+#define RLS Read_Loop_String
 #ifdef ONLINE_JUDGE
 	#define Debug(...) ;
 	#define Debug_Array(n,x) ;
@@ -32,6 +34,10 @@ constexpr int kN = int(1E5 + 10);
 // constexpr ll kInf = 0x3f3f3f3f3f3f3f3f;
 // constexpr double kPi = acos(-1);
 // constexpr double kEps = 1E-9;
+// constexpr int dx[4] = {0, 0, 1, -1};
+// constexpr int dy[4] = {1, -1, 0, 0};
+// constexpr int dx[8] = {0, 0, 1, -1, 1, -1, 1, -1};
+// constexpr int dy[8] = {1, -1, 1, -1, -1, 1, 0, 0};
 
 #include "C:\Users\ianli\Desktop\CP\template\Various\Fast_IO\Fast_IO.cpp"
 #include "C:\Users\ianli\Desktop\CP\template\Various\Useful_Functions\Useful_Functions.cpp"

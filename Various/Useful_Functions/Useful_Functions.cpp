@@ -4,6 +4,7 @@ inline void sort(string &s) {return sort(s.begin(), s.end());}
 inline void sort_r(string &s) {return sort(s.begin(), s.end(), greater<char>());}
 
 template <typename T> inline void reverse(vector<T> &v) {return reverse(v.begin(), v.end());}
+inline void reverse(string &s) {return reverse(s.begin(), s.end());}
 
 template <typename T> inline void Merge(vector<T> &a, vector<T> &b, vector<T> &c) {
 	if (c.size() < a.size() + b.size()) c.resize(a.size() + b.size());
@@ -19,6 +20,7 @@ template <typename T> inline void Concatanate(vector<T> &a, vector<T> &b, vector
 }
 
 template <typename T> inline void Discrete(vector<T> &v) {sort(v); v.resize(unique(v.begin(), v.end()) - v.begin()); return ;}
+template <typename T> inline int Discrete_Id(vector<T> &v, T x) {return  lower_bound(v.begin(), v.end(), x) - v.begin();}
 
 template <typename T> using PQ = priority_queue<T>;
 template <typename T> using PQ_R = priority_queue<T, vector<T>, greater<T>>;
@@ -68,13 +70,14 @@ vector<int> Primes(int n) {
 	return primes;
 }
 
-vector<int> factors(int x) {
-	vector<int> ans;
-	for (int i = 1; i * i <= x; i++) if (x % i == 0) ans.PB(i);
+template <typename T> vector<T> factors(T x) {
+	// maybe use factorize would be faster?
+	vector<T> ans;
+	for (T i = 1; i * i <= x; i++) if (x % i == 0) ans.push_back(i);
 
 	int id = int(ans.size()) - 1;
 	if (ans[id] * ans[id] == x) id--;
-	for (int i = id; i >= 0; i--) ans.PB(x / ans[i]);
+	for (int i = id; i >= 0; i--) ans.push_back(x / ans[i]);
 
 	return ans;
 }
@@ -163,6 +166,7 @@ namespace MR32 {
 	}
 }
 
+#ifdef __SIZEOF_INT128__
 namespace MR64 {
 	using uint128 = unsigned __int128;
 	using ull = unsigned long long int;
@@ -196,12 +200,17 @@ namespace MR64 {
 		return true;
 	}
 }
+#endif
 
 bool IsPrime(unsigned long long int x) {
+#ifdef __SIZEOF_INT128__
 	if ((x >> 32) == 0) return MR32::IsPrime(x);
 	else return MR64::IsPrime(x);
+#endif
+	return MR32::IsPrime(x);
 }
 
+#ifdef __SIZEOF_INT128__
 uint64_t PollardRho(uint64_t x) {
 	static mt19937 rng;
 	if (!(x & 1)) return 2;
@@ -217,6 +226,7 @@ uint64_t PollardRho(uint64_t x) {
   }
   return d;
 }
+#endif
 
 template <typename T> vector<T> factorize(T x) {
 	if (x <= 1) return {};

@@ -11,17 +11,6 @@ using namespace std;
 #define RL Read_Loop
 #define RLD Read_Loop_Digit
 #define RLP Read_Loop_P
-#ifdef ONLINE_JUDGE
-	#define Debug(...) ;
-	#define Debug_Array(n,x) ;
-	#define Debugln_Array(n,x) ;
-	#define NL ;
-#else
-	#define Debug(...) {printf("(%s) = ",(#__VA_ARGS__)),_print(__VA_ARGS__),printf("\n");}
-	#define Debug_Array(n,x) {printf("%s :",(#x));for(int i=1;i<=n;i++)printf(" "),_print(x[i]);printf("\n");}
-	#define Debugln_Array(n,x) {for(int i=1;i<=n;i++){printf("%s",(#x));printf("[%d] = ", i);_print(x[i]);printf("\n");}}
-	#define NL {printf("\n");}
-#endif
 typedef long long int ll;
 typedef unsigned long long int ull;
 
@@ -33,9 +22,8 @@ constexpr int kN = int(1E5 + 10);
 // constexpr double kPi = acos(-1);
 // constexpr double kEps = 1E-9;
 
-#include "C:\Users\ianli\Desktop\CP\template\Various\Fast_IO\Fast_IO.cpp"
-#include "C:\Users\ianli\Desktop\CP\template\Various\Useful_Functions\Useful_Functions.cpp"
-#include "C:\Users\ianli\Desktop\CP\template\Various\Debug\Debug.cpp"
+#include "C:\Users\ianli\Desktop\CP\template\Various\Fast_IO\Fast_IO_short.cpp"
+#include "C:\Users\ianli\Desktop\CP\template\Various\Useful_Functions\Useful_Functions_short.cpp"
 
 int main() {
 

@@ -11,7 +11,7 @@ template <typename T> struct MCMF {
 	vector<int> p, ed;
 	vector<bool> inq;
 	int size;
-	static constexpr T kInf = numeric_limits<T>::max();
+	static constexpr T kInf = numeric_limits<T>::max() / 2 - 10;
 
 	void init(int n) {
 		size = n;

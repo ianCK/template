@@ -10,6 +10,41 @@ void _print(unsigned long long int x) {printf("%llu", x);}
 void _print(float x) {printf("%f", x);}
 void _print(double x) {printf("%lf", x);}
 void _print(long double x) {printf("%Lf", x);}
+template <size_t _size> void _print(bitset<_size> bs) {for (int i = 0; i < _size; i++) printf("%d", bs[i] ? 1 : 0);}
+#ifdef __SIZEOF_INT128__
+void _print(__int128 x) {
+	if (x < 0) {
+		printf("-");
+		x = -x;
+	}
+	if (x == 0) printf("0");
+	else {
+		static int val[100];
+		int idx = -1;
+		while (x) {
+			val[++idx] = x % 10;
+			x /= 10;
+		}
+		while (idx >= 0) printf("%d", val[idx--]);
+	}
+}
+void _print(unsigned __int128 x) {
+	if (x < 0) {
+		printf("-");
+		x = -x;
+	}
+	if (x == 0) printf("0");
+	else {
+		static int val[100];
+		int idx = -1;
+		while (x) {
+			val[++idx] = x % 10;
+			x /= 10;
+		}
+		while (idx >= 0) printf("%d", val[idx--]);
+	}
+}
+#endif
 template <typename T1, typename T2> void _print(pair<T1, T2> x) {printf("("); _print(x.first); printf(", "); _print(x.second); printf(")");}
 template <typename T1, typename T2, typename T3> void _print(tuple<T1, T2, T3> x) {printf("("); _print(get<0>(x)); printf(", "); _print(get<1>(x)); printf(", "); _print(get<2>(x)); printf(")");}
 template <typename T> void _print(vector<T> v) {
@@ -61,9 +96,6 @@ template <typename T1, typename T2, typename T3> void _print(priority_queue<T1, 
 		_print(pq.top()); pq.pop();
 		while (!pq.empty()) {printf(", "); _print(pq.top()); pq.pop();}
 	}
-}
-template <int size> void _print(bitset<size> bs) {
-	for (int i = 0; i < size; i++) printf("%d", bs[i] ? 1 : 0);
 }
 template <typename T1, typename T2> void _print(map<T1, T2> m) {
 	if (m.empty()) printf(" empty");

@@ -220,4 +220,19 @@ struct Big_Int {
 			}
 			return ;
 		}
+
+		string to_str() {
+			string ans;
+			int sz = int(_val.size());
+
+			if (!_positive) printf("-");
+			ans += to_string(_val[sz - 1]);
+			for (int i = sz - 2; i >= 0; i--) {
+				string tmp = to_string(_val[i]);
+				int tmp_sz = int(tmp.size());
+				for (int j = tmp_sz; j < kLen; j++) ans += "0"; 
+				ans += tmp;
+			}
+			return ans;
+		}
 };

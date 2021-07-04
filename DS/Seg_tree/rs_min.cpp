@@ -1,5 +1,5 @@
 // range set, max
-template <typename T> struct seg_tree_max {
+template <typename T> struct rs_min {
 	static constexpr T kInf = numeric_limits<T>::max() / 2 - 10;
 	private :
 	int _size;
@@ -21,12 +21,12 @@ template <typename T> struct seg_tree_max {
 		return ;
 	}
 	void pull(int n) {
-		val[n] = max(val[n << 1], val[n << 1 | 1]);
+		val[n] = min(val[n << 1], val[n << 1 | 1]);
 		return ;
 	}
 
 	void init(int n, int l, int r) {
-		val[n] = -kInf;
+		val[n] = kInf;
 		has_flag[n] = false;
 		if (l < r) {
 			int mid = (l + r) >> 1;
@@ -83,26 +83,36 @@ template <typename T> struct seg_tree_max {
 	}
 	T ask(int n, int l, int r, int L, int R) {
 		if (L <= l && r <= R) return val[n];
-		else if (l > R || L > r) return -kInf;
+		else if (l > R || L > r) return kInf;
 		else {
 			int mid = (l + r) >> 1;
 			push(n);
-			return max(ask(n << 1, l, mid, L, R), ask(n << 1 | 1, mid + 1, r, L, R));
+			return min(ask(n << 1, l, mid, L, R), ask(n << 1 | 1, mid + 1, r, L, R));
 		}
 	}
 
+	static int need_id(int n, int l, int r) {
+		if (l < r) {
+			int mid = (l + r) >> 1;
+			return max(need_id(n << 1, l, mid), need_id(n << 1 | 1, mid + 1, r));
+		}
+		else return n;
+	}
+
 	public:
-	seg_tree_max() : _size(0), val(nullptr), flag(nullptr) {}
+	rs_min() : _size(0), val(nullptr), flag(nullptr) {}
 	void init(int n) {
-		delete [] val; val = new T [n << 2];
-		delete [] flag; flag = new T [n << 2];
-		has_flag.resize(n << 2);
+		int need = need_id(1, 1, n);
+		delete [] val; val = new T [need + 1];
+		delete [] flag; flag = new T [need + 1];
+		has_flag.resize(need + 1);
 		return init(1, 1, _size = n);
 	}
 	void init(int n, T *v) {
-		delete [] val; val = new T [n << 2];
-		delete [] flag; flag = new T [n << 2];
-		has_flag.resize(n << 2);
+		int need = need_id(1, 1, n);
+		delete [] val; val = new T [need + 1];
+		delete [] flag; flag = new T [need + 1];
+		has_flag.resize(need + 1);
 		return init(1, 1, _size = n, v);
 	}
 	void set(int pos, T x) {return set(1, 1, _size, pos, x);}
@@ -111,4 +121,3 @@ template <typename T> struct seg_tree_max {
 	T ask(int L, int R) {return ask(1, 1, _size, L, R);}
 	T top() const {return val[1];}
 };
-

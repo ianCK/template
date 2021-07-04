@@ -8,7 +8,7 @@ template <int K, typename T, typename Comp = less<T>> struct BestK {
 	public:
 		BestK() : _size(0) {}
 		int size() const {return _size;}
-		bool insert(T x) {
+		int insert(T x) {
 			for (int i = 0; i < _size; i++) if (comp(x, _val[i])){
 				for (int j = i; j < _size; j++) swap(x, _val[j]);
 				if (_size < K) _val[_size++] = x;
@@ -20,7 +20,7 @@ template <int K, typename T, typename Comp = less<T>> struct BestK {
 				return true;
 			}
 
-			return false;
+			return -1;
 		}
 		T operator [](int x) const {return _val[x];}
 };
