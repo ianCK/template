@@ -1,0 +1,18 @@
+Define V_p(x) to be the largest power of p that divides x (V_p(0) = 0)
+
+For any integers x, y and positive integers n and p, where p is a prime such that x % p and y % p :
+
+When p is odd :
+	If p | (x - y), then V_p(x^n - y^n) = V_p(x - y) + V_p(n)
+	If p | (x + y) and n is odd, then V_p(x^n + y^n) = V_p(x + y) + V_p(n)
+
+When p = 2 :
+	If 4 | (x - y), then V_2(x^n - y^n) = V_2(x - y) + V_2(n)
+	If 2 | (x - y) and n is even, then V_2(x^n - y^n) = V_2(x - y) + V_2(x + y) + V_2(n) - 1 
+
+For all p :
+	If gcd(n, p) == 1 and p | (x - y), then V_p(x^n - y^n) = V_p(x - y)
+	If gcd(n, p) == 1 and p | (x + y) and n is odd, then V_p(x^n + y^n) = V_p(x + y)
+
+Some skills :
+	if (x - y) % p, then find some k s.t. (x^k - y^k) % p

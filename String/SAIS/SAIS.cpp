@@ -1,8 +1,10 @@
 // sa[i]: sa[i]-th suffix is the i-th lexigraphically smallest suffix. 
+// rnk[i]: i-th suffix is the rnk[i]-th lexigraphically smallest suffix.
 // hi[i]: longest common prefix of suffix sa[i] and suffix sa[i - 1].
 namespace SA {
-	bool *t_glob = nullptr;
-	int *hi, *rnk, *sa, *_s = nullptr, *c_glob = nullptr, *x = nullptr, *p_glob = nullptr, *q_glob = nullptr;
+	int *hi, *rnk, *sa;
+	bool *t_glob;
+	int *_s, *c_glob, *x, *p_glob, *q_glob;
 
 	void induce(int *_sa, int *c, const int *s, const bool *t, int n, int z) {
 		memcpy(x + 1, c, sizeof(int) * (z - 1));
@@ -39,7 +41,7 @@ namespace SA {
 		memset(_sa, 0, sizeof(int) * n);
 		memcpy(x, c, sizeof(int) * z);
 		for (int i = nn - 1; i >= 0; --i) _sa[--x[s[p[nsa[i]]]]] = p[nsa[i]];
-		induce(_sa, c, s, t, n, z);
+		return induce(_sa, c, s, t, n, z);
 	}
 
 	void build(const string &s) {
