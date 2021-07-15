@@ -113,6 +113,18 @@ template <int kN> struct Factorial_No_Inf_Catalan {
 	constexpr Mint operator () (int n) const {return f[n << 1] / f[n] / f[n + 1];}
 };
 
+#if defined(Pre_Factorial)
+	constexpr Factorial<Pre_Factorial> f;
+	constexpr Factorial_Inv<Pre_Factorial> inf(f);
+	constexpr Factorial_C<Pre_Factorial> C(f, inf);
+	constexpr Factorial_Catalan<Pre_Factorial> Catalan(f, inf);
+#elif defined(Pre_Factorial_No_Inf)
+	constexpr Factorial<Pre_Factorial_No_Inf> f;
+	constexpr Factorial_No_Inf_C<Pre_Factorial_No_Inf> C(f);
+	constexpr Factorial_No_Inf_Catalan<Pre_Factorial_No_Inf> Catalan(f);
+#endif
+
+/*
 #define Pre_Factorial(kN) \
 	constexpr Factorial<kN> f; \
 	constexpr Factorial_Inv<kN> inf(f); \
@@ -123,3 +135,4 @@ template <int kN> struct Factorial_No_Inf_Catalan {
 	constexpr Factorial<kN> f; \
 	constexpr Factorial_No_Inf_C<kN> C(f); \
 	constexpr Factorial_No_Inf_Catalan<kN> Catalan(f);
+*/
