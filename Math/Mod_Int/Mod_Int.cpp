@@ -33,7 +33,7 @@ template <int kMod> struct Mod_Int {
 		if (ans.val < 0) ans.val += kMod;
 		return ans;
 	}
-	constexpr Mod_Int operator * (const Mod_Int &x) const {return Mod_Int(1LL * val * x.val % kMod);}
+	constexpr Mod_Int operator * (const Mod_Int &x) const {return Mod_Int(uint64_t(val) * x.val % kMod);}
 	constexpr Mod_Int operator / (const Mod_Int &x) const {return *this * x.inv();}
 
 	constexpr Mod_Int operator += (const Mod_Int &x) {return *this = *this + x;}
@@ -78,48 +78,53 @@ template <int kN> struct Factorial {
 template <int kN> struct Factorial_Inv {
 	Mint val[kN + 1];
 	
-	constexpr Factorial_Inv(const Factorial<kN> &f) : val() {
+	constexpr Factorial_Inv(const Factorial<kN>* const f) : val() {
 		val[0] = val[1] = 1;
-		val[kN] = f[kN].inv();
+		val[kN] = (f -> val[kN]).inv();
 		for (int i = kN; i > 2; i--) val[i - 1] = val[i] * i;
 	}
 
 	constexpr Mint operator [] (int x) const {return val[x];}
 };
 
-template <int kN> struct Factorial_C {
-	const Factorial<kN> &f;
-	const Factorial_Inv<kN> &inf;
-	constexpr Factorial_C(const Factorial<kN> &_f, const Factorial_Inv<kN> &_inf) : f(_f), inf(_inf) {}
-	constexpr Mint operator () (int n, int m) const {return f[n] * inf[m] * inf[n - m];}
+#if defined(Pre_Factorial)
+	constexpr Factorial<Pre_Factorial> f;
+	constexpr Factorial_Inv<Pre_Factorial> inf(&f);
+	inline Mint C(int n, int m) {return f[n] * inf[m] * inf[n - m];}
+	inline Mint Catalan(int n) {return f[n << 1] * inf[n + 1] * inf[n];}
+	inline Mint Catalan(int a, int b) {return C(a + b, b) - C(a + b, b - 1);}
+#elif defined(Pre_Factorial_No_Inf)
+	constexpr Factorial<Pre_Factorial_No_Inf> f;
+	inline Mint C(int n, int m) {return f[n] / f[m] / f[n - m];}
+	inline Mint Catalan(int n) {return f[n << 1] / f[n + 1] / f[n];}
+	inline Mint Catalan(int a, int b) {return C(a + b, b) - C(a + b, b - 1);}
+#endif
+
+template <int kN> struct Inverse {
+	Mint val[kN + 1];
+
+	#if defined(Pre_Factorial) and Pre_Inverse <= Pre_Factorial
+	constexpr Inverse() : val() {
+		for (int i = 1; i <= kN; i++) val[i] = f[i - 1] * inf[i];
+	}
+	#else
+	constexpr Inverse() : val() {
+		val[0] = val[1] = 1;
+		for (int i = 2; i <= kN; i++) val[i] = val[i - 1] * i;
+		val[kN] = val[kN].inv();
+
+		for (int i = kN; i >= 1; i--) {
+			Mint tmp = val[i - 1] * val[i];
+			val[i - 1] = val[i] * i;
+			val[i] = tmp;
+		}
+	}
+	#endif
+
+	constexpr Mint operator [] (int x) const {return val[x];}
 };
 
-template <int kN> struct Factorial_Catalan {
-	const Factorial<kN> &f;
-	const Factorial_Inv<kN> &inf;
-	constexpr Factorial_Catalan(const Factorial<kN> &_f, const Factorial_Inv<kN> &_inf) : f(_f), inf(_inf) {}
-	constexpr Mint operator () (int n) const {return f[n << 1] * inf[n] * inf[n + 1];}
-};
 
-template <int kN> struct Factorial_No_Inf_C {
-	const Factorial<kN> &f;
-	constexpr Factorial_No_Inf_C(const Factorial<kN> &_f) : f(_f) {}
-	constexpr Mint operator () (int n, int m) const {return f[n] / f[m] / f[n - m];}
-};
-
-template <int kN> struct Factorial_No_Inf_Catalan {
-	const Factorial<kN> &f;
-	constexpr Factorial_No_Inf_Catalan(const Factorial<kN> &_f) : f(_f) {}
-	constexpr Mint operator () (int n) const {return f[n << 1] / f[n] / f[n + 1];}
-};
-
-#define Pre_Factorial(kN) \
-	constexpr Factorial<kN> f; \
-	constexpr Factorial_Inv<kN> inf(f); \
-	constexpr Factorial_C<kN> C(f, inf); \
-	constexpr Factorial_Catalan<kN> Catalan(f, inf);
-
-#define Pre_Factorial_No_Inf(kN) \
-	constexpr Factorial<kN> f; \
-	constexpr Factorial_No_Inf_C<kN> C(f); \
-	constexpr Factorial_No_Inf_Catalan<kN> Catalan(f);
+#if defined(Pre_Inverse)
+	constexpr Inverse<Pre_Inverse> inv;
+#endif

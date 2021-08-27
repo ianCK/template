@@ -5,6 +5,8 @@ void _print(short x) {printf("%hd", x);}
 void _print(unsigned short x) {printf("%hu", x);}
 void _print(int x) {printf("%d", x);}
 void _print(unsigned int x) {printf("%u", x);}
+void _print(long int x) {printf("%ld", x);}
+void _print(unsigned long int x) {printf("%lu", x);}
 void _print(long long int x) {printf("%lld", x);}
 void _print(unsigned long long int x) {printf("%llu", x);}
 void _print(float x) {printf("%f", x);}
@@ -47,6 +49,7 @@ void _print(unsigned __int128 x) {
 #endif
 template <typename T1, typename T2> void _print(pair<T1, T2> x) {printf("("); _print(x.first); printf(", "); _print(x.second); printf(")");}
 template <typename T1, typename T2, typename T3> void _print(tuple<T1, T2, T3> x) {printf("("); _print(get<0>(x)); printf(", "); _print(get<1>(x)); printf(", "); _print(get<2>(x)); printf(")");}
+template <typename T1, typename T2, typename T3, typename T4> void _print(tuple<T1, T2, T3, T4> x) {printf("("); _print(get<0>(x)); printf(", "); _print(get<1>(x)); printf(", "); _print(get<2>(x)); printf(", "); _print(get<3>(x)); printf(")");}
 template <typename T> void _print(vector<T> v) {
 	if (v.empty()) printf(" empty");
 	else {

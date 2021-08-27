@@ -1,0 +1,39 @@
+--- Abstract ---
+IndexSet : The default constructor.
+IndexSet(int n) : Constructor with initial size.
+
+void resize(int n) : Resizes the set.
+void clear() : Clears the set.
+bool contains(int v) const : Checks if an element is in the set.
+int size() const : Returns the size of the set.
+bool empty() const : Returns if the set is empty.
+
+void insert(int v) : Inserts v into the set. (v should be in [0, size()))
+void erase(int v) : Erases v from the set. (v should be in [0, size()))
+
+int operator [](int x) const : Returns the x-th element in the set. (The order of the elements is arbitrary) (x should be in [0, size()))
+const vector<int>& ()() const& : Returns the vector containing all the elements.
+
+void out() const : Outputs the set.
+
+--- Complexity ---
+
+IndexSet : O(1) 
+IndexSet(int n) : O(n) 
+
+void resize(int n) : O(n) 
+void clear() : O(n) 
+bool contains(int v) const : O(1) 
+int size() const : O(1) 
+bool empty() const : O(1) 
+
+void insert(int v) : O(1) 
+void erase(int v) : O(1) 
+
+int operator [](int x) const : O(1) 
+const vector<int>& ()() const& : O(1) 
+
+void out() const : O(n) 
+
+--- Test Source ---
+Several marathon contests

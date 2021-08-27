@@ -18,6 +18,22 @@ template <typename T> inline void Concatanate(vector<T> &a, vector<T> &b, vector
 	for (int i = 0; i < b_size; i++) c[i + a_size] = b[i];
 	return ;
 }
+template <typename T> inline void Append(vector<T> &lhs, vector<T> rhs) {
+	int lsz = int(lhs.size()), rsz = int(rhs.size());
+	lhs.reserve(lsz + rsz);
+	for (int i = 0; i < rsz; i++) lhs.push_back(rhs[i]);
+	return ;
+}
+
+template <typename T> inline void Erase(vector<T> &vec, T x) {
+	int sz = int(vec.size());
+	for (int i = 0; i < sz; i++) if (vec[i] == x) {
+		swap(vec[i], vec.back());
+		vec.pop_back();
+		break;
+	}
+	return ;
+}
 
 template <typename T> inline void Discrete(vector<T> &v) {sort(v); v.resize(unique(v.begin(), v.end()) - v.begin()); return ;}
 template <typename T> inline int Discrete_Id(vector<T> &v, T x) {return  lower_bound(v.begin(), v.end(), x) - v.begin();}
@@ -92,10 +108,14 @@ int mex(vector<int> vec) {
 
 template <typename T> T SQ(T x) {return x * x;}
 
+// Euclidean distance
+template <typename T> T Dist2(pair<T, T> lhs, pair<T, T> rhs) {return SQ(lhs.F - rhs.F) + SQ(lhs.S - rhs.S);}
+
+// Manhattan distance
 template <typename T> T Mdist(pair<T, T> lhs, pair<T, T> rhs) {return ABS(lhs.first - rhs.first) + ABS(lhs.second - rhs.second);}
-template <typename T> T Dist2(pair<T, T> lhs, pair<T, T> rhs) {
-	return SQ(lhs.F - rhs.F) + SQ(lhs.S - rhs.S);
-}
+template <typename T> T Mdist(T x1, T y1, T x2, T y2) {return ABS(x1 - x2) + ABS(y1 - y2);}
+
+template <typename T> bool Adj(pair<T, T> lhs, pair<T, T> rhs) {return Mdist(lhs, rhs) == 1;}
 
 template <typename T> T LUBound(T LB, T val, T UB) {return min(max(LB, val), UB);}
 
@@ -110,8 +130,8 @@ template <typename T, typename Comp> T Binary_Search(T L, T R, Comp f) {
 	return L;
 }
 
-template <typename Comp> double Binary_Search(double L, double R, Comp f, int n = 30) {
-	for (int i = 1; i <= n; i++) {
+template <typename Comp> double Binary_Search(double L, double R, Comp f, int loop = 30) {
+	for (int i = 1; i <= loop; i++) {
 		double mid = (L + R) / 2;
 		if (f(mid)) L = mid;
 		else R = mid;
@@ -119,7 +139,7 @@ template <typename Comp> double Binary_Search(double L, double R, Comp f, int n 
 	return L;
 }
 
-template <typename T> T nearest(set<T> &se, T val) {
+template <typename T> T nearest_dist(set<T> &se, T val) {
 	static constexpr T kInf = numeric_limits<T>::max() / 2 - 10;
 
 	if (se.empty()) return kInf;
@@ -129,6 +149,21 @@ template <typename T> T nearest(set<T> &se, T val) {
 		auto u = se.lower_bound(val);
 		auto v = prev(u);
 		return min(*u - val, val - *v);
+	}
+}
+
+template <typename T> T nearest_elem(set<T> &se, T val) {
+	static constexpr T kInf = numeric_limits<T>::max() / 2 - 10;
+
+	if (se.empty()) return kInf;
+	else if (val <= *se.begin()) return *se.begin();
+	else if (val >= *prev(se.end())) return *prev(se.end());
+	else {
+		auto u = se.lower_bound(val);
+		auto v = prev(u);
+
+		if (*u - val > val - *v) return *v;
+		else return *u;
 	}
 }
 
@@ -226,7 +261,6 @@ uint64_t PollardRho(uint64_t x) {
   }
   return d;
 }
-#endif
 
 template <typename T> vector<T> factorize(T x) {
 	if (x <= 1) return {};
@@ -236,9 +270,10 @@ template <typename T> vector<T> factorize(T x) {
 	Merge(lhs, rhs, ans);
 	return ans;
 }
+#endif
 
+// vec must be sorted
 template <typename T> vector<pair<T, int>> Compress(vector<T> vec) {
-	// vec must me sorted
 	if (vec.empty()) return {};
 
 	vector<pair<T, int>> ans;
@@ -253,5 +288,26 @@ template <typename T> vector<pair<T, int>> Compress(vector<T> vec) {
 		else cnt++;
 	}
 	ans.push_back(make_pair(lst, cnt));
+	return ans;
+}
+
+template <typename T> int Divisors(T x) {
+	vector<pair<T, int>> fac = Compress(factorize(x));
+
+	int ans = 1;
+	for (pair<T, int> i : fac) ans *= i.second + 1;
+
+	return ans;
+}
+
+template <typename T> T phi(T x) {
+	vector<pair<T, int>> fac = Compress(factorize(x));
+
+	T ans = 1;
+	for (pair<T, int> i : fac) {
+		ans *= i.first - 1;
+		for (int j = 1; j < i.second; j++) ans *= i.first;
+	}
+
 	return ans;
 }

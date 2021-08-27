@@ -2,11 +2,13 @@
 struct DSU {
 	int *p;
 	int size;
+	int components;
 	
 	DSU() {p = nullptr;}
+	~DSU() {delete [] p;}
 	
 	void init(int n) {
-		size = n;
+		components = size = n;
 		delete [] p; p = new int[n];
 		memset(p, -1, sizeof(int) * n);
 		return ;
@@ -16,10 +18,12 @@ struct DSU {
 
 	inline int union_size(int n) {return -p[Find(n)];}
 	inline bool same(int l, int r) {return Find(l) == Find(r);}
+	inline int component_count() const {return components;}
 
 	bool Merge(int l, int r) {
 		l = Find(l), r = Find(r);
 		if (l != r) {
+			components--;
 			if (p[l] > p[r]) swap(l, r);
 			p[l] += p[r];
 			p[r] = l;

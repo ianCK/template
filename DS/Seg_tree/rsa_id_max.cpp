@@ -120,7 +120,7 @@ template <typename T> struct seg_tree_rsa_id_max {
 	}
 	pair<T, int> ask(int n, int l, int r, int L, int R) {
 		if (L <= l && r <= R) return _val[n];
-		else if (l > R || L > r) return -kInf;
+		else if (l > R || L > r) return make_pair(-kInf, r);
 		else {
 			int mid = (l + r) >> 1;
 			push(n);

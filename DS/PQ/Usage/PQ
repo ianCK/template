@@ -1,0 +1,31 @@
+using EPQ<T> = Erasable_PQ<T>
+using EPQ_R<T> = Erasable_PQ<T, vector<T>, greater<T>>
+
+--- Abstract ---
+Erasable_PQ<T, T1 = vector<T>, T2 = less<T>>
+
+bool empty() const : Returns if the pq is empty.
+int size() const : Returns the size of the pq.
+void clear() : Clears the pq.
+
+void push(T x) : Pushes x into the pq.
+void pop() : Pops the top element in the pq.
+T top() const : Returns the top element in the pq.
+void erase(T x) : Erases x from the pq.
+
+void out() const : Outputs the pq.
+
+--- Complexity ---
+
+Erasable_PQ<T, T1 = vector<T>, T2 = less<T>> : O(1)
+
+bool empty() const : O(1)
+int size() const : O(1) 
+void clear() : O(n) 
+
+void push(T x) : O(lgn) 
+void pop() : O(lgn) 
+T top() const : O(1) 
+void erase(T x) : O(lgn) 
+
+void out() const : O(nlgn) 

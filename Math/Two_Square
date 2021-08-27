@@ -1,0 +1,1 @@
+A integer greater than one can be written as a sum of two squares if and only if its prime decomposition contains no factor p^k, where prime p % 4 == 3 and k is odd.

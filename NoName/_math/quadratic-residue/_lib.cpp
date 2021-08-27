@@ -9,7 +9,7 @@ int QuadraticResidue(int a, int p) {
   for (b = 2;; b++)
     if (!Check(b, p)) break;
   assert(b != -1);
-  int inva = int(Inv(a, p)), t = 0;
+  int inva = int(PowMod(a, p - 2, p)), t = 0;
   while ((p - 1) % (1 << t) == 0) t++;
   t--;
   int s = (p - 1) / (1 << t);

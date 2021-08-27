@@ -15,6 +15,15 @@ struct Bipartite_Matching {
 	vector<bool> vis;
 	int bfs_dis, x_size, y_size;
 
+	Bipartite_Matching() {}
+	~Bipartite_Matching() {
+		delete [] head; head = new int[x_size];
+		delete [] disx; disx = new int[x_size];
+		delete [] disy; disy = new int[y_size];
+		delete [] matchx; matchx = new int[x_size];
+		delete [] matchy; matchy = new int[y_size];
+	}
+
 	void init(int n, int m) {
 		x_size = n, y_size = m;
 		edge.clear();

@@ -4,8 +4,10 @@ template <typename T> struct BIT {
 	T _sum;
 
 	BIT() : _size(0), val(nullptr), _sum(0) {}
-	int size() const {return _size;}
-	T sum() const {return _sum;}
+	~BIT() {delete [] val;}
+
+	inline int size() const {return _size;}
+	inline T sum() const {return _sum;}
 
 	void init(int n) {
 		delete [] val; val = new T[_size = n + 1];
