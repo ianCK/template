@@ -42,11 +42,27 @@ constexpr int kN = int(1E5 + 10);
 #include "C:\Users\ianli\Desktop\CP\template\Various\Fast_IO\Fast_IO.cpp"
 #include "C:\Users\ianli\Desktop\CP\template\Various\Useful_Functions\Useful_Functions.cpp"
 #include "C:\Users\ianli\Desktop\CP\template\Various\Debug\Debug.cpp"
-#include "C:\Users\ianli\Desktop\CP\template\Various\Random\Random.cpp"
-#include "C:\Users\ianli\Desktop\CP\template\Various\Random\Sequence.cpp"
+#include "C:\Users\ianli\Desktop\CP\template\DS\Scapegoat_Tree\set.cpp"
 
+Scapegoat_Tree<int> se;
 int main() {
-	for (int i = 1; i <= 10; i++) {
-		Debug(rng_seq(5, 1, 10));
-	}
+	se.insert(5);
+	se.insert(3);
+	Debug(se, se.lower_bound(1), se.lower_bound_rank(2), se.upper_bound(3), se.upper_bound_rank(4));
+
+	se.insert(3);
+	se.insert(1);
+	Debug(se, se.lower_bound(1), se.lower_bound_rank(2), se.upper_bound(3), se.upper_bound_rank(4));
+	Debug(se);
+
+	se.erase(3);
+	se.insert(4);
+	Debug(se, se.lower_bound(1), se.lower_bound_rank(2), se.upper_bound(3), se.upper_bound_rank(4));
+	Debug(se);
+	se.erase(5);
+	Debug(se);
+
+	se.erase(1);
+	se.erase(4);
+	Debug(se);
 }

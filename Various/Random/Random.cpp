@@ -1,73 +1,33 @@
-double rng_double(double l = 0, double r = 1) {
-	static random_device rd;
-	static mt19937 eng(rd());
-	static uniform_real_distribution<double> distr(0, 1);
+// returns an unsigned int
+class Rng_int {
+	using ui = unsigned int;
+	private:
+		static constexpr ui ini_x = 123456789, ini_y = 362436069, ini_z = 521288629, ini_w = 88675123;
+		ui x, y, z, w;
 
-	return distr(eng) * (r - l) + l;
-}
-
-template <int l, int r> int rng_int() {
-	static random_device rd;
-	static mt19937 eng(rd());
-	static uniform_int_distribution<int> distr(l, r);
-
-	return distr(eng);
-}
-
-int rng_int(int l, int r) {
-	static random_device rd;
-	static mt19937 eng(rd());
-
-	return eng() % (r - l + 1) + l;
-}
-
-// 1 ~ n
-vector<int> rng_perm(int n) {
-	vector<int> ans(n);
-	for (int i = 0; i < n; i++) ans[i] = i + 1;
-	random_shuffle(ans.begin(), ans.end());
-	return move(ans);
-}
-
-template <typename T> struct Lottery {
-	vector<pair<double, T>> candidates;
-	double sum;
-
-	Lottery() : sum(0) {}
-	~Lottery() {}
-
-	void reserve(int n) {candidates.reserve(n); return ;}
-	int size() const {return int(candidates.size());}
-	bool empty() const {return candidates.empty();}
-
-	void clear() {
-		candidates.clear();
-		sum = 0;
-		return ;
-	}
-
-	void insert(double wei, T x) {
-		sum += wei;
-		if (!candidates.empty()) wei += candidates.back().first;
-		candidates.push_back(make_pair(wei, x));
-		return ;
-	}
-
-	T draw() const {
-		double x = rng_double(0, sum);
-
-		if (x < candidates[0].first) return candidates[0].second;
-
-		int sz = int(candidates.size());
-
-		int l = 0, r = sz;
-
-		while (r - l > 1) {
-			int mid = (l + r) >> 1;
-			if (x >= candidates[mid].first) l = mid;
-			else r = mid;
+		ui randint() {
+			ui t = x ^ (x << 11);
+			x = y;
+			y = z;
+			z = w;
+			return w = (w ^ (w >> 19)) ^ (t ^ (t >> 8));
 		}
 
-		return candidates[r].second;
-	}
-};
+	public:
+		Rng_int(ui seed = 0) : x(ini_x), y(ini_y), z(ini_z), w(ini_w ^ seed) {}
+		void set_seed(ui seed) {x = ini_x, y = ini_y, z = ini_z, w = ini_w ^ seed;}
+		ui operator () () {return randint();}
+		// [1, r]
+		ui operator () (ui r) {return randint() % r + 1;}
+		// [l, r]
+		ui operator () (ui l, ui r) {return l + (randint() % (r - l + 1));}
+} rng_int;
+
+// [0, 1]
+double rng_double() {return double(rng_int()) * 2.3283064370807974e-10;}
+// [0, r]
+double rng_double(double r) {return rng_double() * r;}
+// [l, r]
+double rng_double(double l, double r) {return l + rng_double(r - l);}
+
+inline unsigned int Time_Seed() {return std::chrono::system_clock::now().time_since_epoch().count();}

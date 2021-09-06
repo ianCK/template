@@ -8,21 +8,21 @@ using namespace std;
 #define R Read
 #define RD Read_Digit
 #define RP Read_P
+#define RS Read_String
 #define RL Read_Loop
 #define RLD Read_Loop_Digit
 #define RLP Read_Loop_P
+#define RLS Read_Loop_String
 #ifdef ONLINE_JUDGE
-	#define Debug(x) ;
-	#define Debugln(x) ;
+	#define Debug(...) ;
 	#define Debug_Array(n,x) ;
 	#define Debugln_Array(n,x) ;
 	#define NL ;
 #else
-	#define Debug(x) printf("%s :", (#x)), _Debug(x)
-	#define Debugln(x) printf("%s :", (#x)), _Debugln(x)
-	#define Debug_Array(n,x) printf("%s :", (#x)), _Debug_Array((n), (x))
-	#define Debugln_Array(n,x) printf("%s :", (#x)), _Debugln_Array((n), (x))
-	#define NL printf("\n")
+	#define Debug(...) {printf("(%s) = ",(#__VA_ARGS__)),_print(__VA_ARGS__),printf("\n");}
+	#define Debug_Array(n,x) {printf("%s :",(#x));for(int i=1;i<=n;i++)printf(" "),_print(x[i]);printf("\n");}
+	#define Debugln_Array(n,x) {for(int i=1;i<=n;i++){printf("%s",(#x));printf("[%d] = ", i);_print(x[i]);printf("\n");}}
+	#define NL {printf("\n");}
 #endif
 typedef long long int ll;
 typedef unsigned long long int ull;
@@ -38,10 +38,22 @@ constexpr int kN = int(1E5 + 10);
 #include "C:\Users\ianli\Desktop\CP\template\Various\Fast_IO\Fast_IO.cpp"
 #include "C:\Users\ianli\Desktop\CP\template\Various\Useful_Functions\Useful_Functions.cpp"
 #include "C:\Users\ianli\Desktop\CP\template\Various\Debug\Debug.cpp"
-#include "C:\Users\ianli\Desktop\CP\template\DS\Seg_tree\rs_min.cpp"
+#include "C:\Users\ianli\Desktop\CP\template\DS\Seg_tree\rs.cpp"
 
-rs_min<int> sg;
+Seg_tree_rs<int> sg;
+int a[20];
 
 int main() {
+	int n = 5;
 
+	for (int i = 1; i <= n; i++) a[i] = 5 - i;
+	sg.init(n, a);
+
+	Debug(sg);
+
+	sg.set(2, 4, 3);
+
+	Debug(sg);
+
+	return 0;
 }

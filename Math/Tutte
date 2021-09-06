@@ -1,0 +1,11 @@
+Source : https://www.ioi-jp.org/camp/2017/2017-sp_camp-kumabe2.pdf
+Any graph G = (V, E)
+
+If (i, j) is in E and i < j, then Aij = xij
+If (i, j) is in E and i > j, then Aij = -xji
+Other Aij = 0
+
+det(A) != 0 <=> G has a perfect matching
+(rank(A) / 2 = the maximum size of matching)
+
+In practical use, let xij be random numbers

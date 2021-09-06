@@ -1,0 +1,14 @@
+Source : https://www.ioi-jp.org/camp/2017/2017-sp_camp-kumabe2.pdf
+
+On a DAG, let there be n starting point {a[1], a[2], ..., a[n]} and n ending point {b[1], b[2], ..., b[n]}.
+
+If for all i < j, any path (a[i] -> b[j]) and (a[j] -> b[i]) shares some nodes.
+Then the number of n pathes {p[1] is some (a[1] -> b[1]), p[2] is some (a[2] -> b[2]), ...} where all p[i] don't share points are the determinant of the following Matrix.
+
+Xij is the number of paths (a[i] -> b[j])
+
+X11, ..., X1n
+.					.
+.					.
+.					.
+Xn1, ..., Xnn

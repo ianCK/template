@@ -12,6 +12,7 @@ void _print(unsigned long long int x) {printf("%llu", x);}
 void _print(float x) {printf("%f", x);}
 void _print(double x) {printf("%lf", x);}
 void _print(long double x) {printf("%Lf", x);}
+void _print(string s) {for (char c : s) printf("%c", c);}
 template <size_t _size> void _print(bitset<_size> bs) {for (int i = 0; i < _size; i++) printf("%d", bs[i] ? 1 : 0);}
 #ifdef __SIZEOF_INT128__
 void _print(__int128 x) {
@@ -112,5 +113,5 @@ template <typename T1, typename T2> void _print(map<T1, T2> m) {
 	}
 }
 
-template <typename T> void _print(T x) {return x.out();}
+template <typename T> void _print(T& x) {return x.out();}
 template <typename T, typename... Targs> void _print(T x, Targs... Fargs) {_print(x); printf(", "); _print(Fargs...);}
