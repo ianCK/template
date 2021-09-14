@@ -124,7 +124,6 @@ template <int kN> struct Inverse {
 	constexpr Mint operator [] (int x) const {return val[x];}
 };
 
-
 #if defined(Pre_Inverse)
 	constexpr Inverse<Pre_Inverse> inv;
 #endif
