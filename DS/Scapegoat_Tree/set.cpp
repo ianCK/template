@@ -185,7 +185,7 @@ template <typename T> class Scapegoat_Tree {
 		inline bool empty() const {return root == -1;}
 		void insert(T x) {
 			// !!!
-			if (_val.size() == _val.capacity()) _val.reserve(_val.capacity() << 1 | 1);
+			if (_val.size() == _val.capacity()) _val.reserve((_val.capacity() << 1) + 10);
 			return insert(root, x);
 		}
 		void erase(T x) {return erase(root, x);}

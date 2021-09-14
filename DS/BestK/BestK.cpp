@@ -25,6 +25,16 @@ template <int K, typename T, typename Comp = less<T>> struct BestK {
 			return false;
 		}
 		T operator [](int x) const {return _val[x];}
+
+#ifndef ONLINE_JUDGE
+		void out() const {
+			printf(" BestK\n");
+			if (_size == 0) printf("empty");
+			else {
+				_print(_val[0]); for (int i = 1; i < _size; i++) {printf(" "); _print(_val[i]);}
+			}
+		}
+#endif
 };
 
 template <int size, typename T> using WorstK = BestK<size, T, greater<T>>;

@@ -1,5 +1,5 @@
 template <typename T> void _print(vector<T> v) ;
-void _print(bool x) {printf("%d", x ? 1 : 0);}
+void _print(bool x) {printf("%s", x ? "True" : "False");}
 void _print(char x) {printf("%c", x);}
 void _print(short x) {printf("%hd", x);}
 void _print(unsigned short x) {printf("%hu", x);}

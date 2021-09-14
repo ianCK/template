@@ -4,6 +4,10 @@ template <typename T> struct BIT_max {
 	T* val;
 
 	BIT_max() : _size(0), val(nullptr) {}
+	~BIT_max() {
+		delete [] val;
+	}
+
 	int size() const {return _size;}
 
 	void init(int n) {
