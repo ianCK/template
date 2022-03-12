@@ -101,6 +101,10 @@ template <typename T> struct seg_tree_min {
 
 	public:
 	seg_tree_min() : _size(0), val(nullptr), flag(nullptr) {}
+	~seg_tree_min() {
+		delete [] val;
+		delete [] flag;
+	}
 	void init(int n) {
 		delete [] val; val = new T [n << 2];
 		delete [] flag; flag = new T [n << 2];

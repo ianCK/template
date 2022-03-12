@@ -47,11 +47,14 @@ constexpr int kN = int(1E5 + 10);
 Graph graph;
 
 int main() {
-	graph.init(5);
+	int n = 5;
+	graph.init(n);
 	graph.AddEdge(0, 3);
 	graph.AddEdge(1, 4);
 
 	Debug(graph);
+
+	for (int i = 0; i < n; i++) Debug(i, ":", graph[i]);
 
 	return 0;
 }

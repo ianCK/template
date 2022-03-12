@@ -1,19 +1,28 @@
-// O(log(n + m + a + b))
-// sum_{i = 0..n-1} (ai + b) // m
-long long int Floor_Sum(long long int n, long long int m, long long int a, long long int b) {
-	long long int ans = 0;
-	if (a >= m) {
-		ans += (n - 1) * n * (a / m) / 2;
-		a %= m;
-	}
-	if (b >= m) {
-		ans += n * (b / m);
-		b %= m;
-	}
-	long long int y_max = (a * n + b) / m, x_max = (y_max * m - b);
-	if (y_max == 0) return ans;
-	ans += (n - (x_max + a - 1) / a) * y_max;
-	ans += Floor_Sum(y_max, a, m, (a - x_max % a) % a);
-	return ans;
-}
+// @param n `n < 2^32`
+// @param m `1 <= m < 2^32`
+// @return sum_{i=0}^{n-1} floor((ai + b) / m) (mod 2^64)
+unsigned long long Floor_Sum(unsigned long long n,
+                                      unsigned long long m,
+                                      unsigned long long a,
+                                      unsigned long long b) {
+    unsigned long long ans = 0;
+    while (true) {
+        if (a >= m) {
+            ans += n * (n - 1) / 2 * (a / m);
+            a %= m;
+        }
+        if (b >= m) {
+            ans += n * (b / m);
+            b %= m;
+        }
 
+        unsigned long long y_max = a * n + b;
+        if (y_max < m) break;
+        // y_max < m * (n + 1)
+        // floor(y_max / m) <= n
+        n = (unsigned long long)(y_max / m);
+        b = (unsigned long long)(y_max % m);
+        std::swap(m, a);
+    }
+    return ans;
+}

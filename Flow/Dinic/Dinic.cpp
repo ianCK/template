@@ -9,6 +9,14 @@ template <typename T> struct Dinic {
 	int *dep, *iter, *went;
 	int size;
 
+	Dinic() {}
+	~Dinic() {
+		delete [] graph;
+		delete [] dep;
+		delete [] iter;
+		delete [] went;
+	}
+
 	void init(int n) {
 		size = n;
 		delete [] graph; graph = new vector<Edge>[size];

@@ -12,6 +12,7 @@ void _print(unsigned long long int x) {printf("%llu", x);}
 void _print(float x) {printf("%f", x);}
 void _print(double x) {printf("%lf", x);}
 void _print(long double x) {printf("%Lf", x);}
+void _print(const char* c) {int n = strlen(c); for (int i = 0; i < n; i++) printf("%c", c[i]);}
 void _print(string s) {for (char c : s) printf("%c", c);}
 template <size_t _size> void _print(bitset<_size> bs) {for (int i = 0; i < _size; i++) printf("%d", bs[i] ? 1 : 0);}
 #ifdef __SIZEOF_INT128__
@@ -51,6 +52,7 @@ void _print(unsigned __int128 x) {
 template <typename T1, typename T2> void _print(pair<T1, T2> x) {printf("("); _print(x.first); printf(", "); _print(x.second); printf(")");}
 template <typename T1, typename T2, typename T3> void _print(tuple<T1, T2, T3> x) {printf("("); _print(get<0>(x)); printf(", "); _print(get<1>(x)); printf(", "); _print(get<2>(x)); printf(")");}
 template <typename T1, typename T2, typename T3, typename T4> void _print(tuple<T1, T2, T3, T4> x) {printf("("); _print(get<0>(x)); printf(", "); _print(get<1>(x)); printf(", "); _print(get<2>(x)); printf(", "); _print(get<3>(x)); printf(")");}
+template <typename T1, typename T2, typename T3, typename T4, typename T5> void _print(tuple<T1, T2, T3, T4, T5> x) {printf("("); _print(get<0>(x)); printf(", "); _print(get<1>(x)); printf(", "); _print(get<2>(x)); printf(", "); _print(get<3>(x)); printf(", "); _print(get<4>(x)); printf(")");}
 template <typename T> void _print(vector<T> v) {
 	if (v.empty()) printf(" empty");
 	else {

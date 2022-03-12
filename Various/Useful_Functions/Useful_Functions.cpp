@@ -1,3 +1,14 @@
+template <typename T, typename T1> void make_vector_inner(vector<T>& vec, T1 c) {return vec.push_back(T(c));}
+template <typename T, typename T1, typename... Targs> void make_vector_inner(vector<T> &vec, T1 c, Targs... targs) {
+	vec.push_back(T(c));
+	return make_vector_inner(vec, targs...);
+}
+template <typename T, typename... Targs> vector<T> make_vector(Targs... targs) {
+	vector<T> vec;
+	make_vector_inner(vec, targs...);
+	return vec;
+}
+
 template <typename T> inline void sort(vector<T> &v) {return sort(v.begin(), v.end());}
 template <typename T> inline void sort_r(vector<T> &v) {return sort(v.begin(), v.end(), greater<T>());}
 inline void sort(string &s) {return sort(s.begin(), s.end());}
@@ -36,7 +47,7 @@ template <typename T> inline void Erase(vector<T> &vec, T x) {
 }
 
 template <typename T> inline void Discrete(vector<T> &v) {sort(v); v.resize(unique(v.begin(), v.end()) - v.begin()); return ;}
-template <typename T> inline int Discrete_Id(vector<T> &v, T x) {return  lower_bound(v.begin(), v.end(), x) - v.begin();}
+template <typename T> inline int Discrete_Id(vector<T> &v, T x) {return lower_bound(v.begin(), v.end(), x) - v.begin();}
 
 template <typename T> using PQ = priority_queue<T>;
 template <typename T> using PQ_R = priority_queue<T, vector<T>, greater<T>>;
@@ -68,7 +79,7 @@ template <typename T, typename... Targs> inline void chmin(T &a, T b, Targs... a
 template <typename T, typename... Targs> inline void chmax(T &a, T b, Targs... args) {a = max(a, b, args...); return ;}
 
 vector<int> Primes(int n) {
-	if (n == 1) return {};
+	if (n <= 1) return {};
 	// 2 ~ n
 	vector<int> primes;
 	vector<bool> isPrime(n + 1, true);
@@ -257,16 +268,16 @@ uint64_t PollardRho(uint64_t x) {
     a = (__int128(a) * a + c) % x;
     b = (__int128(b) * b + c) % x;
     b = (__int128(b) * b + c) % x;
-    d = __gcd(uint64_t(abs(a - b)), x);
+    d = gcd(uint64_t(abs(a - b)), x);
     if (d == x) return PollardRho(x);
   }
   return d;
 }
 
 template <typename T> vector<T> factorize(T x) {
-	if (x <= 1) return {};
+	if (x <= 1) return vector<T>();
 	T p = PollardRho(x);
-	if (p == x) return {x};
+	if (p == x) return vector<T>(1, x);
 	vector<T> ans, lhs = factorize(p), rhs = factorize(x / p);
 	Merge(lhs, rhs, ans);
 	return ans;
@@ -311,4 +322,21 @@ template <typename T> T phi(T x) {
 	}
 
 	return ans;
+}
+
+template <typename T> vector<pair<T, T>> BitDecomposition(T l, T r) {
+	vector<pair<T, T>> lhs, rhs;
+	while (l + (l & -l) - 1 <= r) {
+		lhs.push_back(make_pair(l, l + (l & -l) - 1));
+		l += (l & -l);
+	}
+
+	while (r - ((r + 1) & -(r + 1)) + 1 >= l) {
+		rhs.push_back(make_pair(r - ((r + 1) & -(r + 1)) + 1, r));
+		r -= (r + 1) & -(r + 1);
+	}
+
+	reverse(rhs);
+	for (pair<ll, ll> i : rhs) lhs.push_back(i);
+	return lhs;
 }

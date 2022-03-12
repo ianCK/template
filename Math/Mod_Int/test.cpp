@@ -38,6 +38,7 @@ constexpr int kMod = 998244353;
 #include "C:\Users\ianli\Desktop\CP\template\Various\Fast_IO\Fast_IO.cpp"
 #include "C:\Users\ianli\Desktop\CP\template\Various\Useful_Functions\Useful_Functions.cpp"
 #include "C:\Users\ianli\Desktop\CP\template\Various\Debug\Debug.cpp"
+#define Pre_Factorial kN
 #include "C:\Users\ianli\Desktop\CP\template\Math\Mod_Int\Mod_Int.cpp"
 
 int main() {

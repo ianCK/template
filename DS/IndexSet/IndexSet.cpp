@@ -11,11 +11,13 @@ class IndexSet {
 		IndexSet(int n);
 		~IndexSet();
 
+		void init(int n);
 		void resize(int n);
 		void clear();
 		bool contains(int n) const;
 		int size() const;
 		bool empty() const;
+		int any() const;
 
 		void insert(int v);
 		void erase(int v);
@@ -29,6 +31,12 @@ class IndexSet {
 IndexSet::IndexSet() {}
 IndexSet::IndexSet(int n) : _pos(n, -1) {_val.reserve(n);}
 IndexSet::~IndexSet() {}
+
+void IndexSet::init(int n) {
+	_pos.clear(); _pos.resize(n, -1);
+	_val.clear(); _val.reserve(n);
+	return ;
+}
 
 void IndexSet::resize(int n) {
 	_pos.resize(n, -1);
@@ -45,6 +53,7 @@ void IndexSet::clear() {
 bool IndexSet::contains(int v) const {return _pos[v] != -1;}
 int IndexSet::size() const {return int(_val.size());}
 bool IndexSet::empty() const {return _val.empty();}
+int IndexSet::any() const {return _val.back();}
 
 void IndexSet::insert(int v) {
 	if (!this -> contains(v)) {

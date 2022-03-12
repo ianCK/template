@@ -62,9 +62,8 @@ int main() {
 	for (int i = 1; i <= n; i++) mcmf.add_edge(cid[i], T, 0, k, 0);
 
 	ll ans = 0;
-	ans += ll(kInf) * n * k;
-	for (int i = 1; i <= n; i++) for (int j = 1; j <= n; j++) mcmf.add_edge(rid[i], cid[j], 0, 1, kInf - a[i][j]);
-	for (int i = 1; i <= n; i++) mcmf.add_edge(rid[i], T, 0, k, kInf);
+	for (int i = 1; i <= n; i++) for (int j = 1; j <= n; j++) mcmf.add_edge(rid[i], cid[j], 0, 1, -a[i][j]);
+	for (int i = 1; i <= n; i++) mcmf.add_edge(rid[i], T, 0, k, 0);
 
 	mcmf.set_supply(S, n * k);
 	mcmf.set_supply(T, -(n * k));

@@ -1,4 +1,3 @@
-// Compile flags -Wall -Wextra -Wshadow -D_GLIBCXX_ASSERTIONS -DDEBUG -ggdb3 -fmax-errors=2
 #include <bits/stdc++.h>
 using namespace std;
 #define PB push_back
@@ -9,32 +8,57 @@ using namespace std;
 #define R Read
 #define RD Read_Digit
 #define RP Read_P
+#define RS Read_String
 #define RL Read_Loop
 #define RLD Read_Loop_Digit
 #define RLP Read_Loop_P
+#define RLS Read_Loop_String
+#ifdef ONLINE_JUDGE
+	#define Debug(...) ;
+	#define Debug_Array(n,x) ;
+	#define Debugln_Array(n,x) ;
+	#define NL ;
+#else
+	#define Debug(...) {printf("(%s) = ",(#__VA_ARGS__)),_print(__VA_ARGS__),printf("\n");}
+	#define Debug_Array(n,x) {printf("%s :",(#x));for(int i=1;i<=n;i++)printf(" "),_print(x[i]);printf("\n");}
+	#define Debugln_Array(n,x) {for(int i=1;i<=n;i++){printf("%s",(#x));printf("[%d] = ", i);_print(x[i]);printf("\n");}}
+	#define NL {printf("\n");}
+#endif
 typedef long long int ll;
+typedef unsigned long long int ull;
 
-constexpr int kN = int(1E3 + 10);
+constexpr int kN = int(1E5 + 10);
 // constexpr int kMod = 998244353;
-// constexpr int kInf = 0x3f3f3f3f;
+// constexpr int kMod = int(1E9 + 7);
+constexpr int kInf = 0x3f3f3f3f;
 // constexpr ll kInf = 0x3f3f3f3f3f3f3f3f;
 // constexpr double kPi = acos(-1);
 // constexpr double kEps = 1E-9;
-
-template <typename T> T ABS(T n) {return n >= 0 ? n : -n;}
+// constexpr int dx[4] = {0, 0, 1, -1};
+// constexpr int dy[4] = {1, -1, 0, 0};
+// constexpr int dx[8] = {0, 0, 1, -1, 1, -1, 1, -1};
+// constexpr int dy[8] = {1, -1, 1, -1, -1, 1, 0, 0};
 
 #include "C:\Users\ianli\Desktop\CP\template\Various\Fast_IO\Fast_IO.cpp"
 #include "C:\Users\ianli\Desktop\CP\template\Various\Useful_Functions\Useful_Functions.cpp"
-int dp[kN][kN];
+#include "C:\Users\ianli\Desktop\CP\template\Various\Debug\Debug.cpp"
+#include "C:\Users\ianli\Desktop\CP\template\DS\BIT\Max.h"
+#include "C:\Users\ianli\Desktop\CP\template\DS\BIT\Min.h"
+
+BIT_min<int> bit_min;
+BIT_max<ll> bit_max;
 
 int main() {
-	//ios::sync_with_stdio(false);
-	//cin.tie(0);
-	//freopen("file_name", "r", stdin);
-	//freopen("file_name", "w", stdout);
-	int *p = dp;
-	for (int i = 1; i <= 5; i++) for (int j = 1; j <= 5; j++) dp[i][j] = i - j;
-	for (int i = 1; i <= 5; i++, printf("\n")) for (int j = 1; j <= 5; j++) printf("%d ", p[i][j]);
 
+	bit_min.init(5);
+	bit_min.fix(3, 3);
+	bit_min.fix(2, 5);
+
+	for (int i = 1; i <= 5; i++) Debug(i, bit_min.ask(i));
+	NL;
+
+	bit_max.init(10);
+	for (int i = 1; i <= 10; i++) bit_max.fix(i, i * i - i * 5);
+	for (int i = 1; i <= 10; i++) Debug(i, bit_max.ask(i));
 
 }

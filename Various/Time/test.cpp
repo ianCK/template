@@ -42,7 +42,7 @@ constexpr int kN = int(1E5 + 10);
 #include "C:\Users\ianli\Desktop\CP\template\Various\Fast_IO\Fast_IO.cpp"
 #include "C:\Users\ianli\Desktop\CP\template\Various\Useful_Functions\Useful_Functions.cpp"
 #include "C:\Users\ianli\Desktop\CP\template\Various\Debug\Debug.cpp"
-#include "C:\Users\ianli\Desktop\CP\template\Various\Time\Time.cpp"
+#include "C:\Users\ianli\Desktop\CP\template\Various\Time\Time_Slope.cpp"
 
 Time_slope slope(0, 1, 0.995);
 

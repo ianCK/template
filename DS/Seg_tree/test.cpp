@@ -38,22 +38,20 @@ constexpr int kN = int(1E5 + 10);
 #include "C:\Users\ianli\Desktop\CP\template\Various\Fast_IO\Fast_IO.cpp"
 #include "C:\Users\ianli\Desktop\CP\template\Various\Useful_Functions\Useful_Functions.cpp"
 #include "C:\Users\ianli\Desktop\CP\template\Various\Debug\Debug.cpp"
-#include "C:\Users\ianli\Desktop\CP\template\DS\Seg_tree\rs.cpp"
+#include "C:\Users\ianli\Desktop\CP\template\DS\Seg_tree\semigroup.cpp"
+#include "C:\Users\ianli\Desktop\CP\template\DS\Basic_Operations\Basic_Operations.cpp"
 
-Seg_tree_rs<int> sg;
+seg_tree_semigroup<int, BASIC_OPERATION_ADD> sg;
 int a[20];
 
 int main() {
 	int n = 5;
 
 	for (int i = 1; i <= n; i++) a[i] = 5 - i;
+	Debug_Array(5, a);
 	sg.init(n, a);
 
-	Debug(sg);
-
-	sg.set(2, 4, 3);
-
-	Debug(sg);
+	for (int i = 1; i <= n; i++) for (int j = i; j <= n; j++) Debug(i,j, sg.ask(i, j));
 
 	return 0;
 }

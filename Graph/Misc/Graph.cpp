@@ -1,58 +1,42 @@
-// 0 based
+// 0-based
+// un directional
+
 class Graph {
 	private:
-		vector<vector<int>> _graph;
+		int n, m;
+		int *ed, *to;
 
 	public:
 		Graph();
-		Graph(int n);
+		Graph(int _n);
 		~Graph();
 
-		int size() const;
-		void init(int n);
-
 		void clear();
-		void AddEdge(int u, int v);
-		void AddEdge_B(int u, int v);
+		void setN(int _n);
 
-		vector<int> & operator [](int n); 
-		vector<int> const & operator [](int n) const;
+		void AddEdge(int u, int v);
+
 		void out() const;
 };
 
-Graph::Graph() {}
-Graph::Graph(int n) : _graph(n) {}
-Graph::~Graph() {}
-
-int Graph::size() const {return int(_graph.size());}
-void Graph::init(int n) {
-	clear();
-	return _graph.resize(n);
+Graph::Graph() : n(0), m(0), ed(nullptr), to(nullptr) {}
+Graph::Graph(int _n, int _m) : n(_n), m(_m), ed(nullptr), to(nullptr) {}
+Graph::~Graph() {
+	delete [] ed;
+	delete [] to;
 }
 
-void Graph::clear() {return _graph.clear();}
-
-void Graph::AddEdge(int u, int v) {return _graph[u].push_back(v);}
-void Graph::AddEdge_B(int u, int v) {return _graph[u].push_back(v), _graph[v].push_back(u);}
-
-vector<int> & Graph::operator [](int n) {return _graph[n];}
-vector<int> const & Graph::operator [](int n) const {return _graph[n];}
-
-void Graph::out() const {
-	int sz = int(_graph.size());
-	printf("Graph :\n");
-	for (int i = 0; i < sz; i++) {
-		printf("%d :", i);
-
-		bool first = true;
-		for (int j : _graph[i]) {
-			if (first) first = false;
-			else printf(",");
-			printf(" %d", j);
-		}
-
-		printf("\n");
-	}
-	printf("------");
+void Graph::clear() {
+	n = 0, m = 0;
+	delete [] ed;
+	delete [] to;
 	return ;
+}
+
+void Graph::setN(int _n, int _m) {
+	n = _n;
+	return ;
+}
+
+void AddEdge(int u, int v) {
 }

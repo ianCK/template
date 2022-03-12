@@ -1,5 +1,5 @@
-bool Fast_IO_activated = false;
-bool IOS_activated = false;
+static bool Fast_IO_activated = false;
+static bool IOS_activated = false;
 // --- Get ---
 static inline char Get_Raw_Char() {
 	static bool pre = Fast_IO_activated = true;
@@ -41,9 +41,10 @@ template <typename T> static inline void Read_Digit(T &n) {
 }
 
 static inline void Read_String(string &s) {
+	s.clear();
 	char c = Get_Raw_Char();
-	while (c == ' ' || c == '\n') c = Get_Raw_Char();
-	while (c != ' ' && c != '\n') {
+	while (c == ' ' or c == '\n') c = Get_Raw_Char();
+	while (c != ' ' and c != '\n') {
 		s += c;
 		c = Get_Raw_Char();
 	}
@@ -127,7 +128,8 @@ inline void IOS() {
 inline void Freopen(const char *in, const char *out) {freopen(in, "r", stdin); freopen(out, "w", stdout); return ;}
 
 // --- Output ---
-template <typename T> void Print(T x) {
+#if defined(__SIZEOF_INT128__)
+void Print(__int128 x) {
 	if (x < 0) {
 		printf("-");
 		x = -x;
@@ -143,3 +145,4 @@ template <typename T> void Print(T x) {
 		while (idx >= 0) printf("%d", val[idx--]);
 	}
 } 
+#endif

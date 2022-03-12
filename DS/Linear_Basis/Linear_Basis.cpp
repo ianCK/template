@@ -59,7 +59,6 @@ template <int max_bit> struct Linear_Basis {
 	}
 
 	bool can_produce(bitset<max_bit> x) const {
-		if (x.none()) return have_zero;
 		for (int i = 0, now = 0; i < max_bit && now < current_size; i++) {
 			if (x[i]) {
 				if (bs[now][i]) x ^= bs[now++];

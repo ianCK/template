@@ -1,0 +1,10 @@
+
+	vector<int> lhs = {1, 3, 6}, rhs = {-2, -4, -5};
+
+	vector<int> ans;
+	ans.resize(6);
+	merge(lhs.begin(), lhs.end(), rhs.begin(), rhs.end(), ans.begin(), [](int r, int l) -> bool {
+			return l > -r;
+			});
+
+	Debug(ans); // {1, -2, 3, -4, -5, 6}

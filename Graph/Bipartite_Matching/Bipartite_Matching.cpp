@@ -15,23 +15,23 @@ struct Bipartite_Matching {
 	vector<bool> vis;
 	int bfs_dis, x_size, y_size;
 
-	Bipartite_Matching() {}
+	Bipartite_Matching() : head(nullptr), disx(nullptr), disy(nullptr), matchx(nullptr), matchy(nullptr) {}
 	~Bipartite_Matching() {
-		delete [] head; head = new int[x_size];
-		delete [] disx; disx = new int[x_size];
-		delete [] disy; disy = new int[y_size];
-		delete [] matchx; matchx = new int[x_size];
-		delete [] matchy; matchy = new int[y_size];
+		delete [] head;
+		delete [] disx;
+		delete [] disy;
+		delete [] matchx;
+		delete [] matchy;
 	}
 
 	void init(int n, int m) {
 		x_size = n, y_size = m;
 		edge.clear();
-		delete [] head; head = new int[x_size];
-		delete [] disx; disx = new int[x_size];
-		delete [] disy; disy = new int[y_size];
-		delete [] matchx; matchx = new int[x_size];
-		delete [] matchy; matchy = new int[y_size];
+		if (head) delete [] head; head = new int[x_size];
+		if (disx) delete [] disx; disx = new int[x_size];
+		if (disy) delete [] disy; disy = new int[y_size];
+		if (matchx) delete [] matchx; matchx = new int[x_size];
+		if (matchy) delete [] matchy; matchy = new int[y_size];
 		vis.clear(); vis.resize(y_size);
 		memset(head, -1, sizeof(int) * x_size);
 		return ;

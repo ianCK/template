@@ -10,6 +10,9 @@ struct Chromatic {
 
 	public:
 	Chromatic() : n(0), neighbor(nullptr) {}
+	~Chromatic() {
+		delete [] neighbor;
+	}
 
 	void init(int _n) {
 		delete [] neighbor;
@@ -36,9 +39,10 @@ struct Chromatic {
 
 		int *val = new int[tot + 1];
 		memset(val, 0, sizeof(int) * (tot + 1));
-		for (int S = 0; S < tot; S++) 
+		for (int S = 0; S < tot; S++) {
 			if (__builtin_parity(S)) val[I[S]]++;
 			else val[I[S]]--;
+		}
 
 		delete [] I;
 
