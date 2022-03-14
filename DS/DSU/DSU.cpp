@@ -1,32 +1,12 @@
-// 0-base
-class DSU {
-	private:
-		int *p;
-		int size;
-		int components;
+#include "DSU.h"
 
-	public:
-		DSU();
-		DSU(int n);
-		DSU(const DSU& oth);
-		~DSU();
-
-		void init(int n);
-		void clear();
-
-		int Find(int n);
-
-		inline int union_size(int n);
-		inline bool same(int l, int r);
-		inline int component_count() const;
-
-		bool Merge(int l, int r);
-};
-
+#include <string.h>
+#include <algorithm>
+using namespace std;
 	
-DSU::DSU() : components(0), size(0), p(nullptr) {}
-DSU::DSU(int n) : components(n), size(n), p(new int[n]) {memset(p, -1, sizeof(int) * n);}
-DSU::DSU(const DSU& oth) : components(oth.components), size(oth.size), p(new int[oth.size]) {
+DSU::DSU() : p(nullptr), size(0), components(0) {}
+DSU::DSU(int n) : p(new int [n]), size(n), components(n) {memset(p, -1, sizeof(int) * n);}
+DSU::DSU(const DSU& oth) : p(new int[oth.size]), size(oth.size), components(oth.components) {
 	memcpy(p, oth.p, sizeof(int) * size);
 }
 DSU::~DSU() {delete [] p;}
@@ -46,9 +26,9 @@ void DSU::clear() {
 
 int DSU::Find(int n) {return p[n] < 0 ? n : p[n] = Find(p[n]);}
 
-inline int DSU::union_size(int n) {return -p[Find(n)];}
-inline bool DSU::same(int l, int r) {return Find(l) == Find(r);}
-inline int DSU::component_count() const {return components;}
+int DSU::union_size(int n) {return -p[Find(n)];}
+bool DSU::same(int l, int r) {return Find(l) == Find(r);}
+int DSU::component_count() const {return components;}
 
 bool DSU::Merge(int l, int r) {
 	l = Find(l), r = Find(r);

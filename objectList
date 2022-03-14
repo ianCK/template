@@ -1,2 +1,4 @@
-DS/BIT/Min.o
-DS/BIT/Max.o
+DS\BIT\Min.o
+DS\BIT\Max.o
+
+DS\DSU\DSU.o

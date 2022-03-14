@@ -59,6 +59,7 @@ vector<string> readObjectList() {
 	string line;
 	while (getline(file, line)) {
 		if (line.substr(0, commentPrefix.length()) == commentPrefix) continue;
+		else if (line == "") continue;
 		else ret.PB(templatePath + line);
 	}
 
@@ -66,12 +67,16 @@ vector<string> readObjectList() {
 }
 
 int main(int argc, const char* argv[]) {
-	if (argc != 2) {
-		cout << "Usage: compile sol.cpp\n"; 
-		return 0;
+	string cppfile = "";
+	for (int i = 1; i < argc; i++) {
+		if (string(argv[i]) == "-DEBUG") _system_debug = true;
+		else cppfile = string(argv[i]);
 	}
 
-	string cppfile = string(argv[1]);
+	if (cppfile == "") {
+		cout << "No cppfile\n";
+		return 0;
+	}
 
 	vector<string> objects = readObjectList();
 

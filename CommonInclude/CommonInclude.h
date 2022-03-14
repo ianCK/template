@@ -7,14 +7,6 @@ using namespace std;
 #define S second
 #define MP make_pair
 #define MTP make_tuple
-#define R Read
-#define RD Read_Digit
-#define RP Read_P
-#define RS Read_String
-#define RL Read_Loop
-#define RLD Read_Loop_Digit
-#define RLP Read_Loop_P
-#define RLS Read_Loop_String
 #ifdef ONLINE_JUDGE
 	#define Debug(...) ;
 	#define Debug_Array(n,x) ;
