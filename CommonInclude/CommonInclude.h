@@ -18,5 +18,7 @@ using namespace std;
 	#define Debugln_Array(n,x) {for(int i=1;i<=n;i++){printf("%s",(#x));printf("[%d] = ", i);_print(x[i]);printf("\n");}}
 	#define NL {printf("\n");}
 #endif
+
+typedef unsigned int ui;
 typedef long long int ll;
 typedef unsigned long long int ull;

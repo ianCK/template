@@ -132,6 +132,8 @@ class FastIO {
 		template <typename... Targs> void RLS(int n, Targs*... Fargs) {for (int i = 1; i <= n; i++) RLSi(i, Fargs...);}
 		template <typename... Targs> void RLS0(int n, Targs*... Fargs) {for (int i = 0; i < n; i++) RLSi(i, Fargs...);}
 
+		// --- Write ---
+
 		template <typename T> void W(const T& n) {
 			static_assert(is_integral<T>::value, "W requires an integral type");
 			if (n < 0) WC('-');
