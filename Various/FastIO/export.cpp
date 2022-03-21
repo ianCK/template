@@ -1,4 +1,10 @@
 // Merged by FileMerger.exe
+// --- Start of C:\Users\ianli\Desktop\CP\template\Various\FastIO\test.cpp --- 
+// --- Start of C:\Users\ianli\Desktop\CP\template\Various\Pragma\Pragma.cpp --- 
+#define _GLIBCXX_GTHREAD_USE_WEAK 0
+#pragma GCC optimize("O3,Ofast,unroll-loops")
+#pragma GCC target("adx,aes,avx2,avx,bmi2,bmi,clflushopt,cx16,f16c,fma,fsgsbase,hle,lzcnt,movbe,sse4,pclmul,popcnt,prfchw,sahf,sse3,sse4.1,sse4.2,ssse3,xsavec,xsave,xsaveopt,xsaves")
+// --- End of C:\Users\ianli\Desktop\CP\template\Various\Pragma\Pragma.cpp --- 
 // --- Start of C:\Users\ianli\Desktop\CP\template\CommonInclude\CommonInclude.h --- 
 
 #include <bits/stdc++.h>
@@ -19,12 +25,237 @@ using namespace std;
 	#define Debugln_Array(n,x) {for(int i=1;i<=n;i++){printf("%s",(#x));printf("[%d] = ", i);_print(x[i]);printf("\n");}}
 	#define NL {printf("\n");}
 #endif
+
+typedef unsigned int ui;
 typedef long long int ll;
 typedef unsigned long long int ull;
 // --- End of C:\Users\ianli\Desktop\CP\template\CommonInclude\CommonInclude.h --- 
 // --- Start of C:\Users\ianli\Desktop\CP\template\CommonInclude\CommonInclude.cpp --- 
 // --- End of C:\Users\ianli\Desktop\CP\template\CommonInclude\CommonInclude.cpp --- 
+
+constexpr int kN = int(1E6 + 10);
+// constexpr int kMod = 998244353;
+// constexpr int kMod = int(1E9 + 7);
+// constexpr int kInf = 0x3f3f3f3f;
+// constexpr ll kInf = 0x3f3f3f3f3f3f3f3f;
+// constexpr double kPi = acos(-1);
+// constexpr double kEps = 1E-9;
+// constexpr int dx[4] = {0, 0, 1, -1};
+// constexpr int dy[4] = {1, -1, 0, 0};
+// constexpr int dx[8] = {0, 0, 1, -1, 1, -1, 1, -1};
+// constexpr int dy[8] = {1, -1, 1, -1, -1, 1, 0, 0};
+
 // --- Start of C:\Users\ianli\Desktop\CP\template\Various\FastIO\FastIO.h --- 
+
+// --- Start of C:\Users\ianli\Desktop\CP\template\Various\FastIO\Input\Input.h --- 
+
+template <int bufferSize> class Input {
+	public:
+		Input();
+		Input(FILE*  _file);
+		Input(string path);
+
+		template <typename T> void R (T& n);
+		template <typename T> void RP(T& n);
+		template <typename T> void RD(T& n);
+		void RS(string& s);
+
+		template <typename T, typename... Targs> void R (T& n, Targs&... Fargs);
+		template <typename T, typename... Targs> void RP(T& n, Targs&... Fargs);
+		template <typename T, typename... Targs> void RD(T& n, Targs&... Fargs);
+		template <typename... Targs> void RS(string& s, Targs&... Fargs);
+
+		template <typename... Targs> void RL  (int n, Targs*... Fargs);
+		template <typename... Targs> void RL0 (int n, Targs*... Fargs);
+		template <typename... Targs> void RLP (int n, Targs*... Fargs);
+		template <typename... Targs> void RLP0(int n, Targs*... Fargs);
+		template <typename... Targs> void RLD (int n, Targs*... Fargs);
+		template <typename... Targs> void RLD0(int n, Targs*... Fargs);
+		template <typename... Targs> void RLS (int n, Targs*... Fargs);
+		template <typename... Targs> void RLS0(int n, Targs*... Fargs);
+
+	private:
+
+		FILE* file;
+		char buffer[bufferSize];
+		int pointer;
+
+		void read();
+		char getRawChar();
+		static bool isDigit(char c);
+
+		template <typename T> void RLi(int i, T* a);
+		template <typename T, typename... Targs> void RLi(int i, T* a, Targs*... Fargs);
+
+		template <typename T> void RLPi(int i, T* a);
+		template <typename T, typename... Targs> void RLPi(int i, T* a, Targs*... Fargs);
+
+		template <typename T> void RLDi(int i, T* a);
+		template <typename T, typename... Targs> void RLDi(int i, T* a, Targs*... Fargs);
+
+		void RLSi(int i, string* a);
+		template <typename... Targs> void RLSi(int i, string* a, Targs*... Fargs);
+};
+
+// --- Start of C:\Users\ianli\Desktop\CP\template\Various\FastIO\Input\Input.ipp --- 
+template <int bufferSize> Input<bufferSize>::Input() : file(stdin) { read(); }
+template <int bufferSize> Input<bufferSize>::Input(FILE*  _file) : file(_file) { read(); }
+template <int bufferSize> Input<bufferSize>::Input(string path) : file(fopen(path.c_str(), "r")) { read(); }
+
+template <int bufferSize> template <typename T> void Input<bufferSize>::R (T& n) {
+	static_assert(is_integral<T>::value, "R requires an integral type");
+	char c;
+	bool neg = false;
+	while (!isDigit(c = getRawChar())) if (c == '-') neg = true;
+	n = int(c - '0');
+	while (isDigit(c = getRawChar())) n = n * 10 + int(c - '0');
+	if (neg) n = -n;
+	return ;
+}
+
+template <int bufferSize> template <typename T> void Input<bufferSize>::RP(T& n) {
+	static_assert(is_integral<T>::value, "RP requires an integral type");
+	char c;
+	while (!isDigit(c = getRawChar())) ;
+	n = int(c - '0');
+	while (isDigit(c = getRawChar())) n = n * 10 + int(c - '0');
+	return ;
+}
+
+template <int bufferSize> template <typename T> void Input<bufferSize>::RD(T& n) {
+	static_assert(is_integral<T>::value, "RD requires an integral type");
+	char c;
+	while (!isDigit(c = getRawChar())) ;
+	n = int(c - '0');
+	return ;
+}
+
+template <int bufferSize> void Input<bufferSize>::RS(string& s) {
+	s.clear();
+	char c = getRawChar();
+	while (c == ' ' or c == '\n') c = getRawChar();
+	while (c != ' ' and c != '\n') {
+		s += c;
+		c = getRawChar();
+	}
+	return ;
+}
+
+template <int bufferSize> template <typename T, typename... Targs> void Input<bufferSize>::R (T& n, Targs&... Fargs) { R(n); return R(Fargs...); }
+template <int bufferSize> template <typename T, typename... Targs> void Input<bufferSize>::RP(T& n, Targs&... Fargs) { RP(n); return RP(Fargs...); }
+template <int bufferSize> template <typename T, typename... Targs> void Input<bufferSize>::RD(T& n, Targs&... Fargs) { RD(n); return RD(Fargs...); }
+template <int bufferSize> template <typename... Targs> void Input<bufferSize>::RS(string& s, Targs&... Fargs) { RS(s); return RS(Fargs...); }
+template <int bufferSize> template <typename... Targs> void Input<bufferSize>::RL  (int n, Targs*... Fargs) { for (int i = 1; i <= n; i++) RLi(i, Fargs...); }
+template <int bufferSize> template <typename... Targs> void Input<bufferSize>::RL0 (int n, Targs*... Fargs) { for (int i = 0; i < n; i++)  RLi(i, Fargs...); }
+template <int bufferSize> template <typename... Targs> void Input<bufferSize>::RLP (int n, Targs*... Fargs) { for (int i = 1; i <= n; i++) RLPi(i, Fargs...); }
+template <int bufferSize> template <typename... Targs> void Input<bufferSize>::RLP0(int n, Targs*... Fargs) { for (int i = 0; i < n; i++)  RLPi(i, Fargs...); }
+template <int bufferSize> template <typename... Targs> void Input<bufferSize>::RLD (int n, Targs*... Fargs) { for (int i = 1; i <= n; i++) RLDi(i, Fargs...); }
+template <int bufferSize> template <typename... Targs> void Input<bufferSize>::RLD0(int n, Targs*... Fargs) { for (int i = 0; i < n; i++)  RLDi(i, Fargs...); }
+template <int bufferSize> template <typename... Targs> void Input<bufferSize>::RLS (int n, Targs*... Fargs) { for (int i = 1; i <= n; i++) RLSi(i, Fargs...); }
+template <int bufferSize> template <typename... Targs> void Input<bufferSize>::RLS0(int n, Targs*... Fargs) { for (int i = 0; i < n; i++)  RLSi(i, Fargs...); }
+
+// --- private ---
+
+template <int bufferSize> void Input<bufferSize>::read() { fread(buffer, 1, bufferSize, file); pointer = 0; return ; }
+
+template <int bufferSize> char Input<bufferSize>::getRawChar() {
+	if (pointer == bufferSize) read();
+	return buffer[pointer++];
+}
+
+template <int bufferSize> bool Input<bufferSize>::isDigit(char c) { return '0' <= c and c <= '9'; }
+
+template <int bufferSize> template <typename T> void Input<bufferSize>::RLi(int i, T* a) { return R(a[i]); }
+template <int bufferSize> template <typename T, typename... Targs> void Input<bufferSize>::RLi(int i, T* a, Targs*... Fargs) { R(a[i]); return RLi(i, Fargs...); }
+
+template <int bufferSize> template <typename T> void Input<bufferSize>::RLPi(int i, T* a) { return RP(a[i]); }
+template <int bufferSize> template <typename T, typename... Targs> void Input<bufferSize>::RLPi(int i, T* a, Targs*... Fargs) { RP(a[i]); return RLPi(i, Fargs...); }
+
+template <int bufferSize> template <typename T> void Input<bufferSize>::RLDi(int i, T* a) { return RD(a[i]); }
+template <int bufferSize> template <typename T, typename... Targs> void Input<bufferSize>::RLDi(int i, T* a, Targs*... Fargs) { RD(a[i]); return RLDi(i, Fargs...); }
+
+template <int bufferSize> void Input<bufferSize>::RLSi(int i, string* a) { return RS(a[i]); }
+template <int bufferSize> template <typename... Targs> void Input<bufferSize>::RLSi(int i, string* a, Targs*... Fargs) { RS(a[i]); return RSi(i, Fargs...); }
+// --- End of C:\Users\ianli\Desktop\CP\template\Various\FastIO\Input\Input.ipp --- 
+// --- End of C:\Users\ianli\Desktop\CP\template\Various\FastIO\Input\Input.h --- 
+// --- Start of C:\Users\ianli\Desktop\CP\template\Various\FastIO\Input\Input.cpp --- 
+// --- End of C:\Users\ianli\Desktop\CP\template\Various\FastIO\Input\Input.cpp --- 
+// --- Start of C:\Users\ianli\Desktop\CP\template\Various\FastIO\Output\Output.h --- 
+
+template <int bufferSize> class Output {
+	public:
+		Output();
+		Output(FILE*  _file);
+		Output(string path);
+		~Output();
+
+		template <typename T> void W (const T& n);
+		template <typename T> void WP(const T& n);
+		template <typename T> void WD(const T& n);
+		void WC(char c);
+		void WS(const string& s);
+		void WSpace();
+		void WLine();
+
+	private:
+
+		FILE* file;
+		char buffer[bufferSize];
+		int pointer;
+
+		void flush();
+};
+
+// --- Start of C:\Users\ianli\Desktop\CP\template\Various\FastIO\Output\Output.ipp --- 
+template <int bufferSize> Output<bufferSize>::Output() : file(stdout), pointer(0) {}
+template <int bufferSize> Output<bufferSize>::Output(FILE*  _file) : file(_file), pointer(0) {}
+template <int bufferSize> Output<bufferSize>::Output(string path) : file(fopen(path.c_str(), "w")), pointer(0) {}
+template <int bufferSize> Output<bufferSize>::~Output() { flush(); }
+
+template <int bufferSize> template <typename T> void Output<bufferSize>::W (const T& n) {
+	if (n < 0) {
+		WC('-');
+		WP(-n);
+	}
+	else WP(n);
+	return ;
+}
+
+template <int bufferSize> template <typename T> void Output<bufferSize>::WP(const T& n) {
+	if (n == 0) return WC('0');
+
+	T tmp(n);
+	static char buffer[40];
+	int pointer = 0;
+
+	while (tmp) {
+		buffer[pointer++] = char(tmp % 10 + '0');
+		tmp /= 10;
+	}
+
+	for (int i = pointer - 1; i >= 0; i--) WC(buffer[i]); 
+	return ;
+}
+
+template <int bufferSize> template <typename T> void Output<bufferSize>::WD(const T& n) { return WC(char(n + '0')); }
+
+template <int bufferSize> void Output<bufferSize>::WC(char c) {
+	if (pointer == bufferSize) flush();
+	buffer[pointer++] = c;
+	return ;
+}
+
+template <int bufferSize> void Output<bufferSize>::WS(const string& s) { for (char c : s) WC(c); return ; }
+template <int bufferSize> void Output<bufferSize>::WSpace() { return WC(' '); }
+template <int bufferSize> void Output<bufferSize>::WLine() { return WC('\n'); }
+
+// --- private ---
+
+template <int bufferSize> void Output<bufferSize>::flush() { fwrite(buffer, 1, pointer, file); pointer = 0; return ; }
+// --- End of C:\Users\ianli\Desktop\CP\template\Various\FastIO\Output\Output.ipp --- 
+// --- End of C:\Users\ianli\Desktop\CP\template\Various\FastIO\Output\Output.h --- 
+// --- Start of C:\Users\ianli\Desktop\CP\template\Various\FastIO\Output\Output.cpp --- 
+// --- End of C:\Users\ianli\Desktop\CP\template\Various\FastIO\Output\Output.cpp --- 
 
 // R -> Read
 // D -> digit (no check for neg, only one digit)
@@ -34,162 +265,89 @@ typedef unsigned long long int ull;
 // W -> write
 
 class FastIO {
+	public:
+		FastIO();
+		FastIO(FILE*  inputFile, FILE*  outputFile);
+		FastIO(string inputPath, FILE*  outputFile);
+		FastIO(FILE*  inputFile, string outputPath);
+		FastIO(string inputPath, string outputPath);
+
+		// --- Input ---
+
+		template <typename T> void R (T& n);
+		template <typename T> void RP(T& n);
+		template <typename T> void RD(T& n);
+		void RS(string& s);
+
+		template <typename T, typename... Targs> void R (T& n, Targs&... Fargs);
+		template <typename T, typename... Targs> void RP(T& n, Targs&... Fargs);
+		template <typename T, typename... Targs> void RD(T& n, Targs&... Fargs);
+		template <typename... Targs> void RS(string& s, Targs&... Fargs);
+
+		template <typename... Targs> void RL  (int n, Targs*... Fargs);
+		template <typename... Targs> void RL0 (int n, Targs*... Fargs);
+		template <typename... Targs> void RLP (int n, Targs*... Fargs);
+		template <typename... Targs> void RLP0(int n, Targs*... Fargs);
+		template <typename... Targs> void RLD (int n, Targs*... Fargs);
+		template <typename... Targs> void RLD0(int n, Targs*... Fargs);
+		template <typename... Targs> void RLS (int n, Targs*... Fargs);
+		template <typename... Targs> void RLS0(int n, Targs*... Fargs);
+
+		// --- Output ---
+
+		template <typename T> void W (const T& n);
+		template <typename T> void WP(const T& n);
+		template <typename T> void WD(const T& n);
+		void WC(char c);
+		void WS(const string& s);
+		void WSpace();
+		void WLine();
+
 	private:
 		static constexpr int bufferSize = 1 << 16;
-		static constexpr int bufferMod = bufferSize - 1; // (use & to mod)
 
-		FILE *input, *output;
-
-		char inputBuffer[bufferSize];
-		char outputBuffer[bufferSize];
-
-		int inputPointer;
-		int outputPointer;
-
-		char getRawChar() {
-			if (inputPointer == bufferSize) {
-				fread(inputBuffer, 1, bufferSize, input);
-				inputPointer = 0;
-			}
-			return inputBuffer[inputPointer++];
-		}
-
-		static bool isDigit(char c) {return '0' <= c and c <= '9';}
-
-		void outputAll() {
-			fwrite(outputBuffer, 1, bufferSize, output);
-			return ;
-		}
-		void outputRemain() {
-			fwrite(outputBuffer, 1, outputPointer, output);
-			return ;
-		}
-
-		template <typename T> void RLi(int i, T *a) {return R(a[i]);}
-		template <typename T, typename... Targs> void RLi(int i, T *a, Targs*... Fargs) {R(a[i]); return RLi(i, Fargs...);}
-
-		template <typename T> void RLPi(int i, T *a) {return RP(a[i]);}
-		template <typename T, typename... Targs> void RLPi(int i, T *a, Targs*... Fargs) {RP(a[i]); return RLPi(i, Fargs...);}
-
-		template <typename T> void RLDi(int i, T *a) {return RD(a[i]);}
-		template <typename T, typename... Targs> void RLDi(int i, T *a, Targs*... Fargs) {RD(a[i]); return RLDi(i, Fargs...);}
-
-		void RLSi(int i, string *a) {return RS(a[i]);}
-		template <typename... Targs> void RLSi(int i, string *a, Targs*... Fargs) {RS(a[i]); return RLSi(i, Fargs...);}
-
-		void WC(char c) {
-			if (outputPointer == bufferSize) {
-				outputAll();
-				outputPointer = 0;
-			}
-			outputBuffer[outputPointer++] = c;
-			return ;
-		}
-
-	public:
-		FastIO() : input(stdin), output(stdout), inputPointer(0), outputPointer(0) {
-			fread(inputBuffer, 1, bufferSize, input);
-		}
-		FastIO(string inputPath, string outputPath) : 
-			input(fopen(inputPath.c_str(), "r")), 
-			output(fopen(outputPath.c_str(), "w")),
-			inputPointer(0),
-			outputPointer(0) {
-				fread(inputBuffer, 1, bufferSize, input);
-			}
-
-		~FastIO() {
-			outputRemain();
-			fclose(input);
-			fclose(output);
-		}
-
-		template <typename T> void R (T& n) {
-			static_assert(is_integral<T>::value, "R requires an integral type");
-			char c;
-			bool neg = false;
-			while (!isDigit(c = getRawChar())) if (c == '-') neg = true;
-			n = int(c - '0');
-			while (isDigit(c = getRawChar())) n = n * 10 + int(c - '0');
-			if (neg) n = -n;
-			return ;
-		}
-		template <typename T> void RP(T& n) {
-			static_assert(is_integral<T>::value, "RP requires an integral type");
-			char c;
-			while (!isDigit(c = getRawChar()));
-			n = int(c - '0');
-			while (isDigit(c = getRawChar())) n = n * 10 + int(c - '0');
-			return ;
-		}
-		template <typename T> void RD(T& n) {
-			static_assert(is_integral<T>::value, "RD requires an integral type");
-			char c;
-			while (!isDigit(c = getRawChar())) ;
-			n = int(c - '0');
-			return ;
-		}
-		void RS(string& s) {
-			// Can optimize?
-			s.clear();
-			char c = getRawChar();
-			while (c == ' ' or c == '\n') c = getRawChar();
-			while (c != ' ' and c != '\n') {
-				s += c;
-				c = getRawChar();
-			}
-			return ;
-		}
-
-		template <typename T, typename... Targs> void R (T &n, Targs&... Fargs) {R (n); return R (Fargs...);}
-		template <typename T, typename... Targs> void RD(T &n, Targs&... Fargs) {RD(n); return RD(Fargs...);}
-		template <typename T, typename... Targs> void RP(T &n, Targs&... Fargs) {RP(n); return RP(Fargs...);}
-		template <typename... Targs> void RS(string &s, Targs&... Fargs) {RS(s); return RS(Fargs...);}
-
-		template <typename... Targs> void RL(int n, Targs*... Fargs) {for (int i = 1; i <= n; i++) RLi(i, Fargs...);}
-		template <typename... Targs> void RL0(int n, Targs*... Fargs) {for (int i = 0; i < n; i++) RLi(i, Fargs...);}
-
-		template <typename... Targs> void RLP(int n, Targs*... Fargs) {for (int i = 1; i <= n; i++) RLPi(i, Fargs...);}
-		template <typename... Targs> void RLP0(int n, Targs*... Fargs) {for (int i = 0; i < n; i++) RLPi(i, Fargs...);}
-
-		template <typename... Targs> void RLD(int n, Targs*... Fargs) {for (int i = 1; i <= n; i++) RLDi(i, Fargs...);}
-		template <typename... Targs> void RLD0(int n, Targs*... Fargs) {for (int i = 0; i < n; i++) RLDi(i, Fargs...);}
-
-		template <typename... Targs> void RLS(int n, Targs*... Fargs) {for (int i = 1; i <= n; i++) RLSi(i, Fargs...);}
-		template <typename... Targs> void RLS0(int n, Targs*... Fargs) {for (int i = 0; i < n; i++) RLSi(i, Fargs...);}
-
-		template <typename T> void W(const T& n) {
-			static_assert(is_integral<T>::value, "W requires an integral type");
-			if (n < 0) WC('-');
-			return WP(-n);
-		}
-		template <typename T> void WP(const T& n) {
-			static_assert(is_integral<T>::value, "WP requires an integral type");
-
-			if (n == 0) return WC('0');
-
-			T tmp = n;
-
-			static char buffer[40];
-
-			int pointer = 0;
-			while (tmp) {
-				buffer[pointer++] = char(tmp % 10 + '0');
-				tmp /= 10;
-			}
-
-			for (int i = pointer - 1; i >= 0; i--) WC(buffer[i]);
-
-			return ;
-		}
-		template <typename T> void WD(const T& n) {
-			static_assert(is_integral<T>::value, "WD requires an integral type");
-			return WC(char(n + '0'));
-		}
-		void WS(const string& s) {for (char c : s) WC(c); return ;}
-		void WSpace() {return WC(' ');}
-		void WLine() {return WC('\n');}
+		Input<bufferSize> input;
+		Output<bufferSize> output;
 };
+
+// --- Start of C:\Users\ianli\Desktop\CP\template\Various\FastIO\FastIO.ipp --- 
+FastIO::FastIO() : input(stdin), output(stdout) {}
+FastIO::FastIO(FILE*  inputFile, FILE*  outputFile) : input(inputFile), output(outputFile) {}
+FastIO::FastIO(string inputPath, FILE*  outputFile) : input(inputPath), output(outputFile) {}
+FastIO::FastIO(FILE*  inputFile, string outputPath) : input(inputFile), output(outputPath) {}
+FastIO::FastIO(string inputPath, string outputPath) : input(inputPath), output(outputPath) {}
+
+// --- Input ---
+
+template <typename T> void FastIO::R (T& n) { return input.R(n); }
+template <typename T> void FastIO::RP(T& n) { return input.RP(n); }
+template <typename T> void FastIO::RD(T& n) { return input.RD(n); }
+void FastIO::RS(string& s) {return input.RS(s); }
+
+template <typename T, typename... Targs> void FastIO::R (T& n, Targs&... Fargs) { return input.R(n, Fargs...); }
+template <typename T, typename... Targs> void FastIO::RP(T& n, Targs&... Fargs) { return input.RP(n, Fargs...); }
+template <typename T, typename... Targs> void FastIO::RD(T& n, Targs&... Fargs) { return input.RD(n, Fargs...); }
+template <typename... Targs> void FastIO::RS(string& s, Targs&... Fargs) { return input.RS(s, Fargs...); }
+
+template <typename... Targs> void FastIO::RL  (int n, Targs*... Fargs) { return input.RL(n, Fargs...); }
+template <typename... Targs> void FastIO::RL0 (int n, Targs*... Fargs) { return input.RL0(n, Fargs...); }
+template <typename... Targs> void FastIO::RLP (int n, Targs*... Fargs) { return input.RLP(n, Fargs...); }
+template <typename... Targs> void FastIO::RLP0(int n, Targs*... Fargs) { return input.RLP0(n, Fargs...); }
+template <typename... Targs> void FastIO::RLD (int n, Targs*... Fargs) { return input.RLD(n, Fargs...); }
+template <typename... Targs> void FastIO::RLD0(int n, Targs*... Fargs) { return input.RLD0(n, Fargs...); }
+template <typename... Targs> void FastIO::RLS (int n, Targs*... Fargs) { return input.RLS(n, Fargs...); }
+template <typename... Targs> void FastIO::RLS0(int n, Targs*... Fargs) { return input.RLS0(n, Fargs...); }
+
+// --- Output ---
+
+template <typename T> void FastIO::W (const T& n) { return output.W(n); }
+template <typename T> void FastIO::WP(const T& n) { return output.WP(n); }
+template <typename T> void FastIO::WD(const T& n) { return output.WD(n); }
+void FastIO::WC(char c) { return output.WC(c); }
+void FastIO::WS(const string& s) { return output.WS(s); }
+void FastIO::WSpace() { return output.WSpace(); }
+void FastIO::WLine() { return output.WLine(); }
+// --- End of C:\Users\ianli\Desktop\CP\template\Various\FastIO\FastIO.ipp --- 
 // --- End of C:\Users\ianli\Desktop\CP\template\Various\FastIO\FastIO.h --- 
 // --- Start of C:\Users\ianli\Desktop\CP\template\Various\FastIO\FastIO.cpp --- 
 // --- End of C:\Users\ianli\Desktop\CP\template\Various\FastIO\FastIO.cpp --- 
@@ -658,30 +816,23 @@ template <typename T1, typename T2> void _print(map<T1, T2> m) {
 template <typename T> void _print(T& x) {return x.out();}
 template <typename T, typename... Targs> void _print(T x, Targs... Fargs) {_print(x); printf(", "); _print(Fargs...);}
 // --- End of C:\Users\ianli\Desktop\CP\template\Various\Debug\Debug.cpp --- 
-// --- Start of C:\Users\ianli\Desktop\CP\template\Various\FastIO\test2.cpp --- 
-
-constexpr int kN = int(1E6 + 10);
-// constexpr int kMod = 998244353;
-// constexpr int kMod = int(1E9 + 7);
-// constexpr int kInf = 0x3f3f3f3f;
-// constexpr ll kInf = 0x3f3f3f3f3f3f3f3f;
-// constexpr double kPi = acos(-1);
-// constexpr double kEps = 1E-9;
-// constexpr int dx[4] = {0, 0, 1, -1};
-// constexpr int dy[4] = {1, -1, 0, 0};
-// constexpr int dx[8] = {0, 0, 1, -1, 1, -1, 1, -1};
-// constexpr int dy[8] = {1, -1, 1, -1, -1, 1, 0, 0};
-
 
 // using Mint = Mod_Int<kMod>;
+
+ll a[kN], b[kN];
+ll ans[kN];
 
 int main() {
 	FastIO IO;
 
 	int t; IO.RP(t);
+	IO.RLP(t, a, b);
+
+	for (int i = 1; i <= t; i++) ans[i] = a[i] + b[i];
+
 	for (int i = 1; i <= t; i++) {
-		ll a, b; IO.RP(a, b);
-		IO.WP(a + b); IO.WLine();
+		IO.WP(ans[i]);
+		IO.WLine();
 	}
 }
-// --- End of C:\Users\ianli\Desktop\CP\template\Various\FastIO\test2.cpp --- 
+// --- End of C:\Users\ianli\Desktop\CP\template\Various\FastIO\test.cpp --- 

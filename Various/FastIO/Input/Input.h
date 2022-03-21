@@ -1,24 +1,10 @@
 #pragma once
 
-#include "Input/Input.h"
-#include "Output/Output.h"
-
-// R -> Read
-// D -> digit (no check for neg, only one digit)
-// P -> positive (no check for neg)
-// S -> string
-// L -> loop
-// W -> write
-
-class FastIO {
+template <int bufferSize> class Input {
 	public:
-		FastIO();
-		FastIO(FILE*  inputFile, FILE*  outputFile);
-		FastIO(string inputPath, FILE*  outputFile);
-		FastIO(FILE*  inputFile, string outputPath);
-		FastIO(string inputPath, string outputPath);
-
-		// --- Input ---
+		Input();
+		Input(FILE*  _file);
+		Input(string path);
 
 		template <typename T> void R (T& n);
 		template <typename T> void RP(T& n);
@@ -39,21 +25,27 @@ class FastIO {
 		template <typename... Targs> void RLS (int n, Targs*... Fargs);
 		template <typename... Targs> void RLS0(int n, Targs*... Fargs);
 
-		// --- Output ---
-
-		template <typename T> void W (const T& n);
-		template <typename T> void WP(const T& n);
-		template <typename T> void WD(const T& n);
-		void WC(char c);
-		void WS(const string& s);
-		void WSpace();
-		void WLine();
-
 	private:
-		static constexpr int bufferSize = 1 << 16;
 
-		Input<bufferSize> input;
-		Output<bufferSize> output;
+		FILE* file;
+		char buffer[bufferSize];
+		int pointer;
+
+		void read();
+		char getRawChar();
+		static bool isDigit(char c);
+
+		template <typename T> void RLi(int i, T* a);
+		template <typename T, typename... Targs> void RLi(int i, T* a, Targs*... Fargs);
+
+		template <typename T> void RLPi(int i, T* a);
+		template <typename T, typename... Targs> void RLPi(int i, T* a, Targs*... Fargs);
+
+		template <typename T> void RLDi(int i, T* a);
+		template <typename T, typename... Targs> void RLDi(int i, T* a, Targs*... Fargs);
+
+		void RLSi(int i, string* a);
+		template <typename... Targs> void RLSi(int i, string* a, Targs*... Fargs);
 };
 
-#include "FastIO.ipp"
+#include "Input.ipp"
