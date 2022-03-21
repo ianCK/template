@@ -1,4 +1,5 @@
 // Merged by FileMerger.exe
+// --- Start of C:\Users\ianli\Desktop\CP\template\Applications\FileMerger\test3.cpp --- 
 // --- Start of C:\Users\ianli\Desktop\CP\template\CommonInclude\CommonInclude.h --- 
 
 #include <bits/stdc++.h>
@@ -8,14 +9,6 @@ using namespace std;
 #define S second
 #define MP make_pair
 #define MTP make_tuple
-#define R Read
-#define RD Read_Digit
-#define RP Read_P
-#define RS Read_String
-#define RL Read_Loop
-#define RLD Read_Loop_Digit
-#define RLP Read_Loop_P
-#define RLS Read_Loop_String
 #ifdef ONLINE_JUDGE
 	#define Debug(...) ;
 	#define Debug_Array(n,x) ;
@@ -27,161 +20,197 @@ using namespace std;
 	#define Debugln_Array(n,x) {for(int i=1;i<=n;i++){printf("%s",(#x));printf("[%d] = ", i);_print(x[i]);printf("\n");}}
 	#define NL {printf("\n");}
 #endif
+
+typedef unsigned int ui;
 typedef long long int ll;
 typedef unsigned long long int ull;
 // --- End of C:\Users\ianli\Desktop\CP\template\CommonInclude\CommonInclude.h --- 
 // --- Start of C:\Users\ianli\Desktop\CP\template\CommonInclude\CommonInclude.cpp --- 
 // --- End of C:\Users\ianli\Desktop\CP\template\CommonInclude\CommonInclude.cpp --- 
-// --- Start of C:\Users\ianli\Desktop\CP\template\Various\Fast_IO\Fast_IO.cpp --- 
-static bool Fast_IO_activated = false;
-static bool IOS_activated = false;
-// --- Get ---
-static inline char Get_Raw_Char() {
-	static bool pre = Fast_IO_activated = true;
-	static char buf[1 << 16], *p = buf, *end = buf;
-	if (p == end) {
-		if ((end = buf + fread(buf, 1, 1 << 16, stdin)) == buf) return '\0';
-		p = buf;
-	}
-	return *p++;
-}
 
-// --- Read ---
-template <typename T> static inline void Read_P(T &n) {
-	static_assert(is_integral<T>::value, "Read_P requires an integral type");
-	char c;
-	while (!isdigit(c = Get_Raw_Char())) ;
-	n = int(c - '0');
-	while (isdigit(c = Get_Raw_Char())) n = n * 10 + int(c - '0');
-	return ;
-}
+constexpr int kN = int(1E5 + 10);
+// constexpr int kMod = 998244353;
+// constexpr int kMod = int(1E9 + 7);
+// constexpr int kInf = 0x3f3f3f3f;
+// constexpr ll kInf = 0x3f3f3f3f3f3f3f3f;
+// constexpr double kPi = acos(-1);
+// constexpr double kEps = 1E-9;
+// constexpr int dx[4] = {0, 0, 1, -1};
+// constexpr int dy[4] = {1, -1, 0, 0};
+// constexpr int dx[8] = {0, 0, 1, -1, 1, -1, 1, -1};
+// constexpr int dy[8] = {1, -1, 1, -1, -1, 1, 0, 0};
 
-template <typename T> static inline void Read(T &n) {
-	static_assert(is_integral<T>::value, "Read requires an integral type");
-	char c;
-	bool neg = false;
-	while (!isdigit(c = Get_Raw_Char())) if (c == '-') neg = true;
-	n = int(c - '0');
-	while (isdigit(c = Get_Raw_Char())) n = n * 10 + int(c - '0');
-	if (neg) n = -n;
-	return ;
-}
+// --- Start of C:\Users\ianli\Desktop\CP\template\Various\FastIO\FastIO.h --- 
 
-template <typename T> static inline void Read_Digit(T &n) {
-	static_assert(is_integral<T>::value, "Read_Digit requires an integral type");
-	char c;
-	while (!isdigit(c = Get_Raw_Char())) ;
-	n = int(c - '0');
-	return ;
-}
+// R -> Read
+// D -> digit (no check for neg, only one digit)
+// P -> positive (no check for neg)
+// S -> string
+// L -> loop
+// W -> write
 
-static inline void Read_String(string &s) {
-	s.clear();
-	char c = Get_Raw_Char();
-	while (c == ' ' or c == '\n') c = Get_Raw_Char();
-	while (c != ' ' and c != '\n') {
-		s += c;
-		c = Get_Raw_Char();
-	}
-	return ;
-}
+class FastIO {
+	private:
+		static constexpr int bufferSize = 1 << 16;
+		static constexpr int bufferMod = bufferSize - 1; // (use & to mod)
 
-// --- Read multiple ---
-template <typename T, typename... Targs> static inline void Read(T &n, Targs&... Fargs) {Read(n); return Read(Fargs...);}
-template <typename T, typename... Targs> static inline void Read_Digit(T &n, Targs&... Fargs) {Read_Digit(n); return Read_Digit(Fargs...);}
-template <typename T, typename... Targs> static inline void Read_P(T &n, Targs&... Fargs) {Read_P(n); return Read_P(Fargs...);}
-template <typename... Targs> static inline void Read_String(string &s, Targs&... Fargs) {Read_String(s); return Read_String(Fargs...);}
+		FILE *input, *output;
 
-// --- Read Loop ---
-template <typename T> static inline void Read_Loop_i(int i, T *a) {return Read(a[i]);}
-template <typename T, typename... Targs> static inline void Read_Loop_i(int i, T *a, Targs*... Fargs) {Read(a[i]); return Read_Loop_i(i, Fargs...);}
-template <typename... Targs> static inline void Read_Loop(int n, Targs*... Fargs) {for (int i = 1; i <= n; i++) Read_Loop_i(i, Fargs...);}
+		char inputBuffer[bufferSize];
+		char outputBuffer[bufferSize];
 
-template <typename T> static inline void Read_Loop_Digit_i(int i, T *a) {return Read_Digit(a[i]);}
-template <typename T, typename... Targs> static inline void Read_Loop_Digit_i(int i, T *a, Targs*... Fargs) {Read_Digit(a[i]); return Read_Loop_Digit_i(i, Fargs...);}
-template <typename... Targs> static inline void Read_Loop_Digit(int n, Targs*... Fargs) {for (int i = 1; i <= n; i++) Read_Loop_Digit_i(i, Fargs...);}
+		int inputPointer;
+		int outputPointer;
 
-template <typename T> static inline void Read_Loop_P_i(int i, T *a) {return Read_P(a[i]);}
-template <typename T, typename... Targs> static inline void Read_Loop_P_i(int i, T *a, Targs*... Fargs) {Read_P(a[i]); return Read_Loop_P_i(i, Fargs...);}
-template <typename... Targs> static inline void Read_Loop_P(int n, Targs*... Fargs) {for (int i = 1; i <= n; i++) Read_Loop_P_i(i, Fargs...);}
-
-static inline void Read_Loop_String_i(int i, string *a) {return Read_String(a[i]);}
-template <typename... Targs> static inline void Read_Loop_String_i(int i, string *a, Targs*... Fargs) {Read_String(a[i]); return Read_Loop_String_i(i, Fargs...);}
-template <typename... Targs> static inline void Read_Loop_String(int n, Targs*... Fargs) {for (int i = 1; i <= n; i++) Read_Loop_String_i(i, Fargs...);}
-
-// --- Float ---
-template <int mul, typename T> static inline void Read(T &n) {
-	char c;
-	bool neg = false;
-	while (!isdigit(c = Get_Raw_Char())) if (c == '-') neg = true;
-	n = int(c - '0');
-	while (isdigit(c = Get_Raw_Char())) n = n * 10 + int(c - '0');
-
-	int cnt = 0;
-
-	if (c == '.') {
-		while (isdigit(c = Get_Raw_Char())) {
-			n = n * 10 + int(c - '0');
-			cnt++;
+		char getRawChar() {
+			if (inputPointer == bufferSize) {
+				fread(inputBuffer, 1, bufferSize, input);
+				inputPointer = 0;
+			}
+			return inputBuffer[inputPointer++];
 		}
-	}
 
-	while (cnt++ < mul) n = n * 10;
+		static bool isDigit(char c) {return '0' <= c and c <= '9';}
 
-	if (neg) n = -n;
-	return ;
-}
-
-template <int mul, typename T> static inline void Read_P(T &n) {
-	char c;
-	while (!isdigit(c = Get_Raw_Char())) ;
-
-	n = int(c - '0');
-	while (isdigit(c = Get_Raw_Char())) n = n * 10 + int(c - '0');
-
-	int cnt = 0;
-
-	if (c == '.') {
-		while (isdigit(c = Get_Raw_Char())) {
-			n = n * 10 + int(c - '0');
-			cnt++;
+		void outputAll() {
+			fwrite(outputBuffer, 1, bufferSize, output);
+			return ;
 		}
-	}
-
-	while (cnt++ < mul) n = n * 10;
-	return ;
-}
-
-template <int mul, typename T, typename... Targs> static inline void Read(T &n, Targs&... Fargs) {Read<mul>(n); return Read<mul>(Fargs...);}
-template <int mul, typename T, typename... Targs> static inline void Read_P(T &n, Targs&... Fargs) {Read_P<mul>(n); return Read_P<mul>(Fargs...);}
-
-// --- init ---
-inline void IOS() {
-	IOS_activated = true;
-	ios::sync_with_stdio(false); cin.tie(0);
-}
-inline void Freopen(const char *in, const char *out) {freopen(in, "r", stdin); freopen(out, "w", stdout); return ;}
-
-// --- Output ---
-#if defined(__SIZEOF_INT128__)
-void Print(__int128 x) {
-	if (x < 0) {
-		printf("-");
-		x = -x;
-	}
-	if (x == 0) printf("0");
-	else {
-		static int val[100];
-		int idx = -1;
-		while (x) {
-			val[++idx] = x % 10;
-			x /= 10;
+		void outputRemain() {
+			fwrite(outputBuffer, 1, outputPointer, output);
+			return ;
 		}
-		while (idx >= 0) printf("%d", val[idx--]);
-	}
-} 
-#endif
-// --- End of C:\Users\ianli\Desktop\CP\template\Various\Fast_IO\Fast_IO.cpp --- 
+
+		template <typename T> void RLi(int i, T *a) {return R(a[i]);}
+		template <typename T, typename... Targs> void RLi(int i, T *a, Targs*... Fargs) {R(a[i]); return RLi(i, Fargs...);}
+
+		template <typename T> void RLPi(int i, T *a) {return RP(a[i]);}
+		template <typename T, typename... Targs> void RLPi(int i, T *a, Targs*... Fargs) {RP(a[i]); return RLPi(i, Fargs...);}
+
+		template <typename T> void RLDi(int i, T *a) {return RD(a[i]);}
+		template <typename T, typename... Targs> void RLDi(int i, T *a, Targs*... Fargs) {RD(a[i]); return RLDi(i, Fargs...);}
+
+		void RLSi(int i, string *a) {return RS(a[i]);}
+		template <typename... Targs> void RLSi(int i, string *a, Targs*... Fargs) {RS(a[i]); return RLSi(i, Fargs...);}
+
+		void WC(char c) {
+			if (outputPointer == bufferSize) {
+				outputAll();
+				outputPointer = 0;
+			}
+			outputBuffer[outputPointer++] = c;
+			return ;
+		}
+
+	public:
+		FastIO() : input(stdin), output(stdout), inputPointer(0), outputPointer(0) {
+			fread(inputBuffer, 1, bufferSize, input);
+		}
+		FastIO(string inputPath, string outputPath) : 
+			input(fopen(inputPath.c_str(), "r")), 
+			output(fopen(outputPath.c_str(), "w")),
+			inputPointer(0),
+			outputPointer(0) {
+				fread(inputBuffer, 1, bufferSize, input);
+			}
+
+		~FastIO() {
+			outputRemain();
+			fclose(input);
+			fclose(output);
+		}
+
+		template <typename T> void R (T& n) {
+			static_assert(is_integral<T>::value, "R requires an integral type");
+			char c;
+			bool neg = false;
+			while (!isDigit(c = getRawChar())) if (c == '-') neg = true;
+			n = int(c - '0');
+			while (isDigit(c = getRawChar())) n = n * 10 + int(c - '0');
+			if (neg) n = -n;
+			return ;
+		}
+		template <typename T> void RP(T& n) {
+			static_assert(is_integral<T>::value, "RP requires an integral type");
+			char c;
+			while (!isDigit(c = getRawChar()));
+			n = int(c - '0');
+			while (isDigit(c = getRawChar())) n = n * 10 + int(c - '0');
+			return ;
+		}
+		template <typename T> void RD(T& n) {
+			static_assert(is_integral<T>::value, "RD requires an integral type");
+			char c;
+			while (!isDigit(c = getRawChar())) ;
+			n = int(c - '0');
+			return ;
+		}
+		void RS(string& s) {
+			// Can optimize?
+			s.clear();
+			char c = getRawChar();
+			while (c == ' ' or c == '\n') c = getRawChar();
+			while (c != ' ' and c != '\n') {
+				s += c;
+				c = getRawChar();
+			}
+			return ;
+		}
+
+		template <typename T, typename... Targs> void R (T &n, Targs&... Fargs) {R (n); return R (Fargs...);}
+		template <typename T, typename... Targs> void RD(T &n, Targs&... Fargs) {RD(n); return RD(Fargs...);}
+		template <typename T, typename... Targs> void RP(T &n, Targs&... Fargs) {RP(n); return RP(Fargs...);}
+		template <typename... Targs> void RS(string &s, Targs&... Fargs) {RS(s); return RS(Fargs...);}
+
+		template <typename... Targs> void RL(int n, Targs*... Fargs) {for (int i = 1; i <= n; i++) RLi(i, Fargs...);}
+		template <typename... Targs> void RL0(int n, Targs*... Fargs) {for (int i = 0; i < n; i++) RLi(i, Fargs...);}
+
+		template <typename... Targs> void RLP(int n, Targs*... Fargs) {for (int i = 1; i <= n; i++) RLPi(i, Fargs...);}
+		template <typename... Targs> void RLP0(int n, Targs*... Fargs) {for (int i = 0; i < n; i++) RLPi(i, Fargs...);}
+
+		template <typename... Targs> void RLD(int n, Targs*... Fargs) {for (int i = 1; i <= n; i++) RLDi(i, Fargs...);}
+		template <typename... Targs> void RLD0(int n, Targs*... Fargs) {for (int i = 0; i < n; i++) RLDi(i, Fargs...);}
+
+		template <typename... Targs> void RLS(int n, Targs*... Fargs) {for (int i = 1; i <= n; i++) RLSi(i, Fargs...);}
+		template <typename... Targs> void RLS0(int n, Targs*... Fargs) {for (int i = 0; i < n; i++) RLSi(i, Fargs...);}
+
+		// --- Write ---
+
+		template <typename T> void W(const T& n) {
+			static_assert(is_integral<T>::value, "W requires an integral type");
+			if (n < 0) WC('-');
+			return WP(-n);
+		}
+		template <typename T> void WP(const T& n) {
+			static_assert(is_integral<T>::value, "WP requires an integral type");
+
+			if (n == 0) return WC('0');
+
+			T tmp = n;
+
+			static char buffer[40];
+
+			int pointer = 0;
+			while (tmp) {
+				buffer[pointer++] = char(tmp % 10 + '0');
+				tmp /= 10;
+			}
+
+			for (int i = pointer - 1; i >= 0; i--) WC(buffer[i]);
+
+			return ;
+		}
+		template <typename T> void WD(const T& n) {
+			static_assert(is_integral<T>::value, "WD requires an integral type");
+			return WC(char(n + '0'));
+		}
+		void WS(const string& s) {for (char c : s) WC(c); return ;}
+		void WSpace() {return WC(' ');}
+		void WLine() {return WC('\n');}
+};
+// --- End of C:\Users\ianli\Desktop\CP\template\Various\FastIO\FastIO.h --- 
+// --- Start of C:\Users\ianli\Desktop\CP\template\Various\FastIO\FastIO.cpp --- 
+// --- End of C:\Users\ianli\Desktop\CP\template\Various\FastIO\FastIO.cpp --- 
 // --- Start of C:\Users\ianli\Desktop\CP\template\Various\Useful_Functions\Useful_Functions.cpp --- 
 template <typename T, typename T1> void make_vector_inner(vector<T>& vec, T1 c) {return vec.push_back(T(c));}
 template <typename T, typename T1, typename... Targs> void make_vector_inner(vector<T> &vec, T1 c, Targs... targs) {
@@ -647,121 +676,35 @@ template <typename T1, typename T2> void _print(map<T1, T2> m) {
 template <typename T> void _print(T& x) {return x.out();}
 template <typename T, typename... Targs> void _print(T x, Targs... Fargs) {_print(x); printf(", "); _print(Fargs...);}
 // --- End of C:\Users\ianli\Desktop\CP\template\Various\Debug\Debug.cpp --- 
-// --- Start of C:\Users\ianli\Desktop\CP\template\DS\BIT\Monoid.h --- 
 
-template <typename T> class BITMonoid {
-	private:
-		int _size; // n + 1
-		T* val;
+// --- Start of C:\Users\ianli\Desktop\CP\template\Applications\FileMerger\a.h --- 
 
-		virtual T defaultValue() const = 0;
-		virtual void update(T& lhs, const T& rhs) const = 0;
-
+template <typename T> class A {
 	public:
-		BITMonoid() : _size(0), val(nullptr) {}
-		~BITMonoid() {delete [] val;}
-
-		inline int size() const {return _size;}
-
-		void init(int n) {
-			delete [] val; val = new T[_size = n + 1];
-			for (int i = 1; i <= n; i++) val[i] = defaultValue();
-			return ;
-		}
-
-		void init(int n, T *a) {
-			delete [] val; val = new T[_size = n + 1];
-			memcpy(val + 1, a + 1, sizeof(T) * n);
-			for (int i = 1; i <= n; i++) if (i + (i & -i) <= n) update(val[i + (i & -i)], val[i]);
-			return ;
-		}
-
-		void fix(int pos, T x) {
-			for (int i = pos; i < _size; i += i & -i) update(val[i], x);
-			return ;
-		}
-
-		T ask(int pos) const {
-			T ans = defaultValue();
-			for (int i = pos; i; i ^= i & -i) update(ans, val[i]);
-			return ans;
-		}
-
-		void clear() {
-			for (int i = 1; i < _size; i++) val[i] = defaultValue();
-			return ;
-		}
-};
-// --- End of C:\Users\ianli\Desktop\CP\template\DS\BIT\Monoid.h --- 
-// --- Start of C:\Users\ianli\Desktop\CP\template\DS\BIT\Monoid.cpp --- 
-// --- End of C:\Users\ianli\Desktop\CP\template\DS\BIT\Monoid.cpp --- 
-// --- Start of C:\Users\ianli\Desktop\CP\template\DS\BIT\Max.h --- 
-
-template <typename T> class BIT_max : public BITMonoid<T> {
-	private:
-		T defaultValue() const override;
-
-		void update(T& lhs, const T& rhs) const override {
-			chmax(lhs, rhs);
-			return ;
-		}
-};
-// --- End of C:\Users\ianli\Desktop\CP\template\DS\BIT\Max.h --- 
-// --- Start of C:\Users\ianli\Desktop\CP\template\DS\BIT\Min.h --- 
-
-template <typename T> class BIT_min : public BITMonoid<T> {
-	private:
-		T defaultValue() const override;
-
-		void update(T& lhs, const T& rhs) const override {
-			chmin(lhs, rhs);
-			return ;
-		}
+		A();
+		void output() const;
 };
 
-// --- End of C:\Users\ianli\Desktop\CP\template\DS\BIT\Min.h --- 
-// --- Start of C:\Users\ianli\Desktop\CP\template\DS\BIT\Max.cpp --- 
+// --- Start of C:\Users\ianli\Desktop\CP\template\Applications\FileMerger\a.ipp --- 
 
-template<> int BIT_max<int>::defaultValue() const {return -0x3f3f3f3f;}
-template<> long long int BIT_max<long long int>::defaultValue() const {return -0x3f3f3f3f3f3f3f3f;}
-// --- End of C:\Users\ianli\Desktop\CP\template\DS\BIT\Max.cpp --- 
-// --- Start of C:\Users\ianli\Desktop\CP\template\DS\BIT\Min.cpp --- 
+template <typename T> A<T>::A() {}
 
-template<> int BIT_min<int>::defaultValue() const {return 0x3f3f3f3f;}
-template<> long long int BIT_min<long long int>::defaultValue() const {return 0x3f3f3f3f3f3f3f3f;}
+template <typename T> void A<T>::output() const {
+	printf("HELLO WORLD\n");
+	return ;
+}
+// --- End of C:\Users\ianli\Desktop\CP\template\Applications\FileMerger\a.ipp --- 
+// --- End of C:\Users\ianli\Desktop\CP\template\Applications\FileMerger\a.h --- 
+// --- Start of C:\Users\ianli\Desktop\CP\template\Applications\FileMerger\a.cpp --- 
+// --- End of C:\Users\ianli\Desktop\CP\template\Applications\FileMerger\a.cpp --- 
 
-// --- End of C:\Users\ianli\Desktop\CP\template\DS\BIT\Min.cpp --- 
-// --- Start of C:\Users\ianli\Desktop\CP\template\FileMerger\test2.cpp --- 
-
-constexpr int kN = int(1E5 + 10);
-// constexpr int kMod = 998244353;
-// constexpr int kMod = int(1E9 + 7);
-// constexpr int kInf = 0x3f3f3f3f;
-// constexpr ll kInf = 0x3f3f3f3f3f3f3f3f;
-// constexpr double kPi = acos(-1);
-// constexpr double kEps = 1E-9;
-// constexpr int dx[4] = {0, 0, 1, -1};
-// constexpr int dy[4] = {1, -1, 0, 0};
-// constexpr int dx[8] = {0, 0, 1, -1, 1, -1, 1, -1};
-// constexpr int dy[8] = {1, -1, 1, -1, -1, 1, 0, 0};
-
-
-
-BIT_max<int> bit;
-template<> short BIT_min<short>::defaultValue() const {return 0x3f3f;}
-BIT_min<short> b2;
+// using Mint = Mod_Int<kMod>;
 
 int main() {
+	FastIO IO;
 
-	bit.init(10);
-	for (int i = 1; i <= 10; i++) bit.fix(i, i * i - i * 5);
-	for (int i = 1; i <= 10; i++) Debug(i, bit.ask(i));
-
-	NL;
-
-	b2.init(10);
-	for (int i = 1; i <= 10; i++) b2.fix(i, i * i - i * 5);
-	for (int i = 1; i <= 10; i++) Debug(i, b2.ask(i));
+	A<int> a;
+	a.output();
 
 }
-// --- End of C:\Users\ianli\Desktop\CP\template\FileMerger\test2.cpp --- 
+// --- End of C:\Users\ianli\Desktop\CP\template\Applications\FileMerger\test3.cpp --- 

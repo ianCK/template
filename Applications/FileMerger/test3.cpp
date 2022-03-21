@@ -16,9 +16,14 @@ constexpr int kN = int(1E5 + 10);
 #include "C:\Users\ianli\Desktop\CP\template\Various\Useful_Functions\Useful_Functions.cpp"
 #include "C:\Users\ianli\Desktop\CP\template\Various\Debug\Debug.cpp"
 
+#include "a.h"
+
 // using Mint = Mod_Int<kMod>;
 
 int main() {
 	FastIO IO;
+
+	A<int> a;
+	a.output();
 
 }

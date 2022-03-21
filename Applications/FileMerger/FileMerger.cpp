@@ -39,80 +39,78 @@ constexpr int kN = int(1E5 + 10);
 // constexpr int dx[8] = {0, 0, 1, -1, 1, -1, 1, -1};
 // constexpr int dy[8] = {1, -1, 1, -1, -1, 1, 0, 0};
 
-#include "C:\Users\ianli\Desktop\CP\template\Various\Fast_IO\Fast_IO.cpp"
-#include "C:\Users\ianli\Desktop\CP\template\Various\Useful_Functions\Useful_Functions.cpp"
-#include "C:\Users\ianli\Desktop\CP\template\Various\Debug\Debug.cpp"
-
 static const string localIncludePrefix = "#include \"";
 
+void makeGood(string& str) {
+	for (char& c : str) if (c == '/') c = '\\';
+	return ;
+}
+
+bool hasPrefix(const string& lhs, string rhs) {
+	return lhs.substr(0, rhs.length()) == rhs;
+}
+
 bool isRelativePath(string path) {
-	if (path.length() >= 2 and path[0] == 'C' and path[1] == ':') return false;
+	if (hasPrefix(path, "C:")) return false;
 	return true;
 }
 
-vector<string> allDependencies(string filePath) {
+string makeAbsolutePath(string directoryPath, string filePath) {
+	makeGood(directoryPath);
+	makeGood(filePath);
 
-	string directoryPath = filePath;
-	while (directoryPath.back() != '\\') directoryPath.pop_back();
-
-	vector<string> ret;
-
-	fstream file(filePath, ios::in);
-
-	string line;
-	while (getline(file, line)) {
-		if (line.substr(0, localIncludePrefix.length()) == localIncludePrefix) {
-			string path = line.substr(localIncludePrefix.length());
-			path.pop_back();
-
-			if (isRelativePath(path)) path = directoryPath + path; 
-
-			ret.PB(path);
+	bool working = true;
+	while (working) {
+		working = false;
+		if (hasPrefix(filePath, ".\\")) {
+			working = true;
+			filePath = filePath.substr(2);
+		}
+		if (hasPrefix(filePath, "..\\")) {
+			working = true;
+			directoryPath.pop_back();
+			while (directoryPath.back() != '\\') directoryPath.pop_back();
+			filePath = filePath.substr(3);
 		}
 	}
 
-	file.close();
-
-	return ret;
-}
-
-vector<string> collectFiles(string path) {
-	vector<string> ret;
-
-	set<string> processed;
-	queue<string> toBeProcessed;
-
-	toBeProcessed.push(path);
-
-	while (!toBeProcessed.empty()) {
-		string path = toBeProcessed.front(); toBeProcessed.pop();
-
-		if (processed.find(path) != processed.end()) continue;
-
-		processed.insert(path);
-		ret.PB(path);
-		for (const string& str : allDependencies(path)) {
-			toBeProcessed.push(str);
-			if (str.back() == 'h') {
-				string tmp = str;
-				tmp.pop_back();
-				tmp += "cpp";
-				toBeProcessed.push(tmp);
-			}
-		}
-	}
-
-	return ret;
+	return directoryPath + filePath;
 }
 
 void outputFile(fstream& output, string path) {
+	static set<string> se;
+	if (se.find(path) != se.end()) return ;
+
+	se.insert(path);
+	cerr << path << endl;
+
+	string directoryPath = path;
+	while (directoryPath.back() != '\\') directoryPath.pop_back();
+
 	output << "// --- Start of " << path << " --- \n";
 
 	fstream file(path, ios::in);
 
 	string line;
 	while (getline(file, line)) {
-		if (line.substr(0, localIncludePrefix.length()) == localIncludePrefix) continue;
+		if (hasPrefix(line, localIncludePrefix)) {
+			string path = line.substr(localIncludePrefix.length());
+			path.pop_back();
+
+			if (isRelativePath(path)) path = makeAbsolutePath(directoryPath, path); 
+
+			if (se.find(path) == se.end()) {
+				outputFile(output, path);
+			}
+
+			if (path.back() == 'h') {
+				path.pop_back();
+				path += "cpp";
+				outputFile(output, path);
+			}
+
+			continue;
+		}
 		else if (line == "#pragma once") continue;
 		else output << line << "\n";
 	}
@@ -128,34 +126,14 @@ int main(int argc, const char* argv[]) {
 	}
 
 	string current_path = filesystem::current_path().string() + "\\";
-	Debug(current_path);
+	makeGood(current_path);
+	cerr << "current_path = " << current_path << endl;
 
-	string path = current_path + string(argv[1]);
-	vector<string> allFiles = collectFiles(path);
-
-	for (const string& str : allFiles) Debug(str);
-
-	map<string, vector<string>> graph;
-	for (const string& str : allFiles) graph[str] = allDependencies(str);
-
-	map<string, int> deg;
-	for (const string& str : allFiles) deg[str] = int(graph[str].size());
-
-	map<string, vector<string>> dependants;
-	for (auto [str, vec] : graph) for (const string& dep : vec) dependants[dep].PB(str);
-
+	string path = makeAbsolutePath(current_path, string(argv[1]));
 	fstream output("export.cpp", ios::out);
 	output << "// Merged by FileMerger.exe\n";
 
-	queue<string> qu;
-	for (const string& str : allFiles) if (deg[str] == 0) qu.push(str);
-	while (!qu.empty()) {
-		string path =  qu.front(); qu.pop();
-
-		outputFile(output, path);
-
-		for (const string& str : dependants[path]) if (!--deg[str]) qu.push(str);
-	}
+	outputFile(output, path);
 
 	output.close();
 
