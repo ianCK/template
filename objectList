@@ -1,8 +1,3 @@
-DP\SOS\SOS.o
-DP\SOS\Add.o
-DP\SOS\Mul.o
-DP\SOS\Xor.o
-
 DS\BIT\Min.o
 DS\BIT\Max.o
 

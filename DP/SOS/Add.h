@@ -2,8 +2,6 @@
 
 #include "SOS.h"
 
-template <typename T> class SOSAdd : public tSOS<T> {
-	private:
-		void oper(T& lhs, const T& rhs) const override;
-	public:
-};
+template <typename T> void SOSAdd(int tot, T* arr);
+
+#include "Add.ipp"

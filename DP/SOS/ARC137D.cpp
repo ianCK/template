@@ -1,6 +1,6 @@
 #include "C:\Users\ianli\Desktop\CP\template\CommonInclude\CommonInclude.h"
 
-constexpr int kN = int(1E5 + 10);
+constexpr int kN = 1 << 20;
 // constexpr int kMod = 998244353;
 // constexpr int kMod = int(1E9 + 7);
 // constexpr int kInf = 0x3f3f3f3f;
@@ -17,21 +17,30 @@ constexpr int kN = int(1E5 + 10);
 #include "C:\Users\ianli\Desktop\CP\template\Various\Debug\Debug.cpp"
 
 #include "All.h"
-
 // using Mint = Mod_Int<kMod>;
 
 int a[kN];
+int dp[kN];
+int ans[kN];
 
 int main() {
 	FastIO IO;
 
+	int n, m; IO.RP(n, m);
+	IO.RLP(n, a);
 
-	int n = 4;
-	int tot = 1 << n;
+	int tot = 1 << 20;
 
-	for (int i = 0; i < n; i++) a[1 << i] = 1 << i;
+	for (int i = 0; i < n; i++) dp[i] = a[n - i];
 
-	SOSAdd<int>(tot, a);
+	SOSXor(tot, dp);
 
-	for (int i = 0; i < tot; i++) printf(" %d", a[i]); printf("\n");
+	for (int i = 1; i <= m; i++) ans[i] = dp[tot - i];
+
+	IO.WP(ans[1]);
+	for (int i = 2; i <= m; i++) {
+		IO.WSpace();
+		IO.WP(ans[i]);
+	}
+	IO.WLine();
 }

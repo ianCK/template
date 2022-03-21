@@ -1,13 +1,5 @@
 #pragma once
 
-// just a wrapper
-template <typename T> class tSOS {
-	private:
-		virtual void oper(T& lhs, const T& rhs) const = 0;
+template <typename T, T (*oper)(T, T)> void SOS(int tot, T* arr);
 
-	public:
-		tSOS();
-
-		void solve(int tot, T* arr) const;
-		void operator () (int tot, T* arr) const;
-};
+#include "SOS.ipp"

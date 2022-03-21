@@ -2,9 +2,6 @@
 
 #include "SOS.h"
 
-template <typename T> class SOSMul : public tSOS<T> {
-	private:
-		void oper(T& lhs, const T& rhs) const override;
-	public:
-};
+template <typename T> void SOSMul(int tot, T* arr);
 
+#include "Mul.ipp"

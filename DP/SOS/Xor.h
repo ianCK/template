@@ -2,9 +2,6 @@
 
 #include "SOS.h"
 
-template <typename T> class SOSXor : public tSOS<T> {
-	private:
-		void oper(T& lhs, const T& rhs) const override;
-	public:
-};
+template <typename T> void SOSXor(int tot, T* arr);
 
+#include "Xor.ipp"
