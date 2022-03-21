@@ -28,6 +28,7 @@ template <typename... Targs> void FastIO::RLS0(int n, Targs*... Fargs) { return 
 // --- Output ---
 
 template <typename T> void FastIO::W (const T& n) { return output.W(n); }
+template <typename T, typename... Targs> void FastIO::W(const T& n, const Targs&... Fargs) { return output.W(n, Fargs...); }
 template <typename T> void FastIO::WP(const T& n) { return output.WP(n); }
 template <typename T> void FastIO::WD(const T& n) { return output.WD(n); }
 void FastIO::WC(char c) { return output.WC(c); }

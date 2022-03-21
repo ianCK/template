@@ -1,6 +1,6 @@
 #pragma once
 
-template <int bufferSize> class Input {
+class Input {
 	public:
 		Input();
 		Input(FILE*  _file);
@@ -26,6 +26,7 @@ template <int bufferSize> class Input {
 		template <typename... Targs> void RLS0(int n, Targs*... Fargs);
 
 	private:
+		static constexpr int bufferSize = 1 << 16;
 
 		FILE* file;
 		char buffer[bufferSize];

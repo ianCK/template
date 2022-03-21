@@ -23,15 +23,12 @@ ll a[kN], b[kN];
 ll ans[kN];
 
 int main() {
-	FastIO IO;
+	FastIO IO("test1", stdout);
 
 	int t; IO.RP(t);
 	IO.RLP(t, a, b);
 
 	for (int i = 1; i <= t; i++) ans[i] = a[i] + b[i];
 
-	for (int i = 1; i <= t; i++) {
-		IO.WP(ans[i]);
-		IO.WLine();
-	}
+	for (int i = 1; i <= t; i++) IO.W(ans[i], '\n');
 }

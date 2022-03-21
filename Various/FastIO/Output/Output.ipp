@@ -1,9 +1,9 @@
-template <int bufferSize> Output<bufferSize>::Output() : file(stdout), pointer(0) {}
-template <int bufferSize> Output<bufferSize>::Output(FILE*  _file) : file(_file), pointer(0) {}
-template <int bufferSize> Output<bufferSize>::Output(string path) : file(fopen(path.c_str(), "w")), pointer(0) {}
-template <int bufferSize> Output<bufferSize>::~Output() { flush(); }
+Output::Output() : file(stdout), pointer(0) {}
+Output::Output(FILE*  _file) : file(_file), pointer(0) {}
+Output::Output(string path) : file(fopen(path.c_str(), "w")), pointer(0) {}
+Output::~Output() { flush(); }
 
-template <int bufferSize> template <typename T> void Output<bufferSize>::W (const T& n) {
+template <typename T> void Output::W (const T& n) {
 	if (n < 0) {
 		WC('-');
 		WP(-n);
@@ -12,7 +12,11 @@ template <int bufferSize> template <typename T> void Output<bufferSize>::W (cons
 	return ;
 }
 
-template <int bufferSize> template <typename T> void Output<bufferSize>::WP(const T& n) {
+template <> void Output::W<char>(const char& n) { return WC(n); }
+
+template <typename T, typename... Targs> void Output::W(const T& n, const Targs&... Fargs) { W(n); return W(Fargs...); }
+
+template <typename T> void Output::WP(const T& n) {
 	if (n == 0) return WC('0');
 
 	T tmp(n);
@@ -28,18 +32,18 @@ template <int bufferSize> template <typename T> void Output<bufferSize>::WP(cons
 	return ;
 }
 
-template <int bufferSize> template <typename T> void Output<bufferSize>::WD(const T& n) { return WC(char(n + '0')); }
+template <typename T> void Output::WD(const T& n) { return WC(char(n + '0')); }
 
-template <int bufferSize> void Output<bufferSize>::WC(char c) {
+void Output::WC(char c) {
 	if (pointer == bufferSize) flush();
 	buffer[pointer++] = c;
 	return ;
 }
 
-template <int bufferSize> void Output<bufferSize>::WS(const string& s) { for (char c : s) WC(c); return ; }
-template <int bufferSize> void Output<bufferSize>::WSpace() { return WC(' '); }
-template <int bufferSize> void Output<bufferSize>::WLine() { return WC('\n'); }
+void Output::WS(const string& s) { for (char c : s) WC(c); return ; }
+void Output::WSpace() { return WC(' '); }
+void Output::WLine() { return WC('\n'); }
 
 // --- private ---
 
-template <int bufferSize> void Output<bufferSize>::flush() { fwrite(buffer, 1, pointer, file); pointer = 0; return ; }
+void Output::flush() { fwrite(buffer, 1, pointer, file); pointer = 0; return ; }

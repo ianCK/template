@@ -42,6 +42,7 @@ class FastIO {
 		// --- Output ---
 
 		template <typename T> void W (const T& n);
+		template <typename T, typename... Targs> void W(const T& n, const Targs&... Fargs);
 		template <typename T> void WP(const T& n);
 		template <typename T> void WD(const T& n);
 		void WC(char c);
@@ -50,10 +51,8 @@ class FastIO {
 		void WLine();
 
 	private:
-		static constexpr int bufferSize = 1 << 16;
-
-		Input<bufferSize> input;
-		Output<bufferSize> output;
+		Input input;
+		Output output;
 };
 
 #include "FastIO.ipp"
