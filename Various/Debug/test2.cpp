@@ -21,7 +21,24 @@ constexpr int kN = int(1E5 + 10);
 
 // using Mint = Mod_Int<kMod>;
 
+int abc[] = {0, 1, 2, 3, 3, 4, 2, 1};
+
 int main() {
 	FastIO IO;
 
+	int a = 3;
+	bool b = false;
+	char c = 'A';
+	double d = 0.3;
+	float f = 0.2;
+	long double lf = 0.14;
+
+
+	Debug(a, b, c, d, f, lf);
+	Debug(MTP(a, c));
+	Debug(MTP(a, c, d, lf));
+	Debug("Good!");
+
+	DebugArray(7, abc);
+	DebugArray0Ln(8, abc);
 }

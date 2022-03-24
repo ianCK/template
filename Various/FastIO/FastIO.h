@@ -47,6 +47,7 @@ class FastIO {
 		template <typename T> void WD(const T& n);
 		void WC(char c);
 		void WS(const string& s);
+		void WS(const char* s);
 		void WSpace();
 		void WLine();
 

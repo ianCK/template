@@ -13,8 +13,11 @@ class Output {
 		template <typename T> void WD(const T& n);
 		void WC(char c);
 		void WS(const string& s);
+		void WS(const char* s);
 		void WSpace();
 		void WLine();
+
+		void flush();
 
 	private:
 		static constexpr int bufferSize = 1 << 16;
@@ -22,8 +25,6 @@ class Output {
 		FILE* file;
 		char buffer[bufferSize];
 		int pointer;
-
-		void flush();
 };
 
 #include "Output.ipp"

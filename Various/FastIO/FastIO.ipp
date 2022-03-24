@@ -33,5 +33,6 @@ template <typename T> void FastIO::WP(const T& n) { return output.WP(n); }
 template <typename T> void FastIO::WD(const T& n) { return output.WD(n); }
 void FastIO::WC(char c) { return output.WC(c); }
 void FastIO::WS(const string& s) { return output.WS(s); }
+void FastIO::WS(const char* s) { return output.WS(s); }
 void FastIO::WSpace() { return output.WSpace(); }
 void FastIO::WLine() { return output.WLine(); }
