@@ -6,6 +6,9 @@ template <typename T, T (*op)(const T&, const T&), T E, T (*inv)(const T&)> clas
 	public:
 		static constexpr T identity = E;
 
+		static_assert(op(identity, identity) == identity, "E * E != E");
+		static_assert(inv(identity) == identity, "E^-1 != E");
+
 		constexpr Group();
 		constexpr Group(const T& _val);
 

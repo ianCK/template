@@ -6,6 +6,8 @@ template <typename T, T (*op)(const T&, const T&), T E> class Monoid {
 	public:
 		static constexpr T identity = E;
 
+		static_assert(op(identity, identity) == identity, "E * E != E");
+
 		constexpr Monoid();
 		constexpr Monoid(const T& _val);
 
