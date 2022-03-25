@@ -15,7 +15,7 @@ template <typename T, T (*op)(const T&, const T&)> class Subgroup {
 		const T& value() const;
 		void out(Output& output) const;
 
-	private:
+	protected:
 		T val;
 };
 

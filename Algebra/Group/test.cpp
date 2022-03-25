@@ -35,7 +35,7 @@ struct md {
 };
 
 md rev(const md& x) { return md(1.0 / x.val); }
-double rev(const double& x) { return 1 / x; }
+constexpr double rev(const double& x) { return 1 / x; }
 
 int main() {
 	FastIO IO;
@@ -45,7 +45,7 @@ int main() {
 	Debug(a, b, a * b, a / b);
 
 	// This is only valid in C++20
-	// Group<double, MUL, 1, rev> c(3), d(5);
+	// Group<double, MUL, double(1), rev> c(3), d(5);
 	// Debug(c, d, c * d, c / d);
 
 }
