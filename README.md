@@ -1,78 +1,85 @@
+### Algebra
+- O Subgroup
+- X Monoid
+- X Group
+- X Ring
+- X Field
+
 ### DS
-- O BIT
-- O Sliding\_Window
-- O Dividing\_Tree
-- O Dynamic\_Convex\_Hull
-- O Monotone\_Convex\_Hull
-- O Linear\_Basis
-- O DSU
-- ? Treap
+- X BIT
+- X Sliding\_Window
+- X Dividing\_Tree
+- X Dynamic\_Convex\_Hull
+- X Monotone\_Convex\_Hull
+- X Linear\_Basis
+- X DSU
+- X Treap
 - X Seg\_tree
 - X PQ
 
 ### Flow
-- O Dinic
-- O MCMF
-- ? Gomory hu
+- X Dinic
+- X MCMF
+- X Gomory hu
 
 ### Geometry
-- O Misc
-- ? Circle
-- ? Convex Hull
-- ? Point in Poly
-- ? Half\_Plane\_Intersection
-- ? Library
+- X Misc
+- X Circle
+- X Convex Hull
+- X Point in Poly
+- X Half\_Plane\_Intersection
+- X Library
 
 ### Graph
-- O Graph\_Note
-- O Bipartite\_Matching
-- O Chromatic
-- O KM
-- ? 2SAT
-- ? C4.cpp
-- ? C3.cpp
-- ? Clique
-- ? Clique\_sq2m
-- ? SCC
-- ? SCC\_B
-- ? Stoer Wanger
-- ? Tutte
+- X Graph\_Note
+- X Bipartite\_Matching
+- X Chromatic
+- X KM
+- X 2SAT
+- X C4.cpp
+- X C3.cpp
+- X Clique
+- X Clique\_sq2m
+- X SCC
+- X SCC\_B
+- X Stoer Wanger
+- X Tutte
 
 ### Math
-- O CRT
-- O Derangement
-- O ExtGcd
-- O FWT
-- O Floor\_Sum
-- O Gauss
-- O Martingale
-- O Matrix
-- O Miller\_Rabin
-- O Mod\_Int
-- O NTT
-- O Binomial\_notes
-- O Kirchoff
-- O Pick's theorem
-- ? Mod\_Int\_Dynamic
-- ? Mod\_Mul
-- ? Polynomial
+- X CRT
+- X Derangement
+- X ExtGcd
+- X FWT
+- X Floor\_Sum
+- X Gauss
+- X Martingale
+- X Matrix
+- X Miller\_Rabin
+- X Mod\_Int
+- X NTT
+- X Binomial\_notes
+- X Kirchoff
+- X Pick's theorem
+- X Mod\_Int\_Dynamic
+- X Mod\_Mul
+- X Polynomial
 
 ### String
-- O RollingHash
-- O Rotation
-- O SAIS
-- ? Palindrome\_Tree
+- X RollingHash
+- X Rotation
+- X SAIS
+- X Palindrome\_Tree
 
 ### Various
 - O Debug
 - O Fast\_IO
-- O Fraction
-- O Gray\_Code
-- O Pragma
-- O Random
-- O Useful\_Functions
-- O bitset\_notes
-- O builtin
-- O PBDS
-- ? bitset
+- X Fraction
+- X Gray\_Code
+- X Pragma
+- X Random
+- X Useful\_Functions
+- X bitset\_notes
+- X builtin
+- X PBDS
+- X bitset
 - X Matrix
