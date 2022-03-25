@@ -1,5 +1,10 @@
 #pragma once
 
+// --- unary ---
+template <typename T> constexpr T MINUS(const T& x);
+template <typename T> constexpr T NOT(const T& x);
+
+// --- binary ---
 template <typename T> constexpr T ADD(const T& lhs, const T& rhs);
 template <typename T> constexpr T SUB(const T& lhs, const T& rhs);
 template <typename T> constexpr T MUL(const T& lhs, const T& rhs);
