@@ -24,4 +24,13 @@ constexpr int kN = int(1E5 + 10);
 int main() {
 	FastIO IO;
 
+	vector<int> vec = {4, 3, 1, 5, 2};
+	vector<int> tmp = vec;
+
+	sort(vec);
+	Debug(vec);
+
+	sort_r(tmp);
+	Debug(tmp);
+
 }

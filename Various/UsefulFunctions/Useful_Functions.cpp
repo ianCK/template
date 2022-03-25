@@ -17,6 +17,8 @@ inline void sort_r(string &s) {return sort(s.begin(), s.end(), greater<char>());
 template <typename T> inline void reverse(vector<T> &v) {return reverse(v.begin(), v.end());}
 inline void reverse(string &s) {return reverse(s.begin(), s.end());}
 
+// below = TODO
+
 template <typename T> inline void Merge(vector<T> &a, vector<T> &b, vector<T> &c) {
 	if (c.size() < a.size() + b.size()) c.resize(a.size() + b.size());
 	merge(a.begin(), a.end(), b.begin(), b.end(), c.begin());
