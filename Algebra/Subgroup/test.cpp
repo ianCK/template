@@ -44,4 +44,6 @@ int main() {
 	e = (c *= d);
 	Debug(c, d, e);
 
+	Debug(3 + e);
+
 }

@@ -12,7 +12,9 @@ template <typename T, T (*op)(const T&, const T&)> class Subgroup {
 		constexpr Subgroup operator * (const Subgroup<T, op>& o) const;
 		constexpr const Subgroup& operator *= (const Subgroup<T, op>& o);
 
+		operator T() const;
 		const T& value() const;
+
 		void out(Output& output) const;
 
 	protected:
