@@ -208,6 +208,5 @@ template <int i, typename... Targs> void Debugger::printi(const tuple<Targs...>&
 }
 
 template <int... Is, typename... Targs> void Debugger::print(const tuple<Targs...>& n, integer_sequence<int, Is...> seq) {
-	[[maybe_unused]] auto l = { (printi<Is>(n), 0)... };
-	return ;
+	return ((printi<Is>(n)), ...);
 }

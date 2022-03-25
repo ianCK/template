@@ -13,7 +13,7 @@ constexpr int kN = int(1E5 + 10);
 // constexpr int dy[8] = {1, -1, 1, -1, -1, 1, 0, 0};
 
 #include "C:\Users\ianli\Desktop\CP\template\Various\FastIO\FastIO.h"
-#include "C:\Users\ianli\Desktop\CP\template\Various\Useful_Functions\Useful_Functions.cpp"
+#include "C:\Users\ianli\Desktop\CP\template\Various\UsefulFunctions\UsefulFunctions.h"
 
 #ifndef ONLINE_JUDGE
 #include "C:\Users\ianli\Desktop\CP\template\Various\Debug\Debug.h"
