@@ -16,3 +16,12 @@ using namespace std;
 typedef unsigned int ui;
 typedef long long int ll;
 typedef unsigned long long int ull;
+
+template <int i> class isZero { public: static constexpr bool value = false; };
+template <> class isZero<0> { public: static constexpr bool value = true; };
+
+class falseType { public: static constexpr bool value = false; };
+class trueType { public: static constexpr bool value = true; };
+
+template <bool b = false> class boolType : public falseType {};
+template <> class boolType<true> : public trueType {};

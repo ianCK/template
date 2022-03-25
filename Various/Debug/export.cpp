@@ -18,6 +18,15 @@ using namespace std;
 typedef unsigned int ui;
 typedef long long int ll;
 typedef unsigned long long int ull;
+
+template <int i> class isZero { public: static constexpr bool value = false; };
+template <> class isZero<0> { public: static constexpr bool value = true; };
+
+class falseType { public: static constexpr bool value = false; };
+class trueType { public: static constexpr bool value = true; };
+
+template <bool b = false> class boolType : public falseType {};
+template <> class boolType<true> : public trueType {};
 // --- End of C:\Users\ianli\Desktop\CP\template\CommonInclude\CommonInclude.h --- 
 // --- Start of C:\Users\ianli\Desktop\CP\template\CommonInclude\CommonInclude.cpp --- 
 // --- End of C:\Users\ianli\Desktop\CP\template\CommonInclude\CommonInclude.cpp --- 
@@ -185,6 +194,7 @@ class Output {
 		template <typename T> void WD(const T& n);
 		void WC(char c);
 		void WS(const string& s);
+		void WS(const char* s);
 		void WSpace();
 		void WLine();
 
@@ -204,6 +214,26 @@ Output::Output(FILE*  _file) : file(_file), pointer(0) {}
 Output::Output(string path) : file(fopen(path.c_str(), "w")), pointer(0) {}
 Output::~Output() { flush(); }
 
+template <> void Output::W<char>(const char& n) { return WC(n); }
+
+template <> void Output::W<float>(const float& n) { 
+	static char buffer[50];
+	sprintf(buffer, "%f", n);
+	return WS(buffer); 
+}
+
+template <> void Output::W<double>(const double& n) {
+	static char buffer[50];
+	sprintf(buffer, "%lf", n);
+	return WS(buffer); 
+}
+
+template <> void Output::W<long double>(const long double& n) {
+	static char buffer[50];
+	sprintf(buffer, "%Lf", n);
+	return WS(buffer); 
+}
+
 template <typename T> void Output::W (const T& n) {
 	if (n < 0) {
 		WC('-');
@@ -212,8 +242,6 @@ template <typename T> void Output::W (const T& n) {
 	else WP(n);
 	return ;
 }
-
-template <> void Output::W<char>(const char& n) { return WC(n); }
 
 template <typename T, typename... Targs> void Output::W(const T& n, const Targs&... Fargs) { W(n); return W(Fargs...); }
 
@@ -242,6 +270,7 @@ void Output::WC(char c) {
 }
 
 void Output::WS(const string& s) { for (char c : s) WC(c); return ; }
+void Output::WS(const char* s) { int i = 0; while (s[i]) WC(s[i++]); return ; }
 void Output::WSpace() { return WC(' '); }
 void Output::WLine() { return WC('\n'); }
 
@@ -297,6 +326,7 @@ class FastIO {
 		template <typename T> void WD(const T& n);
 		void WC(char c);
 		void WS(const string& s);
+		void WS(const char* s);
 		void WSpace();
 		void WLine();
 
@@ -341,6 +371,7 @@ template <typename T> void FastIO::WP(const T& n) { return output.WP(n); }
 template <typename T> void FastIO::WD(const T& n) { return output.WD(n); }
 void FastIO::WC(char c) { return output.WC(c); }
 void FastIO::WS(const string& s) { return output.WS(s); }
+void FastIO::WS(const char* s) { return output.WS(s); }
 void FastIO::WSpace() { return output.WSpace(); }
 void FastIO::WLine() { return output.WLine(); }
 // --- End of C:\Users\ianli\Desktop\CP\template\Various\FastIO\FastIO.ipp --- 
@@ -703,11 +734,11 @@ template <typename T> vector<pair<T, T>> BitDecomposition(T l, T r) {
 #undef DebugArray0Ln
 #undef NL
 
-class DebugOutput {
+class Debugger {
 	public:
-		DebugOutput();
-		DebugOutput(FILE* file);
-		DebugOutput(string path);
+		Debugger();
+		Debugger(FILE* file);
+		Debugger(string path);
 
 		template <typename T> void W (const T& n);
 		template <typename T, typename... Targs> void W(const T& n, const Targs&... Fargs);
@@ -722,6 +753,9 @@ class DebugOutput {
 
 		void print(const char* n); // This is an overload
 		template <typename T> void print(const T& n);
+		template <typename T1, typename T2> void print(const pair<T1, T2>& n); // This is an overload
+		template <typename... Targs> void print(const tuple<Targs...>& n); // This is an overload
+
 		template <typename T, typename... Targs> void print(const T& n, const Targs&... Fargs);
 		template <typename T> void printArray(int n, T* x);
 		template <typename T> void printArray0(int n, T* x);
@@ -730,62 +764,77 @@ class DebugOutput {
 
 	private:
 		Output output;
+
+		template <typename T> void printp(const T& n, falseType ft);
+		template <typename T> void printp(const T& n, trueType tt);
+		template <int i, typename... Targs> void printi(const tuple<Targs...>& n); 
+		template <int... Is, typename... Targs> void print(const tuple<Targs...>& n, integer_sequence<int, Is...>); // inner
+
 } debug;
 
 #define Debug(...) {debug.WS("("+string(#__VA_ARGS__)+") = ");debug.print(__VA_ARGS__);debug.WLine();debug.flush();}
-#define DebugArray(n,x) {debug.WS(string(#x)+" :");debug.printArray(n,x);debug.flush();}
-#define DebugArray0(n,x) {debug.WS(string(#x)+" :");debug.printArray0(n,x);debug.flush();}
-#define DebugArrayLn(n,x) {debug.WS(string(#x)+" :\n");debug.printArrayLn(n,x);debug.flush();}
-#define DebugArray0Ln(n,x) {debug.WS(string(#x)+" :\n");debug.printArray0Ln(n,x);debug.flush();}
+#define DebugArray(n,x) {debug.WS(#x);debug.WS(" :");debug.printArray(n,x);debug.flush();}
+#define DebugArray0(n,x) {debug.WS(#x);debug.WS(" :");debug.printArray0(n,x);debug.flush();}
+#define DebugArrayLn(n,x) {debug.WS(#x);debug.WS(" :\n");debug.printArrayLn(n,x);debug.flush();}
+#define DebugArray0Ln(n,x) {debug.WS(#x);debug.WS(" :\n");debug.printArray0Ln(n,x);debug.flush();}
 #define NL {debug.WLine();debug.flush();}
 
 // --- Start of C:\Users\ianli\Desktop\CP\template\Various\Debug\Debug.ipp --- 
-DebugOutput::DebugOutput() : output(stderr) {}
-DebugOutput::DebugOutput(FILE* file) : output(file) {}
-DebugOutput::DebugOutput(string path) : output(path) {}
+Debugger::Debugger() : output(stderr) {}
+Debugger::Debugger(FILE* file) : output(file) {}
+Debugger::Debugger(string path) : output(path) {}
 
-template <typename T> void DebugOutput::W (const T& n) { return output.W(n); }
-template <typename T, typename... Targs> void DebugOutput::W(const T& n, const Targs&... Fargs) { return output.W(n, Fargs...); }
-template <typename T> void DebugOutput::WP(const T& n) { return output.WP(n); }
-template <typename T> void DebugOutput::WD(const T& n) { return output.WD(n); }
-void DebugOutput::WC(char c) { return output.WC(c); }
-void DebugOutput::WS(const string& s) { return output.WS(s); }
-void DebugOutput::WSpace() { return output.WSpace(); }
-void DebugOutput::WLine() { return output.WLine(); }
+template <typename T> void Debugger::W (const T& n) { return output.W(n); }
+template <typename T, typename... Targs> void Debugger::W(const T& n, const Targs&... Fargs) { return output.W(n, Fargs...); }
+template <typename T> void Debugger::WP(const T& n) { return output.WP(n); }
+template <typename T> void Debugger::WD(const T& n) { return output.WD(n); }
+void Debugger::WC(char c) { return output.WC(c); }
+void Debugger::WS(const string& s) { return output.WS(s); }
+void Debugger::WSpace() { return output.WSpace(); }
+void Debugger::WLine() { return output.WLine(); }
 
-void DebugOutput::flush() { return output.flush(); }
+void Debugger::flush() { return output.flush(); }
 
-template <> void DebugOutput::print<short>(const short& n) { return W(n); }
-template <> void DebugOutput::print<unsigned short>(const unsigned short& n) { return WP(n); }
+template <> void Debugger::print<short>(const short& n) { return W(n); }
+template <> void Debugger::print<unsigned short>(const unsigned short& n) { return WP(n); }
 
-template <> void DebugOutput::print<int>(const int& n) { return W(n); }
-template <> void DebugOutput::print<unsigned int>(const unsigned int& n) { return WP(n); }
+template <> void Debugger::print<int>(const int& n) { return W(n); }
+template <> void Debugger::print<unsigned int>(const unsigned int& n) { return WP(n); }
 
-template <> void DebugOutput::print<long>(const long& n) { return W(n); }
-template <> void DebugOutput::print<unsigned long>(const unsigned long& n) { return WP(n); }
+template <> void Debugger::print<long>(const long& n) { return W(n); }
+template <> void Debugger::print<unsigned long>(const unsigned long& n) { return WP(n); }
 
-template <> void DebugOutput::print<long long int>(const long long int& n) { return W(n); }
-template <> void DebugOutput::print<unsigned long long int>(const unsigned long long int& n) { return WP(n); }
+template <> void Debugger::print<long long int>(const long long int& n) { return W(n); }
+template <> void Debugger::print<unsigned long long int>(const unsigned long long int& n) { return WP(n); }
 
 #ifdef __SIZEOF_INT128__
-template <> void DebugOutput::print<__int128>(const __int128& n) { return W(n); }
-template <> void DebugOutput::print<unsigned __int128>(const unsigned __int128& n) { return WP(n); }
+template <> void Debugger::print<__int128>(const __int128& n) { return W(n); }
+template <> void Debugger::print<unsigned __int128>(const unsigned __int128& n) { return WP(n); }
 #endif
 
-template <> void DebugOutput::print<bool>(const bool& n) { return (n ? WS("true") : WS("false")); }
+template <> void Debugger::print<bool>(const bool& n) { return (n ? WS("true") : WS("false")); }
 
-template <> void DebugOutput::print<char>(const char& n) { return WC(n); }
-template <> void DebugOutput::print<unsigned char>(const unsigned char& n) { return WP(n); }
+template <> void Debugger::print<char>(const char& n) { return WC(n); }
+template <> void Debugger::print<unsigned char>(const unsigned char& n) { return WP(n); }
 
-// template <> void DebugOutput::print<float>(const float& n) { return W(n); }
-// template <> void DebugOutput::print<double>(const double& n) { return W(n); }
-// template <> void DebugOutput::print<long double>(const long double& n) { return W(n); }
+template <> void Debugger::print<float>(const float& n) { return W(n); }
+template <> void Debugger::print<double>(const double& n) { return W(n); }
+template <> void Debugger::print<long double>(const long double& n) { return W(n); }
 
-void DebugOutput::print(const char* n) { return WS(string(n)); }
-template <> void DebugOutput::print<string>(const string& n) { return WS(n); }
+void Debugger::print(const char* n) { return WS(n); }
+template <> void Debugger::print<string>(const string& n) { return WS(n); }
 
-// pair
-// tuple
+template <typename T1, typename T2> void Debugger::print(const pair<T1, T2>& n) {
+	WC('('); W(n.first); printp<falseType>(n.second); WC(')');
+	return ;
+}
+
+template <typename... Targs> void Debugger::print(const tuple<Targs...>& n) {
+	WC('('); print(n, make_integer_sequence<int, sizeof...(Targs)>()); WC(')');
+	return ;
+}
+
+// TODO
 // bitset
 //
 // vector
@@ -798,13 +847,13 @@ template <> void DebugOutput::print<string>(const string& n) { return WS(n); }
 // map
 // pq
 
-template <typename T> void DebugOutput::print(const T& n) {
+template <typename T> void Debugger::print(const T& n) {
 	n.out(output);
 	return ;
 }
 
-template <typename T, typename... Targs> void DebugOutput::print(const T& n, const Targs&... Fargs) { print(n); WC(','); WSpace(); return print(Fargs...); }
-template <typename T> void DebugOutput::printArray(int n, T* x) {
+template <typename T, typename... Targs> void Debugger::print(const T& n, const Targs&... Fargs) { print(n); WC(','); WSpace(); return print(Fargs...); }
+template <typename T> void Debugger::printArray(int n, T* x) {
 	for (int i = 1; i <= n; i++) {
 		WSpace();
 		print(x[i]);
@@ -814,7 +863,7 @@ template <typename T> void DebugOutput::printArray(int n, T* x) {
 	return ;
 }
 
-template <typename T> void DebugOutput::printArray0(int n, T* x) {
+template <typename T> void Debugger::printArray0(int n, T* x) {
 	for (int i = 0; i < n; i++) {
 		WSpace();
 		print(x[i]);
@@ -824,7 +873,7 @@ template <typename T> void DebugOutput::printArray0(int n, T* x) {
 	return ;
 }
 
-template <typename T> void DebugOutput::printArrayLn(int n, T* x) {
+template <typename T> void Debugger::printArrayLn(int n, T* x) {
 	for (int i = 1; i <= n; i++) {
 		print(x[i]);
 		WLine();
@@ -833,12 +882,32 @@ template <typename T> void DebugOutput::printArrayLn(int n, T* x) {
 	return ;
 }
 
-template <typename T> void DebugOutput::printArray0Ln(int n, T* x) {
+template <typename T> void Debugger::printArray0Ln(int n, T* x) {
 	for (int i = 0; i < n; i++) {
 		print(x[i]);
 		WLine();
 	}
 
+	return ;
+}
+
+// --- private ---
+
+template <typename T> void Debugger::printp(const T& n, falseType ft) {
+	WC(','); WSpace(); W(n);
+	return ;
+}
+template <typename T> void Debugger::printp(const T& n, trueType tt) {
+	W(n);
+	return ;
+}
+
+template <int i, typename... Targs> void Debugger::printi(const tuple<Targs...>& n) {
+	return printp(get<i>(n), boolType<isZero<i>::value>());
+}
+
+template <int... Is, typename... Targs> void Debugger::print(const tuple<Targs...>& n, integer_sequence<int, Is...> seq) {
+	[[maybe_unused]] auto l = { (printi<Is>(n), 0)... };
 	return ;
 }
 // --- End of C:\Users\ianli\Desktop\CP\template\Various\Debug\Debug.ipp --- 
@@ -976,8 +1045,14 @@ int main() {
 	int a = 3;
 	bool b = false;
 	char c = 'A';
+	double d = 0.3;
+	float f = 0.2;
+	long double lf = 0.14;
 
-	Debug(a, b, c);
+
+	Debug(a, b, c, d, f, lf);
+	Debug(MTP(a, c));
+	Debug(MTP(a, c, d, lf));
 	Debug("Good!");
 
 	DebugArray(7, abc);
