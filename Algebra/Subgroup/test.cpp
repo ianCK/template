@@ -24,6 +24,13 @@ constexpr int kN = int(1E5 + 10);
 
 // using Mint = Mod_Int<kMod>;
 
+struct foo {
+	int val;
+	foo();
+	foo(int v) : val(v) {}
+	foo operator + (const foo& o) const { return foo(val + o.val); }
+};
+
 int main() {
 	FastIO IO;
 
@@ -46,4 +53,5 @@ int main() {
 
 	Debug(3 + e);
 
+	Subgroup<foo, ADD> f(3), g(10);
 }
