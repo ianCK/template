@@ -17,8 +17,6 @@ inline void sort_r(string &s) {return sort(s.begin(), s.end(), greater<char>());
 template <typename T> inline void reverse(vector<T> &v) {return reverse(v.begin(), v.end());}
 inline void reverse(string &s) {return reverse(s.begin(), s.end());}
 
-// below = TODO
-
 template <typename T> inline void Merge(vector<T> &a, vector<T> &b, vector<T> &c) {
 	if (c.size() < a.size() + b.size()) c.resize(a.size() + b.size());
 	merge(a.begin(), a.end(), b.begin(), b.end(), c.begin());
@@ -79,6 +77,8 @@ template <typename T, typename... Targs> inline T min(T a, T b, T c, Targs... ar
 template <typename T, typename... Targs> inline T max(T a, T b, T c, Targs... args) {return max(a, max(b, c, args...));}
 template <typename T, typename... Targs> inline void chmin(T &a, T b, Targs... args) {a = min(a, b, args...); return ;}
 template <typename T, typename... Targs> inline void chmax(T &a, T b, Targs... args) {a = max(a, b, args...); return ;}
+
+// below = TODO
 
 vector<int> Primes(int n) {
 	if (n <= 1) return {};
