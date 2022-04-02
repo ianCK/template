@@ -25,6 +25,8 @@ class Output {
 		FILE* file;
 		char buffer[bufferSize];
 		int pointer;
+
+		template <typename T> void WInteger(const T& n);
 };
 
 #include <Various/FastIO/Output/Output.ipp>

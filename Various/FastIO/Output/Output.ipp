@@ -23,14 +23,24 @@ template <> void Output::W<long double>(const long double& n) {
 	return WS(buffer); 
 }
 
-template <typename T> void Output::W (const T& n) {
-	if (n < 0) {
-		WC('-');
-		WP(-n);
-	}
-	else WP(n);
-	return ;
-}
+template <> void Output::W<short>(const short& n) { return WInteger(n); }
+template <> void Output::W<unsigned short>(const unsigned short& n) { return WP(n); }
+
+template <> void Output::W<int>(const int& n) { return WInteger(n); }
+template <> void Output::W<unsigned int>(const unsigned int& n) { return WP(n); }
+
+template <> void Output::W<long>(const long& n) { return WInteger(n); }
+template <> void Output::W<unsigned long>(const unsigned long& n) { return WP(n); }
+
+template <> void Output::W<long long int>(const long long int& n) { return WInteger(n); }
+template <> void Output::W<unsigned long long int>(const unsigned long long int& n) { return WP(n); }
+
+#ifdef __SIZEOF_INT128__
+template <> void Output::W<__int128>(const __int128& n) { return WInteger(n); }
+template <> void Output::W<unsigned __int128>(const unsigned __int128& n) { return WP(n); }
+#endif
+
+template <typename T> void Output::W (const T& n) { return n.out(*this); }
 
 template <typename T, typename... Targs> void Output::W(const T& n, const Targs&... Fargs) { W(n); return W(Fargs...); }
 
@@ -63,6 +73,15 @@ void Output::WS(const char* s) { int i = 0; while (s[i]) WC(s[i++]); return ; }
 void Output::WSpace() { return WC(' '); }
 void Output::WLine() { return WC('\n'); }
 
+void Output::flush() { fwrite(buffer, 1, pointer, file); pointer = 0; return ; }
+
 // --- private ---
 
-void Output::flush() { fwrite(buffer, 1, pointer, file); pointer = 0; return ; }
+template <typename T> void Output::WInteger (const T& n) {
+	if (n < 0) {
+		WC('-');
+		WP(-n);
+	}
+	else WP(n);
+	return ;
+}

@@ -11,7 +11,7 @@ template <typename T, int N, int M = N> class Matrix {
 		static constexpr int n = N;
 		static constexpr int m = M;
 
-		Matrix(int x = 0); // 0 -> init, other -> no init
+		explicit Matrix(int x = 0); // 0 -> init, other -> no init
 		Matrix(const Matrix& o); // copy
 		Matrix(Matrix&& o); // move
 
@@ -58,9 +58,12 @@ template <typename T, int N> class Matrix<T, N, N> {
 	public:
 		static constexpr int n = N;
 
-		Matrix(int x = 0); // 0 -> init, other -> no init
+		explicit Matrix(int x = 0); // 0 -> init, other -> no init
 		Matrix(const Matrix& o); // copy
 		Matrix(Matrix&& o); // move
+
+		constexpr Matrix& operator = (const Matrix& o);
+		constexpr Matrix& operator = (Matrix&& o);
 
 		constexpr Matrix operator + (const Matrix& o) const;
 		constexpr Matrix operator - (const Matrix& o) const;

@@ -10,7 +10,7 @@ template <int mod> constexpr ModInt<mod> ModInt<mod>::operator + (const ModInt<m
 }
 
 template <int mod> constexpr ModInt<mod> ModInt<mod>::operator - (const ModInt<mod>& o) const { 
-	int tmp = val + o.value();
+	int tmp = val - o.value();
 	return tmp < 0 ? ModInt(tmp + kMod) : ModInt(tmp);
 }
 

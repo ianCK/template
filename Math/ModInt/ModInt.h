@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../Various/FastIO/Output/Output.h"
+#include <Various/FastIO/Output/Output.h>
 
 template <int mod> class ModInt {
 	public:
@@ -41,4 +41,4 @@ template <int mod> class ModInt {
 		int val;
 };
 
-#include "ModInt.ipp"
+#include <Math/ModInt/ModInt.ipp>

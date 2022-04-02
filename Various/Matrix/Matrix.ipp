@@ -63,6 +63,9 @@ template <typename T, int N> Matrix<T, N>::Matrix(int x) { if (x == 0) val.fill(
 template <typename T, int N> Matrix<T, N>::Matrix(const Matrix& o) : val(o.val) {}
 template <typename T, int N> Matrix<T, N>::Matrix(Matrix&& o) : val(move(o.val)) {}
 
+template <typename T, int N> constexpr Matrix<T, N>& Matrix<T, N>::operator = (const Matrix& o) { val = o.val; return *this; }
+template <typename T, int N> constexpr Matrix<T, N>& Matrix<T, N>::operator = (Matrix&& o) { val = move(o.val); return *this; }
+
 template <typename T, int N> constexpr Matrix<T, N> Matrix<T, N>::operator + (const Matrix& o) const {
 	Matrix<T, N> ret(-1);
 	for (int i = 0; i < N; i++) for (int j = 0; j < N; j++) ret[i][j] = val[i][j] + o[i][j];
