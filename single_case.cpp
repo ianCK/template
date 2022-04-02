@@ -20,8 +20,8 @@ constexpr int kN = int(1E5 + 10);
 #endif
 
 // using Mint = Mod_Int<kMod>;
+FastIO IO;
 
 int main() {
-	FastIO IO;
 
 }
