@@ -39,53 +39,23 @@ constexpr int kN = int(1E5 + 10);
 // constexpr int dx[8] = {0, 0, 1, -1, 1, -1, 1, -1};
 // constexpr int dy[8] = {1, -1, 1, -1, -1, 1, 0, 0};
 
-static const string localIncludePrefix = "#include \"";
+static const string localIncludePrefix = "#include <";
+static const string templatePath = "C:\\Users\\ianli\\Desktop\\CP\\template\\";
 
 void makeGood(string& str) {
 	for (char& c : str) if (c == '/') c = '\\';
 	return ;
 }
 
-bool hasPrefix(const string& lhs, string rhs) {
-	return lhs.substr(0, rhs.length()) == rhs;
-}
-
-bool isRelativePath(string path) {
-	if (hasPrefix(path, "C:")) return false;
-	return true;
-}
-
-string makeAbsolutePath(string directoryPath, string filePath) {
-	makeGood(directoryPath);
-	makeGood(filePath);
-
-	bool working = true;
-	while (working) {
-		working = false;
-		if (hasPrefix(filePath, ".\\")) {
-			working = true;
-			filePath = filePath.substr(2);
-		}
-		if (hasPrefix(filePath, "..\\")) {
-			working = true;
-			directoryPath.pop_back();
-			while (directoryPath.back() != '\\') directoryPath.pop_back();
-			filePath = filePath.substr(3);
-		}
-	}
-
-	return directoryPath + filePath;
+bool isLocal(string path) {
+	return 'A' <= path[0] and path[0] <= 'Z';
 }
 
 void outputFile(fstream& output, string path) {
 	static set<string> se;
-	if (se.find(path) != se.end()) return ;
 
 	se.insert(path);
 	cerr << path << endl;
-
-	string directoryPath = path;
-	while (directoryPath.back() != '\\') directoryPath.pop_back();
 
 	output << "// --- Start of " << path << " --- \n";
 
@@ -93,23 +63,23 @@ void outputFile(fstream& output, string path) {
 
 	string line;
 	while (getline(file, line)) {
-		if (hasPrefix(line, localIncludePrefix)) {
-			string path = line.substr(localIncludePrefix.length());
-			path.pop_back();
-
-			if (isRelativePath(path)) path = makeAbsolutePath(directoryPath, path); 
-
-			if (se.find(path) == se.end()) {
-				outputFile(output, path);
+		if (line.substr(0, localIncludePrefix.length()) == localIncludePrefix) {
+			string path;
+			bool start = false;
+			for (char c : line) {
+				if (c == '>') break;
+				if (start) path += c;
+				if (c == '<') start = true;
 			}
 
-			if (path.back() == 'h') {
-				path.pop_back();
-				path += "cpp";
-				outputFile(output, path);
-			}
+			makeGood(path);
 
-			continue;
+			if (isLocal(path)) {
+				path = templatePath + path;
+				if (se.find(path) == se.end()) outputFile(output, path);
+				continue;
+			}
+			else output << line << "\n";
 		}
 		else if (line == "#pragma once") continue;
 		else output << line << "\n";
@@ -129,7 +99,7 @@ int main(int argc, const char* argv[]) {
 	makeGood(current_path);
 	cerr << "current_path = " << current_path << endl;
 
-	string path = makeAbsolutePath(current_path, string(argv[1]));
+	string path = current_path + string(argv[1]);
 	fstream output("export.cpp", ios::out);
 	output << "// Merged by FileMerger.exe\n";
 
