@@ -1,5 +1,5 @@
 CXX = g++
-CXXFLAGS = -O3 -Wall -std=c++17
+CXXFLAGS = -O3 -Wall -std=c++17 -I C:\\Users\\ianli\\Desktop\\CP\\template\\
 
 EXE = compile.exe
 

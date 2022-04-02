@@ -49,4 +49,4 @@ class Input {
 		template <typename... Targs> void RLSi(int i, string* a, Targs*... Fargs);
 };
 
-#include "Input.ipp"
+#include <Various/FastIO/Input/Input.ipp> 

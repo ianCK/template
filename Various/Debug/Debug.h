@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../FastIO/Output/Output.h"
+#include <Various/FastIO/Output/Output.h>
 
 #undef Debug
 #undef DebugArray
@@ -62,4 +62,4 @@ class Debugger {
 #define DebugArray0Ln(n,x) {debug.WS(#x);debug.WS(" :\n");debug.printArray0Ln(n,x);debug.flush();}
 #define NL {debug.WLine();debug.flush();}
 
-#include "Debug.ipp"
+#include <Various/Debug/Debug.ipp>

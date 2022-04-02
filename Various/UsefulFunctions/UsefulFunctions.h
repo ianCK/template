@@ -43,4 +43,4 @@ template <typename T> vector<T> factorize(T n);
 
 int mex(const vector<int>& vec);
 
-#include "UsefulFunctions.ipp"
+#include <Various/UsefulFunctions/UsefulFunctions.ipp>

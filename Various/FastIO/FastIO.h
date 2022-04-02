@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Input/Input.h"
-#include "Output/Output.h"
+#include <Various/FastIO/Input/Input.h>
+#include <Various/FastIO/Output/Output.h>
 
 // R -> Read
 // D -> digit (no check for neg, only one digit)
@@ -56,4 +56,4 @@ class FastIO {
 		Output output;
 };
 
-#include "FastIO.ipp"
+#include <Various/FastIO/FastIO.ipp>

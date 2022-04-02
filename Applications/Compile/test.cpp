@@ -1,4 +1,4 @@
-#include "C:\Users\ianli\Desktop\CP\template\CommonInclude\CommonInclude.h"
+#include <CommonInclude\CommonInclude.h>
 
 constexpr int kN = int(1E5 + 10);
 // constexpr int kMod = 998244353;
@@ -12,9 +12,12 @@ constexpr int kN = int(1E5 + 10);
 // constexpr int dx[8] = {0, 0, 1, -1, 1, -1, 1, -1};
 // constexpr int dy[8] = {1, -1, 1, -1, -1, 1, 0, 0};
 
-#include "C:\Users\ianli\Desktop\CP\template\Various\FastIO\FastIO.h"
-#include "C:\Users\ianli\Desktop\CP\template\Various\Useful_Functions\Useful_Functions.cpp"
-#include "C:\Users\ianli\Desktop\CP\template\Various\Debug\Debug.cpp"
+#include <Various\FastIO\FastIO.h>
+#include <Various\UsefulFunctions\UsefulFunctions.h>
+
+#ifndef ONLINE_JUDGE
+#include <Various\Debug\Debug.h>
+#endif
 
 // using Mint = Mod_Int<kMod>;
 

@@ -27,4 +27,4 @@ class Output {
 		int pointer;
 };
 
-#include "Output.ipp"
+#include <Various/FastIO/Output/Output.ipp>

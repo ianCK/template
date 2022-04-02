@@ -1,4 +1,4 @@
-#include "C:\Users\ianli\Desktop\CP\template\CommonInclude\CommonInclude.h"
+#include <CommonInclude\CommonInclude.h>
 
 constexpr int kN = int(1E5 + 10);
 // constexpr int kMod = 998244353;
@@ -14,10 +14,10 @@ constexpr int kN = int(1E5 + 10);
 
 // using Mint = Mod_Int<kMod>;
 
-#include "C:\Users\ianli\Desktop\CP\template\Heuristic\System.cpp"
+#include <Heuristic\System.cpp>
 
 static const string gcc = "g++";
-static const string cppflags = "-Wall -std=c++17 -O3";
+static const string cppflags = "-Wall -std=c++17 -O3 -I C:\\Users\\ianli\\Desktop\\CP\\template\\";
 
 static const string templatePath = "C:\\Users\\ianli\\Desktop\\CP\\template\\";
 static const string objectListPath = "objectList";
@@ -52,10 +52,10 @@ int main(int argc, const char* argv[]) {
 		return 0;
 	}
 
-	vector<string> objects = readObjectList();
+	// vector<string> objects = readObjectList();
 
 	string objectsStr = "";
-	for (const string& str : objects) objectsStr += str + " ";
+	// for (const string& str : objects) objectsStr += str + " ";
 
 	System(gcc + " " + cppflags + " " + objectsStr + " " + cppfile + " -o " + outputExe);
 }
