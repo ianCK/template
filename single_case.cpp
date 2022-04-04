@@ -19,7 +19,7 @@ constexpr int kN = int(1E5 + 10);
 #include <Various\Debug\Debug.h>
 #endif
 
-// using Mint = Mod_Int<kMod>;
+// using Mint = ModInt<kMod>;
 FastIO IO;
 
 int main() {
