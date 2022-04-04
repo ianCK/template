@@ -17,7 +17,7 @@ constexpr int kN = int(1E5 + 10);
 #include <Heuristic\System.cpp>
 
 static const string gcc = "g++";
-static const string cppflags = "-Wall -std=c++17 -O3 -I C:\\Users\\ianli\\Desktop\\CP\\template\\";
+static const string cppflags = "-Wall -std=c++17 -O3 -Wl,-stack,10485760 -I C:\\Users\\ianli\\Desktop\\CP\\template\\";
 
 static const string templatePath = "C:\\Users\\ianli\\Desktop\\CP\\template\\";
 static const string objectListPath = "objectList";
