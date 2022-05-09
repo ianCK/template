@@ -43,4 +43,6 @@ template <typename T> vector<T> factorize(T n);
 
 int mex(const vector<int>& vec);
 
+template <typename T> vector<int> sortBy(T* v, int l, int r);
+
 #include <Various/UsefulFunctions/UsefulFunctions.ipp>
