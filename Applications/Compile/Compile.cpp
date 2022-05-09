@@ -52,10 +52,10 @@ int main(int argc, const char* argv[]) {
 		return 0;
 	}
 
-	// vector<string> objects = readObjectList();
+	vector<string> objects = readObjectList();
 
 	string objectsStr = "";
-	// for (const string& str : objects) objectsStr += str + " ";
+	for (const string& str : objects) objectsStr += str + " ";
 
 	System(gcc + " " + cppflags + " " + objectsStr + " " + cppfile + " -o " + outputExe);
 }
