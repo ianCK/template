@@ -17,6 +17,11 @@ typedef unsigned int ui;
 typedef long long int ll;
 typedef unsigned long long int ull;
 
+#ifdef __SIZEOF_INT128__
+typedef __int128 lll;
+typedef unsigned __int128 ulll;
+#endif
+
 template <int i> class isZero { public: static constexpr bool value = false; };
 template <> class isZero<0> { public: static constexpr bool value = true; };
 
