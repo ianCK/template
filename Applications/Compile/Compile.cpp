@@ -40,22 +40,30 @@ vector<string> readObjectList() {
 
 int main(int argc, const char* argv[]) {
 	string cppfile = "";
-	string outputExe = "a.exe";
+	string outputExe = "";
 	for (int i = 1; i < argc; i++) {
 		if (string(argv[i]) == "-DEBUG") _system_debug = true;
 		else if (string(argv[i]) == "-o") outputExe = string(argv[++i]);
 		else cppfile = string(argv[i]);
 	}
 
+    if (cppfile.find(".cpp") == string::npos) cppfile += ".cpp";
+
+    if (outputExe == "") {
+        outputExe = cppfile;
+        for (int i = 0; i < 4; i++) outputExe.pop_back();
+        outputExe += ".exe";
+    }
+
 	if (cppfile == "") {
 		cout << "No cppfile\n";
 		return 0;
 	}
 
-	vector<string> objects = readObjectList();
+	// vector<string> objects = readObjectList();
 
 	string objectsStr = "";
-	for (const string& str : objects) objectsStr += str + " ";
+	// for (const string& str : objects) objectsStr += str + " ";
 
 	System(gcc + " " + cppflags + " " + objectsStr + " " + cppfile + " -o " + outputExe);
 }

@@ -7,7 +7,7 @@ all: $(EXE)
 
 compile.exe : Compile.cpp
 	$(CXX) $(CXXFLAGS) -o $@ Compile.cpp
+	mv -f compile.exe ../
 
 clean:
 	rm $(EXE)
-

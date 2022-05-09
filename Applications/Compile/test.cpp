@@ -19,11 +19,7 @@ constexpr int kN = int(1E5 + 10);
 #include <Various\Debug\Debug.h>
 #endif
 
-#include <DS\DSU\DSU.h>
-
 // using Mint = Mod_Int<kMod>;
-
-DSU dsu;
 
 int main() {
 	FastIO IO;
