@@ -213,7 +213,7 @@ int mex(const vector<int>& vec) {
 }
 
 template <typename T> vector<int> sortBy(T* v, int l, int r) {
-    vector<pair<T&, int>> vec;
+    vector<pair<T, int>> vec;
     vec.reserve(r - l + 1);
     for (int i = l; i <= r; i++) vec.emplace_back(v[i], i);
 
