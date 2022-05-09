@@ -1,6 +1,7 @@
 #pragma once
 
 #include <CommonInclude/CommonInclude.h>
+#include <Various/FastIO/Output/Output.h>
 
 // 0-base
 class DSU {
@@ -15,16 +16,20 @@ class DSU {
 		DSU(const DSU& oth);
 		~DSU();
 
-		void init(int n);
-		void clear();
+		void Init(int n);
+		void Clear();
 
 		int Find(int n);
 
-		int union_size(int n);
-		bool same(int l, int r);
-		int component_count() const;
+		int UnionSize(int n);
+		bool Same(int l, int r);
+		int ComponentCount() const;
+        vector<vector<int>> Components();
 
 		bool Merge(int l, int r);
+
+
+        void out(Output& output) const;
 };
 
 #include <DS/DSU/DSU.ipp>

@@ -1,4 +1,4 @@
-#include "C:\Users\ianli\Desktop\CP\template\CommonInclude\CommonInclude.h"
+#include <CommonInclude\CommonInclude.h>
 
 constexpr int kN = int(1E5 + 10);
 // constexpr int kMod = 998244353;
@@ -12,14 +12,31 @@ constexpr int kN = int(1E5 + 10);
 // constexpr int dx[8] = {0, 0, 1, -1, 1, -1, 1, -1};
 // constexpr int dy[8] = {1, -1, 1, -1, -1, 1, 0, 0};
 
-#include "C:\Users\ianli\Desktop\CP\template\Various\Fast_IO\Fast_IO.cpp"
-#include "C:\Users\ianli\Desktop\CP\template\Various\Useful_Functions\Useful_Functions.cpp"
-#include "C:\Users\ianli\Desktop\CP\template\Various\Debug\Debug.cpp"
-#include "C:\Users\ianli\Desktop\CP\template\DS\DSU\DSU.h"
+#include <Various\FastIO\FastIO.h>
+#include <Various\UsefulFunctions\UsefulFunctions.h>
 
-// using Mint = Mod_Int<kMod>;
+#ifndef ONLINE_JUDGE
+#include <Various\Debug\Debug.h>
+#endif
+
+#include <DS\DSU\DSU.h>
+
+// using Mint = ModInt<kMod>;
+FastIO IO;
 
 int main() {
-	DSU dsu;
+
+    DSU dsu;
+
+    Debug(dsu);
+
+    dsu.Init(5);
+
+    Debug(dsu);
+
+    dsu.Merge(2, 4);
+    dsu.Merge(1, 3);
+
+    Debug(dsu);
 
 }
