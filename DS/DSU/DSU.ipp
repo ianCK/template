@@ -1,9 +1,3 @@
-#include "DSU.h"
-
-#include <string.h>
-#include <algorithm>
-using namespace std;
-
 DSU::DSU() : p(nullptr), size(0), components(0) {}
 DSU::DSU(int n) : p(new int [n]), size(n), components(n) {memset(p, -1, sizeof(int) * n);}
 DSU::DSU(const DSU& oth) : p(new int[oth.size]), size(oth.size), components(oth.components) {

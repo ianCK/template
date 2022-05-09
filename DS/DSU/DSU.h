@@ -1,5 +1,7 @@
 #pragma once
 
+#include <CommonInclude/CommonInclude.h>
+
 // 0-base
 class DSU {
 	private:
@@ -24,3 +26,5 @@ class DSU {
 
 		bool Merge(int l, int r);
 };
+
+#include <DS/DSU/DSU.ipp>
