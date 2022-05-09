@@ -17,7 +17,6 @@ FOLDERS = \
 		  FOLDER_String\
 		  FOLDER_Various
 
-
 all:
 	make $(FOLDERS)
 
