@@ -18,9 +18,9 @@ class DSU {
 
 		int Find(int n);
 
-		inline int union_size(int n);
-		inline bool same(int l, int r);
-		inline int component_count() const;
+		int union_size(int n);
+		bool same(int l, int r);
+		int component_count() const;
 
 		bool Merge(int l, int r);
 };
