@@ -224,7 +224,7 @@ template <typename T> vector<T> factorize(T x) {
 int mex(const vector<int>& vec) {
     int n = int(vec.size());
     vector<bool> have(n, false);
-    for (int i : vec) if (i < n) have[i] = true;
+    for (int i : vec) if (0 <= i and i < n) have[i] = true;
     for (int i = 0; i < n; i++) if (!have[i]) return i;
     return n;
 }
