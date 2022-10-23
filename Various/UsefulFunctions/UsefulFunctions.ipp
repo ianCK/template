@@ -62,6 +62,23 @@ template <typename T> __attribute__((target("bmi"))) T gcd(T a, T b) {
 template <typename T> T lcm(const T& a, const T& b) { return a * (b / gcd(a, b)); }
 template <typename T, typename... Targs> T gcd(const T& a, const T& b, const T& c, const Targs&... args) { return gcd(a, gcd(b, c, args...)); }
 template <typename T, typename... Targs> T lcm(const T& a, const T& b, const T& c, const Targs&... args) { return lcm(a, lcm(b, c, args...)); }
+
+template <typename T> T min( const vector<T>& vec )
+{
+    int n = int( vec.size() );
+    T ans = vec[0];
+    for( int i = 1; i < n; i++ ) chmin( ans, vec[i] );
+    return ans;
+}
+
+template <typename T> T max( const vector<T>& vec )
+{
+    int n = int( vec.size() );
+    T ans = vec[0];
+    for( int i = 1; i < n; i++ ) chmax( ans, vec[i] );
+    return ans;
+}
+
 template <typename T, typename... Targs> T min(const T& a, const T& b, const T& c, const Targs&... args) { return min(a, min(b, c, args...)); }
 template <typename T, typename... Targs> T max(const T& a, const T& b, const T& c, const Targs&... args) { return max(a, max(b, c, args...)); }
 template <typename T, typename... Targs> void chmin(T &a, const T& b, const Targs&... args) { a = min(a, b, args...); return ; }

@@ -26,6 +26,10 @@ template <typename T> __attribute__((target("bmi"))) T gcd(T a, T b);
 template <typename T> T lcm(const T& a, const T& b);
 template <typename T, typename... Targs> T gcd(const T& a, T b, T c, Targs... args);
 template <typename T, typename... Targs> T lcm(const T& a, T b, T c, Targs... args);
+
+template <typename T> T min( const vector<T>& vec );
+template <typename T> T max( const vector<T>& vec );
+
 template <typename T, typename... Targs> T min(const T& a, T b, T c, Targs... args);
 template <typename T, typename... Targs> T max(const T& a, T b, T c, Targs... args);
 template <typename T, typename... Targs> void chmin(T &a, const T& b, const Targs&... args);
