@@ -13,13 +13,13 @@ using namespace std;
 #define DebugArrayLn(n,x) ;
 #define DebugArray0Ln(n,x) ;
 #define NL ;
-typedef unsigned int ui;
-typedef long long int ll;
-typedef unsigned long long int ull;
+using ui = unsigned int;
+using ll = long long int;
+using ull = unsigned long long int;
 
 #ifdef __SIZEOF_INT128__
-typedef __int128 lll;
-typedef unsigned __int128 ulll;
+using lll = __int128;
+using ulll = unsigned __int128;
 #endif
 
 template <int i> class isZero { public: static constexpr bool value = false; };
