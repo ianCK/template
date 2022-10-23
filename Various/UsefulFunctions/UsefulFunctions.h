@@ -45,6 +45,9 @@ template <typename T> vector<T> factors(T n);
 // O(lg(n))
 template <typename T> vector<T> factorize(T n);
 
+// vec must be sorted
+template <typename T> vector<pair<T, int>> Compress(vector<T> vec);
+
 int mex(const vector<int>& vec);
 
 template <typename T> vector<int> sortBy(T* v, int l, int r);

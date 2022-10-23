@@ -221,6 +221,26 @@ template <typename T> vector<T> factorize(T x) {
 }
 #endif
 
+// vec must be sorted
+template <typename T> vector<pair<T, int>> Compress(vector<T> vec) {
+	if (vec.empty()) return {};
+
+	vector<pair<T, int>> ans;
+	int cnt = 1, sz = int(vec.size());
+	T lst = vec[0];
+	for (int i = 1; i < sz; i++) {
+		if (lst != vec[i]) {
+			ans.push_back(make_pair(lst, cnt));
+			lst = vec[i];
+			cnt = 1;
+		}
+		else cnt++;
+	}
+	ans.push_back(make_pair(lst, cnt));
+	return ans;
+}
+
+
 int mex(const vector<int>& vec) {
     int n = int(vec.size());
     vector<bool> have(n, false);
