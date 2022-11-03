@@ -1,44 +1,6 @@
-#include <bits/stdc++.h>
-using namespace std;
-#define PB push_back
-#define F first
-#define S second
-#define MP make_pair
-#define MTP make_tuple
-#define R Read
-#define RD Read_Digit
-#define RP Read_P
-#define RS Read_String
-#define RL Read_Loop
-#define RLD Read_Loop_Digit
-#define RLP Read_Loop_P
-#define RLS Read_Loop_String
-#ifdef ONLINE_JUDGE
-	#define Debug(...) ;
-	#define Debug_Array(n,x) ;
-	#define Debugln_Array(n,x) ;
-	#define NL ;
-#else
-	#define Debug(...) {printf("(%s) = ",(#__VA_ARGS__)),_print(__VA_ARGS__),printf("\n");}
-	#define Debug_Array(n,x) {printf("%s :",(#x));for(int i=1;i<=n;i++)printf(" "),_print(x[i]);printf("\n");}
-	#define Debugln_Array(n,x) {for(int i=1;i<=n;i++){printf("%s",(#x));printf("[%d] = ", i);_print(x[i]);printf("\n");}}
-	#define NL {printf("\n");}
-#endif
-typedef long long int ll;
-typedef unsigned long long int ull;
+#include <CommonInclude/CommonInclude.h>
 
-constexpr int kN = int(1E5 + 10);
-// constexpr int kMod = 998244353;
-// constexpr int kMod = int(1E9 + 7);
-// constexpr int kInf = 0x3f3f3f3f;
-// constexpr ll kInf = 0x3f3f3f3f3f3f3f3f;
-// constexpr double kPi = acos(-1);
-// constexpr double kEps = 1E-9;
-// constexpr int dx[4] = {0, 0, 1, -1};
-// constexpr int dy[4] = {1, -1, 0, 0};
-// constexpr int dx[8] = {0, 0, 1, -1, 1, -1, 1, -1};
-// constexpr int dy[8] = {1, -1, 1, -1, -1, 1, 0, 0};
-
+<<<<<<< Updated upstream:Compile/Compile.cpp
 #include "C:\Users\ianli\Desktop\CP\template\Various\Fast_IO\Fast_IO.cpp"
 #include "C:\Users\ianli\Desktop\CP\template\Various\Useful_Functions\Useful_Functions.cpp"
 #include "C:\Users\ianli\Desktop\CP\template\Various\Debug\Debug.cpp"
@@ -79,4 +41,117 @@ int main(int argc, const char* argv[]) {
 	for (const string& str : objects) objectsStr += str + " ";
 
 	System(gcc + " " + cppflags + " " + objectsStr + " " + cppfile);
+=======
+static const string localIncludePrefix = "#include <";
+static const string templatePath = "C:\\Users\\ianli\\Desktop\\CP\\template\\";
+
+bool IsInclude( string line )
+{
+    static const string include = "#include";
+    return line.substr( 0, include.length() ) == include;
+}
+
+string ExtractPath( string line )
+{
+    size_t lpos = line.find( '"' );
+    size_t rpos = line.find( '"', lpos + 1 );
+
+    if( lpos == string::npos or rpos == string::npos )
+    {
+        lpos = line.find( '<' );
+        rpos = line.find( '>', lpos + 1 );
+    }
+
+    assert( lpos != string::npos and rpos != string::npos );
+
+    return line.substr( lpos + 1, rpos - lpos - 1 );
+}
+
+bool IsTemplateInclude( string line )
+{
+    size_t lpos = line.find( '<' );
+    return lpos != string::npos and isupper( line[lpos + 1] );
+}
+
+bool IsLocalInclude( string line )
+{
+    return line.find( '"' ) != string::npos;
+}
+
+// void outputFile(fstream& output, string path) {
+//     static set<string> se;
+// 
+//     se.insert(path);
+//     cerr << path << endl;
+// 
+//     output << "// --- Start of " << path << " --- \n";
+// 
+//     fstream file(path, ios::in);
+// 
+//     string line;
+//     while (getline(file, line)) {
+//         if (line.substr(0, localIncludePrefix.length()) == localIncludePrefix) {
+//             string path;
+//             bool start = false;
+//             for (char c : line) {
+//                 if (c == '>') break;
+//                 if (start) path += c;
+//                 if (c == '<') start = true;
+//             }
+// 
+//             makeGood(path);
+// 
+//             if (isLocal(path)) {
+//                 path = templatePath + path;
+//                 if (se.find(path) == se.end()) outputFile(output, path);
+//                 continue;
+//             }
+//             else output << line << "\n";
+//         }
+//         else if (line == "#pragma once") continue;
+//         else output << line << "\n";
+//     }
+// 
+//     output << "// --- End of " << path << " --- \n";
+//     return ;
+// }
+
+int main( int argc, const char** argv )
+{
+    if( argc < 2 )
+    {
+        cout << "Usage: FileMerger A.cpp [B.cpp ...]\n";
+        return 0;
+    }
+
+    vector<string> cppFiles;
+
+    string outputFile = "export.cpp";
+
+    for( int i = 1; i < argc; i++ )
+    {
+        string s = string( argv[i] );
+        if( s == "-o" )
+        {
+            outputFile = string( argv[++i] );
+        }
+        else if( IsCppFile( s ) )
+        {
+            cppFiles.push_back( s );
+        }
+    }
+
+    string currentPath = filesystem::current_path().string();
+    cout << "currentPath = " << currentPath << endl;
+
+    fstream output( outputFile, ios::out );
+    output << "// Merged by FileMerger.exe\n";
+
+    // outputFile(output, path);
+
+    output.close();
+
+    system( "CLIP < " + outputFile );
+    cout << "Clipped to clipboard\n";
+>>>>>>> Stashed changes:Applications/FileMerger/FileMerger.cpp
 }

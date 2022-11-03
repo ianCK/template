@@ -17,8 +17,8 @@ class Rng_int {
 		Rng_int(ui seed = 0) : x(ini_x), y(ini_y), z(ini_z), w(ini_w ^ (seed * 371928365)) {}
 		void set_seed(ui seed) {x = ini_x, y = ini_y, z = ini_z, w = ini_w ^ (seed * 371928365);}
 		ui operator () () {return randint();}
-		// [1, r]
-		ui operator () (ui r) {return randint() % r + 1;}
+		// [0, r - 1]
+		ui operator () (ui r) {return randint() % r;}
 		// [l, r]
 		int operator () (int l, int r) {return l + (randint() % (r - l + 1));}
 } rng_int;

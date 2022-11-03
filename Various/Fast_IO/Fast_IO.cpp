@@ -1,8 +1,8 @@
-static bool Fast_IO_activated = false;
-static bool IOS_activated = false;
+[[maybe_unused]] static bool Fast_IO_activated = false;
+[[maybe_unused]] static bool IOS_activated = false;
 // --- Get ---
 static inline char Get_Raw_Char() {
-	static bool pre = Fast_IO_activated = true;
+	[[maybe_unused]] static bool pre = Fast_IO_activated = true;
 	static char buf[1 << 16], *p = buf, *end = buf;
 	if (p == end) {
 		if ((end = buf + fread(buf, 1, 1 << 16, stdin)) == buf) return '\0';

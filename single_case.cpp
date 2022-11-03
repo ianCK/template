@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 #include <bits/stdc++.h>
 using namespace std;
 #define PB push_back
@@ -23,6 +24,15 @@ using namespace std;
 	#define Debug_Array(n,x) {printf("%s :",(#x));for(int i=1;i<=n;i++)printf(" "),_print(x[i]);printf("\n");}
 	#define Debugln_Array(n,x) {for(int i=1;i<=n;i++){printf("%s",(#x));printf("[%d] = ", i);_print(x[i]);printf("\n");}}
 	#define NL {printf("\n");}
+=======
+#include <CommonInclude/CommonInclude.h>
+
+#include <Various/FastIO/FastIO.h>
+#include <Various/UsefulFunctions/UsefulFunctions.h>
+
+#ifndef ONLINE_JUDGE
+#include <Various/Debug/Debug.h>
+>>>>>>> Stashed changes
 #endif
 typedef long long int ll;
 typedef unsigned long long int ull;
